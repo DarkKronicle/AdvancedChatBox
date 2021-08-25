@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "acmoduletemplate",
+  "id": "advancedchatbox",
   "version": "${version}",
-  "name": "AdvancedChatModuleTemplate",
-  "description": "A template for an AdvancedChat Module",
+  "name": "AdvancedChatBox",
+  "description": "A mod to overhaul the Minecraft chat text box",
   "authors": [
     "DarkKronicle"
   ],
   "contact": {
-    "sources": "https://github.com/DarkKronicle/AdvancedChat",
+    "sources": "https://github.com/DarkKronicle/AdvancedChatBox",
     "discord": "https://discord.gg/WnaE3uZxDA"
   },
   "license": "MPL-v2",
@@ -16,11 +16,11 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "io.github.darkkronicle.acmoduletemplate.ACModuleTemplate"
+      "io.github.darkkronicle.advancedchatbox.AdvancedChatBox"
     ]
   },
   "mixins": [
-    "acmoduletemplate.mixins.json"
+    "advancedchatbox.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.8.9+build.204",

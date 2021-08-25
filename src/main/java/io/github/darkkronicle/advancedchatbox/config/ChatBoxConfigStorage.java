@@ -1,4 +1,4 @@
-package io.github.darkkronicle.acmoduletemplate.config;
+package io.github.darkkronicle.advancedchatbox.config;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
@@ -11,7 +11,7 @@ import fi.dy.masa.malilib.config.options.ConfigString;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import fi.dy.masa.malilib.util.StringUtils;
-import io.github.darkkronicle.acmoduletemplate.ACModuleTemplate;
+import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,9 +21,9 @@ import java.util.List;
 
 
 @Environment(EnvType.CLIENT)
-public class ModuleConfigStorage implements IConfigHandler {
+public class ChatBoxConfigStorage implements IConfigHandler {
 
-    public static final String CONFIG_FILE_NAME = ACModuleTemplate.MOD_ID + ".json";
+    public static final String CONFIG_FILE_NAME = AdvancedChatBox.MOD_ID + ".json";
     private static final int CONFIG_VERSION = 1;
 
     public static class General {
