@@ -2,6 +2,8 @@ plugins {
     id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id "io.freefair.lombok" version "6.0.0-m2"
+
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -35,6 +37,9 @@ dependencies {
     shadow 'com.google.code.findbugs:jsr305:3.0.0'
 
     shadow 'com.google.code.gson:gson:2.8.6'
+
+    implementation "org.mariuszgromada.math:MathParser.org-mXparser:4.4.2"
+    shadow "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
 }
 processResources {
     inputs.property "version", project.version

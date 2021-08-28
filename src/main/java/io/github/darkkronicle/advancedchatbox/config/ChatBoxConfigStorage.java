@@ -7,12 +7,15 @@ import com.google.gson.JsonPrimitive;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
+import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.config.options.ConfigString;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
+import io.github.darkkronicle.advancedchatcore.config.options.ConfigSimpleColor;
+import io.github.darkkronicle.advancedchatcore.util.ColorUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -34,15 +37,30 @@ public class ChatBoxConfigStorage implements IConfigHandler {
             return StringUtils.translate("advancedchat.module.config.general." + key);
         }
 
-        public final static ConfigStorage.SaveableConfig<ConfigString> STRING_STUFF = ConfigStorage.SaveableConfig.fromConfig("string_stuff",
-                new ConfigString(translate("string_stuff"), "Very cool string stuff", translate("info.string_stuff")));
+        public final static ConfigStorage.SaveableConfig<ConfigSimpleColor> HIGHLIGHT_COLOR = ConfigStorage.SaveableConfig.fromConfig("highlightColor",
+                new ConfigSimpleColor(translate("highlightcolor"), new ColorUtil.SimpleColor(255, 255, 0, 255), translate("info.highlightcolor")));
+        public final static ConfigStorage.SaveableConfig<ConfigSimpleColor> UNHIGHLIGHT_COLOR = ConfigStorage.SaveableConfig.fromConfig("unhighlightColor",
+                new ConfigSimpleColor(translate("unhighlightcolor"), new ColorUtil.SimpleColor(170, 170, 170, 255), translate("info.unhighlightcolor")));
+        public final static ConfigStorage.SaveableConfig<ConfigSimpleColor> BACKGROUND_COLOR = ConfigStorage.SaveableConfig.fromConfig("backgroundColor",
+                new ConfigSimpleColor(translate("backgroundcolor"), new ColorUtil.SimpleColor(0, 0, 0, 170), translate("info.backgroundcolor")));
+        public final static ConfigStorage.SaveableConfig<ConfigInteger> SUGGESTION_SIZE = ConfigStorage.SaveableConfig.fromConfig("suggestionSize",
+                new ConfigInteger(translate("suggestionsize"), 10, 1, 50, translate("info.suggestionsize")));
+        public final static ConfigStorage.SaveableConfig<ConfigBoolean> REMOVE_IDENTIFIER = ConfigStorage.SaveableConfig.fromConfig("removeIdentifier",
+                new ConfigBoolean(translate("removeidentifier"), true, translate("info.removeidentifier")));
+        public final static ConfigStorage.SaveableConfig<ConfigBoolean> PRUNE_PLAYER_SUGGESTIONS = ConfigStorage.SaveableConfig.fromConfig("prunePlayerSuggestions",
+                new ConfigBoolean(translate("pruneplayersuggestions"), true, translate("info.pruneplayersuggestions")));
+        public final static ConfigStorage.SaveableConfig<ConfigSimpleColor> AVAILABLE_SUGGESTION_COLOR = ConfigStorage.SaveableConfig.fromConfig("availableSuggestionColor",
+                new ConfigSimpleColor(translate("availablesuggestioncolor"), new ColorUtil.SimpleColor(150, 150, 150, 255), translate("info.availablesuggestioncolor")));
 
-        public final static ConfigStorage.SaveableConfig<ConfigBoolean> YES = ConfigStorage.SaveableConfig.fromConfig("yes",
-                new ConfigBoolean(translate("yes"), true, translate("info.yes")));
 
         public final static ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(
-                STRING_STUFF,
-                YES
+                HIGHLIGHT_COLOR,
+                UNHIGHLIGHT_COLOR,
+                BACKGROUND_COLOR,
+                SUGGESTION_SIZE,
+                REMOVE_IDENTIFIER,
+                PRUNE_PLAYER_SUGGESTIONS,
+                AVAILABLE_SUGGESTION_COLOR
         );
 
     }
