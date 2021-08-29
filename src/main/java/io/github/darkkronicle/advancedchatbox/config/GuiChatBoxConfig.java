@@ -100,8 +100,8 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         }
 
         public enum Type {
-            CONFIG_FORMATTERS("advancedchat.config.chatsuggestor.button.config_formatters"),
-            CONFIG_SUGGESTORS("advancedchat.config.chatsuggestor.button.config_suggestors")
+            CONFIG_FORMATTERS("advancedchatbox.config.button.config_formatters"),
+            CONFIG_SUGGESTORS("advancedchatbox.config.button.config_suggestors")
             ;
 
 

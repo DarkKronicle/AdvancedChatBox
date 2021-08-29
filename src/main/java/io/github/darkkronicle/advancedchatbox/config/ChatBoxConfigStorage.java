@@ -34,7 +34,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         public static final String NAME = "general";
 
         public static String translate(String key) {
-            return StringUtils.translate("advancedchat.module.config.general." + key);
+            return StringUtils.translate("advancedchatbox.config.general." + key);
         }
 
         public final static ConfigStorage.SaveableConfig<ConfigSimpleColor> HIGHLIGHT_COLOR = ConfigStorage.SaveableConfig.fromConfig("highlightColor",

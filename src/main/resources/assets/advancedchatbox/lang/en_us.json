@@ -1,0 +1,34 @@
+{
+  "advancedchatbox.config.tab.general": "§dChat Suggestor",
+
+  "advancedchatbox.config.button.config_suggestors": "Configure Suggestors",
+  "advancedchatbox.config.chatsuggestor.players": "Suggest Players",
+  "advancedchatbox.config.chatsuggestor.info.players": "Whether or not §6player names§r are suggested in chat\nThese show up by pressing tab",
+  "advancedchatbox.config.chatsuggestor.shortcuts": "Suggest Shortcuts",
+  "advancedchatbox.config.chatsuggestor.info.shortcuts": "Whether or not §6shortcuts§r are suggested as you type\nShortcuts are a way to bind a memorable phrase to a string of text, such as for emoticons\nTo use shortcuts, put a §6colon (§f:§6)§r and the shortcut name, and press §6tab",
+  "advancedchatbox.config.chatsuggestor.calculator": "In-Chat Calculator",
+  "advancedchatbox.config.chatsuggestor.info.calculator": "Whether or not the §6chat calculator§r is active\nTo use the chat calculator, put a §6math expression§r inside of §6[§fBrackets§6]§r, and press §6tab§r in the brackets\nExpressions follow the format of §6mXParser",
+  "advancedchatbox.config.chatsuggestor.spellcheck": "Spell Checker",
+  "advancedchatbox.config.chatsuggestor.info.spellcheck": "Whether or not the §6spell-checker§r is active",
+
+  "advancedchatbox.config.button.config_formatters": "Configure Formatters",
+  "advancedchatbox.config.chatformatter.commandcolorer": "Custom Command Highlighting",
+  "advancedchatbox.config.chatformatter.info.commandcolorer": "Whether or not custom colors are used to highlight part of a §6command§r in the §9Chat HUD",
+  "advancedchatbox.config.chatformatter.jsonformatter": "Highlight JSON in Commands",
+  "advancedchatbox.config.chatformatter.info.jsonformatter": "Whether or not §6JSON§r is parsed and highlighted in the §9Chat HUD",
+
+  "advancedchatbox.config.general.highlightcolor": "Highlight Color",
+  "advancedchatbox.config.general.info.highlightcolor": "What color §6selected suggestions§r should be",
+  "advancedchatbox.config.general.unhighlightcolor": "Non-Highlighted Color",
+  "advancedchatbox.config.general.info.unhighlightcolor": "What color §6non-selected suggestions§r should be",
+  "advancedchatbox.config.general.backgroundcolor": "Background Color",
+  "advancedchatbox.config.general.info.backgroundcolor": "What color the §6background§r of the §dChat Suggestor§r should be",
+  "advancedchatbox.config.general.suggestionsize": "Number of Suggestions",
+  "advancedchatbox.config.general.info.suggestionsize": "The §6maximum number of suggestions§r that the §dChat Suggestor§r should display at once",
+  "advancedchatbox.config.general.removeidentifier": "Remove Namespace",
+  "advancedchatbox.config.general.info.removeidentifier": "Whether or not the §6namespace§r should be omitted from the §dChat Suggestor§r\nThe namespace is the part of the ID that §6preceeds§r the colon and \nincludes the colon, such as '§6minecraft:§r' in minecraft:stone",
+  "advancedchatbox.config.general.pruneplayersuggestions": "Prune Player Suggestions",
+  "advancedchatbox.config.general.info.pruneplayersuggestions": "Whether or not §6non-real players§r, such as the fake players used in BungeeTabListPlus, are removed from the §dChatSuggestor",
+  "advancedchatbox.config.general.availablesuggestioncolor": "Available Suggestion Color",
+  "advancedchatbox.config.general.info.availablesuggestioncolor": "What color §6custom chat suggestors§r will show up as"
+}
