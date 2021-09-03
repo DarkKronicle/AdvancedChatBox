@@ -13,6 +13,7 @@ import io.github.darkkronicle.advancedchatbox.registry.ChatFormatterRegistry;
 import io.github.darkkronicle.advancedchatbox.registry.ChatSuggestorRegistry;
 import io.github.darkkronicle.advancedchatbox.suggester.CalculatorSuggestor;
 import io.github.darkkronicle.advancedchatbox.suggester.PlayerSuggestor;
+import io.github.darkkronicle.advancedchatbox.suggester.ShortcutSuggestor;
 import io.github.darkkronicle.advancedchatbox.suggester.SpellCheckSuggestor;
 import io.github.darkkronicle.advancedchatcore.AdvancedChatCore;
 import io.github.darkkronicle.advancedchatcore.chat.ChatScreenSectionHolder;
@@ -54,6 +55,7 @@ public class ChatBoxInitHandler implements IInitializationHandler {
         ChatSuggestorRegistry suggestorRegistry = ChatSuggestorRegistry.getInstance();
         suggestorRegistry.register(PlayerSuggestor::new, "players", "advancedchatbox.config.chatsuggestor.players", "advancedchatbox.config.chatsuggestor.info.players", true, false);
         suggestorRegistry.register(CalculatorSuggestor::new, "calculator", "advancedchatbox.config.chatsuggestor.calculator", "advancedchatbox.config.chatsuggestor.info.calculator", true, false);
+        suggestorRegistry.register(ShortcutSuggestor::new, "shortcut", "advancedchatbox.config.chatsuggestor.shortcut", "advancedchatbox.config.chatsuggestor.info.shortcut", true, false);
         try {
             suggestorRegistry.register(SpellCheckSuggestor.newWithCatch(), "spellcheck", "advancedchatbox.config.chatsuggestor.spellcheck", "advancedchatbox.config.chatsuggestor.info.spellcheck", true, false);
         } catch (Exception e) {

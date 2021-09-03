@@ -1,32 +1,39 @@
 package io.github.darkkronicle.advancedchatbox.formatter;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.context.CommandContextBuilder;
 import com.mojang.brigadier.context.ParsedArgument;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageFormatter;
+import io.github.darkkronicle.advancedchatcore.interfaces.IJsonApplier;
+import io.github.darkkronicle.advancedchatcore.interfaces.IScreenSupplier;
 import io.github.darkkronicle.advancedchatcore.util.ColorUtil;
 import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Style;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public class CommandColorer implements IMessageFormatter {
+public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenSupplier {
 
     private static final ColorUtil.SimpleColor INFO = new ColorUtil.SimpleColor(180, 180, 180, 255);
 
-    private static final ColorUtil.SimpleColor[] COLORS = new ColorUtil.SimpleColor[]{
-            new ColorUtil.SimpleColor(160, 172, 219, 255),
+    private List<ColorUtil.SimpleColor> colors = Arrays.asList(new ColorUtil.SimpleColor(160, 172, 219, 255),
             new ColorUtil.SimpleColor(156, 214, 162, 255),
-            new ColorUtil.SimpleColor(129, 110, 224, 255)
-    };
+            new ColorUtil.SimpleColor(129, 110, 224, 255));
 
     @Override
     public Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse) {
@@ -47,13 +54,13 @@ public class CommandColorer implements IMessageFormatter {
                 lowest = start;
             }
             color++;
-            if (color >= COLORS.length) {
+            if (color >= colors.size()) {
                 color = 0;
             }
             final int thisCol = color;
             replace.put(match, (current, match1) -> {
                 if (current.getStyle().equals(Style.EMPTY)) {
-                    return new FluidText(RawText.withColor(match1.match, COLORS[thisCol]));
+                    return new FluidText(RawText.withColor(match1.match, colors.get(thisCol)));
                 }
                 return new FluidText(new RawText(match1.match, current.getStyle()));
             });
@@ -73,4 +80,18 @@ public class CommandColorer implements IMessageFormatter {
     }
 
 
+    @Override
+    public JsonObject save() {
+        return null;
+    }
+
+    @Override
+    public void load(JsonElement element) {
+
+    }
+
+    @Override
+    public Supplier<Screen> getScreen(@Nullable Screen parent) {
+        return null;
+    }
 }

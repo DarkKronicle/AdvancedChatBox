@@ -75,6 +75,8 @@ dependencies {
 
     implementation files("${buildDir}/dist/unpacked/suggester-basic/lib/suggester-1.1.2.jar")
     shadow files("${buildDir}/dist/unpacked/suggester-basic/lib/suggester-1.1.2.jar")
+
+    implementation "org.languagetool:language-en:5.4"
 }
 
 processResources {
