@@ -65,6 +65,27 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
     }
 
+    public static class SpellChecker {
+
+        public static final String NAME = "spellchecker";
+
+        public static String translate(String key) {
+            return StringUtils.translate("advancedchatbox.config.spellchecker." + key);
+        }
+
+        public final static ConfigStorage.SaveableConfig<ConfigString> HOVER_TEXT = ConfigStorage.SaveableConfig.fromConfig("hoverText",
+                new ConfigString(translate("hovertext"), "&8$1&b$2&8$3", translate("info.hovertext")));
+
+        public final static ConfigStorage.SaveableConfig<ConfigBoolean> SUGGEST_CAPITAL = ConfigStorage.SaveableConfig.fromConfig("suggest_capital",
+                new ConfigBoolean(translate("suggestcapital"), true, translate("info.suggestcapital")));
+
+        public final static ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(
+                HOVER_TEXT,
+                SUGGEST_CAPITAL
+        );
+
+    }
+
     public static void loadFromFile() {
 
         File configFile = FileUtils.getConfigDirectory().toPath().resolve("advancedchat").resolve(CONFIG_FILE_NAME).toFile();
@@ -76,6 +97,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                 JsonObject root = element.getAsJsonObject();
 
                 ConfigStorage.readOptions(root, General.NAME, (List<ConfigStorage.SaveableConfig<?>>) General.OPTIONS);
+                ConfigStorage.readOptions(root, SpellChecker.NAME, (List<ConfigStorage.SaveableConfig<?>>) SpellChecker.OPTIONS);
 
                 int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 0);
 
@@ -90,6 +112,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
             JsonObject root = new JsonObject();
 
             ConfigStorage.writeOptions(root, General.NAME, (List<ConfigStorage.SaveableConfig<?>>) General.OPTIONS);
+            ConfigStorage.writeOptions(root, SpellChecker.NAME, (List<ConfigStorage.SaveableConfig<?>>) SpellChecker.OPTIONS);
 
             root.add("config_version", new JsonPrimitive(CONFIG_VERSION));
 

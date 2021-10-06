@@ -44,6 +44,11 @@ public class ChatBoxInitHandler implements IInitializationHandler {
             }
         });
 
+        GuiConfigHandler.getInstance().addGuiSection(GuiConfigHandler.createGuiConfigSection(
+                StringUtils.translate("advancedchatbox.config.tab.spellchecker"),
+                ChatBoxConfigStorage.SpellChecker.OPTIONS
+        ));
+
         ChatFormatterRegistry chatRegistry = ChatFormatterRegistry.getInstance();
         chatRegistry.register(CommandColorer::new, "commandcolorer", "advancedchatbox.config.chatformatter.commandcolorer", "advancedchatbox.config.chatformatter.info.commandcolorer", true, true);
         chatRegistry.register(JSONFormatter::new, "jsonformatter", "advancedchatbox.config.chatformatter.jsonformatter", "advancedchatbox.config.chatformatter.info.jsonformatter", true, false);
@@ -57,7 +62,7 @@ public class ChatBoxInitHandler implements IInitializationHandler {
         suggestorRegistry.register(CalculatorSuggestor::new, "calculator", "advancedchatbox.config.chatsuggestor.calculator", "advancedchatbox.config.chatsuggestor.info.calculator", true, false);
         suggestorRegistry.register(ShortcutSuggestor::new, "shortcut", "advancedchatbox.config.chatsuggestor.shortcut", "advancedchatbox.config.chatsuggestor.info.shortcut", true, false);
         try {
-            suggestorRegistry.register(SpellCheckSuggestor.newWithCatch(), "spellcheck", "advancedchatbox.config.chatsuggestor.spellcheck", "advancedchatbox.config.chatsuggestor.info.spellcheck", true, false);
+            suggestorRegistry.register(SpellCheckSuggestor::getInstance, "spellcheck", "advancedchatbox.config.chatsuggestor.spellcheck", "advancedchatbox.config.chatsuggestor.info.spellcheck", true, false);
         } catch (Exception e) {
             LogManager.getLogger().log(Level.ERROR, "[AdvancedChat] {}", "Couldn't load SpellCheckSuggestor", e);
         }

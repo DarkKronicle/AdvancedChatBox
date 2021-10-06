@@ -1,21 +1,31 @@
 package io.github.darkkronicle.advancedchatbox.suggester;
 
 import com.mojang.brigadier.context.StringRange;
-import com.softcorporation.suggester.BasicSuggester;
-import com.softcorporation.suggester.Suggestion;
-import com.softcorporation.suggester.dictionary.BasicDictionary;
-import com.softcorporation.suggester.tools.SpellCheck;
-import com.softcorporation.suggester.util.SuggesterException;
 import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestion;
 import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestions;
+import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageSuggestor;
+import io.github.darkkronicle.advancedchatcore.util.FindType;
+import io.github.darkkronicle.advancedchatcore.util.FluidText;
+import io.github.darkkronicle.advancedchatcore.util.RawText;
+import io.github.darkkronicle.advancedchatcore.util.SearchUtils;
+import io.github.darkkronicle.advancedchatcore.util.StringMatch;
+import io.github.darkkronicle.advancedchatcore.util.StyleFormatter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import org.languagetool.JLanguageTool;
+import org.languagetool.ResultCache;
+import org.languagetool.UserConfig;
+import org.languagetool.language.AmericanEnglish;
+import org.languagetool.rules.RuleMatch;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -23,53 +33,39 @@ import java.util.function.Supplier;
 @Environment(EnvType.CLIENT)
 public class SpellCheckSuggestor implements IMessageSuggestor {
 
-    private final BasicDictionary dictionary;
-    private final BasicSuggester suggester;
+    private final JLanguageTool lt;
 
-    public SpellCheckSuggestor() throws SuggesterException {
-        dictionary = new BasicDictionary("file://" + new File("./config/advancedchat/english.zip").getAbsolutePath().replace("./", ""));
-        suggester = new BasicSuggester();
-        suggester.attach(dictionary);
+    private static final SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
+
+    public static SpellCheckSuggestor getInstance() {
+        return INSTANCE;
     }
 
-    public static Supplier<IMessageSuggestor> newWithCatch() {
-        return () -> {
-            try {
-                return new SpellCheckSuggestor();
-            } catch (Exception e) {
-                LogManager.getLogger().log(Level.ERROR, "[AdvancedChatBox] {}", "Couldn't load SpellCheckSuggestor", e);
-                return null;
-            }
-        };
+    private SpellCheckSuggestor() {
+        lt = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15), new UserConfig(
+                new ArrayList<>(),
+                new HashMap<>(),
+                1
+        ));
+        lt.setMaxErrorsPerWordRate(0.33f);
+        try {
+            // Set it up. Make it so it doesn't freeze later.
+            lt.check("a");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Optional<List<AdvancedSuggestions>> suggest(String text) {
-        SpellCheck spellCheck = new SpellCheck();
-        spellCheck.setSuggestionLimit(5);
-        try {
-            spellCheck.setSuggester(suggester);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
         ArrayList<AdvancedSuggestions> suggestions = new ArrayList<>();
         try {
-            spellCheck.setText(text);
-            spellCheck.check();
-            while (spellCheck.hasMisspelt()) {
-                List<Suggestion> s = spellCheck.getSuggestions();
-                if (s.isEmpty()) {
-                    // If it can't help you, don't flag it
-                    spellCheck.checkNext();
-                    continue;
-                }
-                int pos = spellCheck.getMisspeltOffset();
-                int length = spellCheck.getMisspeltLength();
-                String word = spellCheck.getMisspelt();
-                StringRange range = new StringRange(pos, pos + length);
-                suggestions.add(new AdvancedSuggestions(range, convertSuggestions(s, range, word)));
-                spellCheck.checkNext();
+            List<RuleMatch> matches = lt.check(text);
+            for (RuleMatch match : matches) {
+                int fromPos = match.getFromPos();
+                int toPos = match.getToPos();
+                StringRange range = new StringRange(fromPos, toPos);
+                suggestions.add(new AdvancedSuggestions(range, convertSuggestions(match, range)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,11 +74,27 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
         return Optional.of(suggestions);
     }
 
-    private static List<AdvancedSuggestion> convertSuggestions(List<Suggestion> suggestions, StringRange range, String string) {
+    private static List<AdvancedSuggestion> convertSuggestions(RuleMatch match, StringRange range) {
         List<AdvancedSuggestion> replacements = new ArrayList<>();
-        for (Suggestion s : suggestions) {
-            replacements.add(new AdvancedSuggestion(range, s.getWord()));
+        for (String s : match.getSuggestedReplacements()) {
+            replacements.add(new AdvancedSuggestion(range, s, new RawText(s, Style.EMPTY), getHover(match.getMessage())));
         }
         return replacements;
+    }
+
+    private static Text getHover(String message) {
+        String text = ChatBoxConfigStorage.SpellChecker.HOVER_TEXT.config.getStringValue();
+        text = text.replaceAll("&", "§");
+        Optional<StringMatch> match = SearchUtils.getMatch(message, "<suggestion>(.+)</suggestion>", FindType.REGEX);
+        if (match.isEmpty()) {
+            text = text.replaceAll("\\$1", message).replaceAll("\\$2", "").replaceAll("\\$3", "");
+            return StyleFormatter.formatText(new FluidText(new RawText(text, Style.EMPTY)));
+        }
+        StringMatch stringMatch = match.get();
+        String start = message.substring(0, stringMatch.start);
+        String end = message.substring(stringMatch.end);
+        String middle = message.substring(stringMatch.start + 12, stringMatch.end - 13);
+        text = text.replaceAll("\\$1", start).replaceAll("\\$2", middle).replaceAll("\\$3", end);
+        return StyleFormatter.formatText(new FluidText(new RawText(text, Style.EMPTY)));
     }
 }

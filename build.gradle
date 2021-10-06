@@ -23,37 +23,6 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-task unzip(type: Copy) {
-    def zipPath = file("${buildDir}/dist/suggester-basic.zip")
-    def dir = file("${buildDir}/dist/suggester-basic.zip")
-    if (!zipPath.exists()) {
-        new URL('http://www.softcorporation.com/products/suggester/suggester-basic.zip').withInputStream{ i -> dir.withOutputStream{ it << i }}
-    }
-    def distDir = file("${buildDir}/dist")
-    if (!distDir.exists()) {
-        distDir.mkdirs()
-    }
-    def zipFile = file(zipPath)
-    def outputDir = file("${buildDir}/dist/unpacked")
-    if (!outputDir.exists()) {
-        outputDir.mkdir()
-    }
-
-    from zipTree(zipFile)
-    into outputDir
-
-}
-
-task moveEnglish(type: Copy) {
-    def englishFrom = file("${buildDir}/dist/unpacked/suggester-basic/dic/english.jar")
-    def englishTo = file('src/main/resources/')
-    from englishFrom
-    into englishTo
-    rename { String fileName ->
-        fileName.replace(".jar", ".zip")
-    }
-}
-
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -73,10 +42,8 @@ dependencies {
     implementation "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
     shadow "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
 
-    implementation files("${buildDir}/dist/unpacked/suggester-basic/lib/suggester-1.1.2.jar")
-    shadow files("${buildDir}/dist/unpacked/suggester-basic/lib/suggester-1.1.2.jar")
-
     implementation "org.languagetool:language-en:5.4"
+    shadow "org.languagetool:language-en:5.4"
 }
 
 processResources {
@@ -112,7 +79,7 @@ shadowJar {
     configurations = [project.configurations.shadow]
     relocate 'org.mariuszgromada', 'io.github.darkkronicle.inscribe.shadow.org.mariusgromada'
     relocate 'com.google.code', 'io.github.darkkronicle.inscribe.shadow.com.google.code'
-    relocate 'com.softcorporation', 'io.github.darkkronicle.inscribe.shadow.com.softcorporation'
+    relocate 'org.languagetool', 'io.github.darkkronicle.inscribe.shadow.org.languagetool'
 
     from('.') {
         include 'LICENSE.txt'
@@ -127,8 +94,6 @@ task remapShadowJar(type: RemapJarTask) {
 }
 
 build {
-    dependsOn 'unzip'
-    dependsOn 'moveEnglish'
     dependsOn 'remapShadowJar'
 }
 

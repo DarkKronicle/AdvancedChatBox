@@ -20,21 +20,6 @@ public class AdvancedChatBox implements ClientModInitializer {
     public void onInitializeClient() {
         // This will run after AdvancedChatCore's because of load order
         InitializationHandler.getInstance().registerInitializationHandler(new ChatBoxInitHandler());
-        File english = new File("./config/advancedchat/english.zip");
-        if (!english.exists()) {
-            new File("./config/advancedchat/").mkdirs();
-            // Move dictionary so that we can access it easier
-            try (FileOutputStream output = new FileOutputStream(english)){
-                InputStream stream = AdvancedChatCore.getResource("english.zip");
-                IOUtils.copy(stream, output);
-                stream.close();
-                System.out.println("Moved english jar!");
-            } catch (Exception e) {
-                System.out.println("Couldn't load english.jar");
-                e.printStackTrace();
-            }
-
-        }
     }
 
 }
