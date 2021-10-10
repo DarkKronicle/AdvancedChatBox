@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
     id "io.freefair.lombok" version "6.0.0-m2"
 }
 
@@ -30,14 +30,8 @@ dependencies {
 
     //Fabric api
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-
     modImplementation "fi.dy.masa.malilib:malilib-fabric-1.17.0:${project.malilib_version}"
-
     modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
-
-    shadow 'com.google.code.findbugs:jsr305:3.0.0'
-
-    shadow 'com.google.code.gson:gson:2.8.6'
 
     implementation "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
     shadow "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
@@ -78,8 +72,6 @@ shadowJar {
     destinationDir = file("${buildDir}/tmp/allJar")
     configurations = [project.configurations.shadow]
     relocate 'org.mariuszgromada', 'io.github.darkkronicle.inscribe.shadow.org.mariusgromada'
-    relocate 'com.google.code', 'io.github.darkkronicle.inscribe.shadow.com.google.code'
-    relocate 'org.languagetool', 'io.github.darkkronicle.inscribe.shadow.org.languagetool'
 
     from('.') {
         include 'LICENSE.txt'
