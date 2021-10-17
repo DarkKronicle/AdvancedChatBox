@@ -74,7 +74,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         }
 
         public final static ConfigStorage.SaveableConfig<ConfigString> HOVER_TEXT = ConfigStorage.SaveableConfig.fromConfig("hoverText",
-                new ConfigString(translate("hovertext"), "&8$1&b$2&8$3", translate("info.hovertext")));
+                new ConfigString(translate("hovertext"), "&7$1&b$2&7$3", translate("info.hovertext")));
 
         public final static ConfigStorage.SaveableConfig<ConfigBoolean> SUGGEST_CAPITAL = ConfigStorage.SaveableConfig.fromConfig("suggest_capital",
                 new ConfigBoolean(translate("suggestcapital"), true, translate("info.suggestcapital")));

@@ -1,5 +1,6 @@
 {
   "advancedchatbox.config.tab.general": "§dChat Suggestor",
+  "advancedchatbox.config.tab.spellchecker": "§6Spell Checker",
 
   "advancedchatbox.config.button.config_suggestors": "Configure Suggestors",
   "advancedchatbox.config.chatsuggestor.players": "Suggest Players",
