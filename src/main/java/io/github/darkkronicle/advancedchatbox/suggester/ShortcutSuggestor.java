@@ -19,6 +19,12 @@ import io.github.darkkronicle.advancedchatcore.interfaces.IJsonApplier;
 import io.github.darkkronicle.advancedchatcore.interfaces.IScreenSupplier;
 import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,20 +33,14 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Style;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.function.Supplier;
-
 @Environment(EnvType.CLIENT)
-public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
-
+public class ShortcutSuggestor
+    implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
 
     @EqualsAndHashCode
     @Data
     public static class Shortcut {
+
         private String name;
         private String replace;
 
@@ -54,7 +54,10 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
                 return null;
             }
             JsonObject obj = element.getAsJsonObject();
-            return new Shortcut(obj.get("name").getAsString(), obj.get("replace").getAsString());
+            return new Shortcut(
+                obj.get("name").getAsString(),
+                obj.get("replace").getAsString()
+            );
         }
 
         public JsonObject toJsonElement() {
@@ -66,7 +69,10 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
     }
 
     public static Shortcut getRandomShortcut() {
-        return new Shortcut(AdvancedChatCore.getRandomString(), AdvancedChatCore.getRandomString());
+        return new Shortcut(
+            AdvancedChatCore.getRandomString(),
+            AdvancedChatCore.getRandomString()
+        );
     }
 
     @Getter
@@ -74,7 +80,6 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
 
     public ShortcutSuggestor() {
         shortcuts = new ArrayList<>();
-
     }
 
     public void clearShortcuts() {
@@ -122,18 +127,36 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
                 break;
             }
             StringRange range = new StringRange(start, end);
-            suggest.add(new AdvancedSuggestions(range, getSuggestions(string.substring(start + 1, end), range)));
+            suggest.add(
+                new AdvancedSuggestions(
+                    range,
+                    getSuggestions(string.substring(start + 1, end), range)
+                )
+            );
         }
         return Optional.of(suggest);
     }
 
-    private List<AdvancedSuggestion> getSuggestions(String current, StringRange range) {
+    private List<AdvancedSuggestion> getSuggestions(
+        String current,
+        StringRange range
+    ) {
         ArrayList<AdvancedSuggestion> suggestions = new ArrayList<>();
         for (Shortcut shortcut : shortcuts) {
-            if (current.length() == 0 || shortcut.name.toLowerCase().startsWith(current.toLowerCase())) {
+            if (
+                current.length() == 0 ||
+                shortcut.name.toLowerCase().startsWith(current.toLowerCase())
+            ) {
                 FluidText text = new FluidText();
                 text.append(new RawText(shortcut.name, Style.EMPTY));
-                suggestions.add(new AdvancedSuggestion(range, shortcut.replace, text, new RawText(shortcut.replace, Style.EMPTY)));
+                suggestions.add(
+                    new AdvancedSuggestion(
+                        range,
+                        shortcut.replace,
+                        text,
+                        new RawText(shortcut.replace, Style.EMPTY)
+                    )
+                );
             }
         }
         return suggestions;
@@ -152,7 +175,7 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
 
     public void loadDefaultShortcuts() {
         shortcuts.add(new Shortcut("happy", "o((*^▽^*))o"));
-        shortcuts.add(new Shortcut("owo","ÒwÓ"));
+        shortcuts.add(new Shortcut("owo", "ÒwÓ"));
         shortcuts.add(new Shortcut("tablepain", "\u200E(ﾉಥ益ಥ）ﾉ ┻━┻"));
         shortcuts.add(new Shortcut("reee", "(ノಠ益ಠ)ノ彡┻━┻"));
         shortcuts.add(new Shortcut("worry", "(❁°͈▵°͈)"));
@@ -208,8 +231,8 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         return () -> new ShortcutScreen(parent);
     }
 
-    public class ShortcutScreen extends GuiListBase<Shortcut, ShortcutEntryListWidget, ShortcutListWidget> {
-
+    public class ShortcutScreen
+        extends GuiListBase<Shortcut, ShortcutEntryListWidget, ShortcutListWidget> {
 
         @Override
         public void initGui() {
@@ -227,8 +250,19 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
             this.setParent(parent);
         }
 
-        protected int addButton(int x, int y, ButtonListener.Type type, boolean rightAlign) {
-            ButtonGeneric button = new ButtonGeneric(x, y, -1, rightAlign, type.getDisplayName());
+        protected int addButton(
+            int x,
+            int y,
+            ButtonListener.Type type,
+            boolean rightAlign
+        ) {
+            ButtonGeneric button = new ButtonGeneric(
+                x,
+                y,
+                -1,
+                rightAlign,
+                type.getDisplayName()
+            );
             this.addButton(button, new ButtonListener(type, this));
 
             return button.getWidth();
@@ -236,7 +270,15 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
 
         @Override
         protected ShortcutListWidget createListWidget(int listX, int listY) {
-            return new ShortcutListWidget(listX, listY, this.getBrowserWidth(), this.getBrowserHeight(), null, ShortcutSuggestor.this, this);
+            return new ShortcutListWidget(
+                listX,
+                listY,
+                this.getBrowserWidth(),
+                this.getBrowserHeight(),
+                null,
+                ShortcutSuggestor.this,
+                this
+            );
         }
 
         @Override
@@ -264,7 +306,6 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         public void back() {
             this.closeGui(true);
         }
-
     }
 
     private static class ButtonListener implements IButtonActionListener {
@@ -278,7 +319,10 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         }
 
         @Override
-        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
+        public void actionPerformedWithButton(
+            ButtonBase button,
+            int mouseButton
+        ) {
             if (this.type == ButtonListener.Type.ADD_SHORTCUT) {
                 this.gui.addShortcut();
             } else if (this.type == ButtonListener.Type.BACK) {
@@ -288,8 +332,7 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
 
         public enum Type {
             ADD_SHORTCUT("addshortcut"),
-            BACK("back")
-            ;
+            BACK("back");
 
             private static String translate(String key) {
                 return "advancedchat.gui.button." + key;

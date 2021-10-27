@@ -8,21 +8,19 @@ import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
 import io.github.darkkronicle.advancedchatcore.util.SearchUtils;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.command.CommandSource;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
 @Environment(EnvType.CLIENT)
 public class JSONFormatter implements IMessageFormatter {
-
 
     /*
      * Released under the MIT license
@@ -31,17 +29,28 @@ public class JSONFormatter implements IMessageFormatter {
      */
     public enum JSONType {
         WHITESPACE("^\\s+", ColorUtil.WHITE.withAlpha(0)),
-        BRACE("^[\\{\\}]", new ColorUtil.SimpleColor(130, 130, 130,255)),
+        BRACE("^[\\{\\}]", new ColorUtil.SimpleColor(130, 130, 130, 255)),
         BRACKET("^[\\[\\]]", new ColorUtil.SimpleColor(180, 180, 180, 255)),
         COLON("^:", new ColorUtil.SimpleColor(130, 130, 130, 255)),
         COMMA("^,", new ColorUtil.SimpleColor(130, 130, 130, 255)),
-        NUMBER_LITERAL("^-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?", new ColorUtil.SimpleColor(168, 97, 199, 255)),
-        STRING_KEY("^\"(?:\\\\.|[^\"\\\\])*\"(?=\\s*:)", new ColorUtil.SimpleColor(120, 156, 183, 255)),
-        STRING_LITERAL("^\"(?:\\\\.|[^\"\\\\])*\"", new ColorUtil.SimpleColor(189, 215, 222, 255)),
-        BOOLEAN_LITERAL("^true|^false", new ColorUtil.SimpleColor(232, 63, 113, 255)),
+        NUMBER_LITERAL(
+            "^-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?",
+            new ColorUtil.SimpleColor(168, 97, 199, 255)
+        ),
+        STRING_KEY(
+            "^\"(?:\\\\.|[^\"\\\\])*\"(?=\\s*:)",
+            new ColorUtil.SimpleColor(120, 156, 183, 255)
+        ),
+        STRING_LITERAL(
+            "^\"(?:\\\\.|[^\"\\\\])*\"",
+            new ColorUtil.SimpleColor(189, 215, 222, 255)
+        ),
+        BOOLEAN_LITERAL(
+            "^true|^false",
+            new ColorUtil.SimpleColor(232, 63, 113, 255)
+        ),
         NULL_LITERAL("^null", new ColorUtil.SimpleColor(194, 76, 75, 255)),
-        OTHER(".", new ColorUtil.SimpleColor(210, 43, 43, 255)),
-        ;
+        OTHER(".", new ColorUtil.SimpleColor(210, 43, 43, 255));
 
         public final String regex;
         public final ColorUtil.SimpleColor color;
@@ -55,14 +64,22 @@ public class JSONFormatter implements IMessageFormatter {
     @Value
     @AllArgsConstructor
     public static class JSONToken {
+
         StringMatch match;
         JSONType type;
     }
 
     @Override
-    public Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse) {
+    public Optional<FluidText> format(
+        FluidText text,
+        @Nullable ParseResults<CommandSource> parse
+    ) {
         String content = text.getString();
-        Optional<List<StringMatch>> omatches = SearchUtils.findMatches(content, "\\{.+\\}", FindType.REGEX);
+        Optional<List<StringMatch>> omatches = SearchUtils.findMatches(
+            content,
+            "\\{.+\\}",
+            FindType.REGEX
+        );
         if (!omatches.isPresent()) {
             return Optional.empty();
         }
@@ -76,7 +93,6 @@ public class JSONFormatter implements IMessageFormatter {
     }
 
     public FluidText colorJson(String string) {
-
         FluidText text = new FluidText();
         for (JSONToken token : parseJson(string)) {
             text.append(RawText.withColor(token.match.match, token.type.color));
@@ -89,7 +105,11 @@ public class JSONFormatter implements IMessageFormatter {
         int index = 0;
         while (string.length() > 0) {
             for (JSONType type : JSONType.values()) {
-                Optional<StringMatch> omatch = SearchUtils.getMatch(string, type.regex, FindType.REGEX);
+                Optional<StringMatch> omatch = SearchUtils.getMatch(
+                    string,
+                    type.regex,
+                    FindType.REGEX
+                );
                 if (!omatch.isPresent()) {
                     continue;
                 }
@@ -101,9 +121,7 @@ public class JSONFormatter implements IMessageFormatter {
                 json.add(new JSONToken(match, type));
                 break;
             }
-
         }
         return json;
     }
-
 }

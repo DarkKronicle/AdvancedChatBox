@@ -3,15 +3,14 @@ package io.github.darkkronicle.advancedchatbox.chat;
 import com.mojang.brigadier.context.StringRange;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
-import lombok.Getter;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import lombok.Getter;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 /**
  * A holder of {@link AdvancedSuggestion}
@@ -23,13 +22,17 @@ public class AdvancedSuggestions {
 
     @Getter
     private final List<AdvancedSuggestion> suggestions;
+
     @Getter
     private StringRange range;
 
     /**
      * Empty suggestions
      */
-    public final static AdvancedSuggestions EMPTY = new AdvancedSuggestions(StringRange.at(0), new ArrayList<>());
+    public static final AdvancedSuggestions EMPTY = new AdvancedSuggestions(
+        StringRange.at(0),
+        new ArrayList<>()
+    );
 
     /**
      * Future of EMPTY
@@ -38,7 +41,10 @@ public class AdvancedSuggestions {
         return CompletableFuture.completedFuture(EMPTY);
     }
 
-    public AdvancedSuggestions(StringRange range, List<AdvancedSuggestion> suggestions) {
+    public AdvancedSuggestions(
+        StringRange range,
+        List<AdvancedSuggestion> suggestions
+    ) {
         this.suggestions = suggestions;
         suggestions.sort(AdvancedSuggestion::compareToIgnoreCase);
         if (range != null) {
@@ -74,5 +80,4 @@ public class AdvancedSuggestions {
         }
         return new AdvancedSuggestions(suggestions.getRange(), s);
     }
-
 }

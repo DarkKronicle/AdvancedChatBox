@@ -4,13 +4,12 @@ import com.mojang.brigadier.Message;
 import com.mojang.brigadier.context.StringRange;
 import com.mojang.brigadier.suggestion.Suggestion;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-
-import javax.annotation.Nonnull;
 
 /**
  * Suggestion that contains render text, suggested text, suggested start/stop, and tooltip.
@@ -28,7 +27,12 @@ public class AdvancedSuggestion extends Suggestion {
      * @param render How the suggestion will render
      * @param tooltip Message to show up on hover
      */
-    public AdvancedSuggestion(StringRange range, String text, Text render, Message tooltip) {
+    public AdvancedSuggestion(
+        StringRange range,
+        String text,
+        Text render,
+        Message tooltip
+    ) {
         super(range, text, tooltip);
         if (render == null) {
             this.render = new RawText(text, Style.EMPTY);
@@ -44,7 +48,9 @@ public class AdvancedSuggestion extends Suggestion {
     @Override
     public int compareTo(final Suggestion o) {
         if (o instanceof AdvancedSuggestion) {
-            return render.getString().compareTo(((AdvancedSuggestion) o).getRender().getString());
+            return render
+                .getString()
+                .compareTo(((AdvancedSuggestion) o).getRender().getString());
         }
         return render.getString().compareTo(o.getText());
     }
@@ -52,7 +58,11 @@ public class AdvancedSuggestion extends Suggestion {
     @Override
     public int compareToIgnoreCase(final Suggestion o) {
         if (o instanceof AdvancedSuggestion) {
-            return render.getString().compareToIgnoreCase(((AdvancedSuggestion) o).getRender().getString());
+            return render
+                .getString()
+                .compareToIgnoreCase(
+                    ((AdvancedSuggestion) o).getRender().getString()
+                );
         }
         return render.getString().compareToIgnoreCase(o.getText());
     }
@@ -63,6 +73,11 @@ public class AdvancedSuggestion extends Suggestion {
      * @return New objeect
      */
     public static AdvancedSuggestion fromSuggestion(Suggestion suggestion) {
-        return new AdvancedSuggestion(suggestion.getRange(), suggestion.getText(), null, suggestion.getTooltip());
+        return new AdvancedSuggestion(
+            suggestion.getRange(),
+            suggestion.getText(),
+            null,
+            suggestion.getTooltip()
+        );
     }
 }

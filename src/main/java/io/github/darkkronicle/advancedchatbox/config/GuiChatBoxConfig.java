@@ -10,7 +10,6 @@ import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
 import io.github.darkkronicle.advancedchatcore.config.gui.GuiConfigHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,15 +44,22 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         String name = ButtonListener.Type.CONFIG_FORMATTERS.getDisplayName();
         int w = StringUtils.getStringWidth(name) + 10;
         ButtonGeneric format = new ButtonGeneric(x - w, y, w, 20, name);
-        this.addButton(format, new ButtonListener(ButtonListener.Type.CONFIG_FORMATTERS, this));
+        this.addButton(
+                format,
+                new ButtonListener(ButtonListener.Type.CONFIG_FORMATTERS, this)
+            );
         x -= w + 2;
         name = ButtonListener.Type.CONFIG_SUGGESTORS.getDisplayName();
         w = StringUtils.getStringWidth(name) + 10;
         ButtonGeneric suggest = new ButtonGeneric(x - w, y, w, 20, name);
-        this.addButton(suggest, new ButtonListener(ButtonListener.Type.CONFIG_SUGGESTORS, this));
+        this.addButton(
+                suggest,
+                new ButtonListener(ButtonListener.Type.CONFIG_SUGGESTORS, this)
+            );
         x -= w + 2;
         if (rows > 1) {
-            int scrollbarPosition = this.getListWidget().getScrollbar().getValue();
+            int scrollbarPosition =
+                this.getListWidget().getScrollbar().getValue();
             this.setListPosition(this.getListX(), 80 + (rows - 1) * 22);
             this.reCreateListWidget();
             this.getListWidget().getScrollbar().setValue(scrollbarPosition);
@@ -64,13 +70,17 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
     }
 
     private int createButton(GuiConfigHandler.TabButton button, int y) {
-        this.addButton(button.getButton(), new ButtonListenerConfigTabs(button));
+        this.addButton(
+                button.getButton(),
+                new ButtonListenerConfigTabs(button)
+            );
         return button.getButton().getY();
     }
 
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
-        List<ConfigStorage.SaveableConfig<? extends IConfigBase>> configs = ChatBoxConfigStorage.General.OPTIONS;
+        List<ConfigStorage.SaveableConfig<? extends IConfigBase>> configs =
+            ChatBoxConfigStorage.General.OPTIONS;
 
         ArrayList<IConfigBase> config = new ArrayList<>();
         for (ConfigStorage.SaveableConfig<? extends IConfigBase> s : configs) {
@@ -91,7 +101,10 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         }
 
         @Override
-        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
+        public void actionPerformedWithButton(
+            ButtonBase button,
+            int mouseButton
+        ) {
             if (type == Type.CONFIG_FORMATTERS) {
                 GuiBase.openGui(new GuiFormatterRegistry(parent));
             } else if (type == Type.CONFIG_SUGGESTORS) {
@@ -100,10 +113,12 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         }
 
         public enum Type {
-            CONFIG_FORMATTERS("advancedchatbox.config.button.config_formatters"),
-            CONFIG_SUGGESTORS("advancedchatbox.config.button.config_suggestors")
-            ;
-
+            CONFIG_FORMATTERS(
+                "advancedchatbox.config.button.config_formatters"
+            ),
+            CONFIG_SUGGESTORS(
+                "advancedchatbox.config.button.config_suggestors"
+            );
 
             private final String translationKey;
 
@@ -117,8 +132,9 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         }
     }
 
+    private static class ButtonListenerConfigTabs
+        implements IButtonActionListener {
 
-    private static class ButtonListenerConfigTabs implements IButtonActionListener {
         private final GuiConfigHandler.TabButton tabButton;
 
         public ButtonListenerConfigTabs(GuiConfigHandler.TabButton tabButton) {
@@ -126,11 +142,16 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         }
 
         @Override
-        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
-            GuiConfigHandler.getInstance().activeTab = this.tabButton.getTab().getName();
-            GuiBase.openGui(this.tabButton.getTab().getScreen(GuiConfigHandler.getInstance().getButtons()));
+        public void actionPerformedWithButton(
+            ButtonBase button,
+            int mouseButton
+        ) {
+            GuiConfigHandler.getInstance().activeTab =
+                this.tabButton.getTab().getName();
+            GuiBase.openGui(
+                this.tabButton.getTab()
+                    .getScreen(GuiConfigHandler.getInstance().getButtons())
+            );
         }
     }
-
-
 }

@@ -7,14 +7,13 @@ import io.github.darkkronicle.advancedchatbox.interfaces.IMessageSuggestor;
 import io.github.darkkronicle.advancedchatcore.util.FindType;
 import io.github.darkkronicle.advancedchatcore.util.SearchUtils;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import org.mariuszgromada.math.mxparser.Expression;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import org.mariuszgromada.math.mxparser.Expression;
 
 @Environment(EnvType.CLIENT)
 public class CalculatorSuggestor implements IMessageSuggestor {
@@ -27,7 +26,9 @@ public class CalculatorSuggestor implements IMessageSuggestor {
         if (!text.contains("[") || !text.contains("]")) {
             return Optional.empty();
         }
-        List<StringMatch> matches = SearchUtils.findMatches(text, BRACKET_REGEX, FindType.REGEX).orElse(null);
+        List<StringMatch> matches = SearchUtils
+            .findMatches(text, BRACKET_REGEX, FindType.REGEX)
+            .orElse(null);
         if (matches == null) {
             return Optional.empty();
         }
@@ -47,7 +48,16 @@ public class CalculatorSuggestor implements IMessageSuggestor {
                 message = String.valueOf(val);
             }
             StringRange range = new StringRange(m.start, m.end);
-            suggest.add(new AdvancedSuggestions(range, new ArrayList<>(Collections.singleton(new AdvancedSuggestion(range, message)))));
+            suggest.add(
+                new AdvancedSuggestions(
+                    range,
+                    new ArrayList<>(
+                        Collections.singleton(
+                            new AdvancedSuggestion(range, message)
+                        )
+                    )
+                )
+            );
         }
         if (suggest.isEmpty()) {
             return Optional.empty();

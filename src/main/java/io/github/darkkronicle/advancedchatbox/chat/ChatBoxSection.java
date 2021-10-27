@@ -19,7 +19,9 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
 
     @Override
     public void onChatFieldUpdate(String chatText, String text) {
-        this.suggestor.setWindowActive(!text.equals(getScreen().getOriginalChatText()));
+        this.suggestor.setWindowActive(
+                !text.equals(getScreen().getOriginalChatText())
+            );
         this.suggestor.refresh();
     }
 
@@ -29,7 +31,12 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(
+        MatrixStack matrixStack,
+        int mouseX,
+        int mouseY,
+        float partialTicks
+    ) {
         this.suggestor.render(matrixStack, mouseX, mouseY);
     }
 
@@ -57,8 +64,18 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
     public void initGui() {
         MinecraftClient client = MinecraftClient.getInstance();
         AdvancedChatScreen screen = getScreen();
-        this.suggestor = new ChatSuggestorGui(client, screen, screen.getChatField(), client.textRenderer, false, false, 1, ChatBoxConfigStorage.General.SUGGESTION_SIZE.config.getIntegerValue(), true);
+        this.suggestor =
+            new ChatSuggestorGui(
+                client,
+                screen,
+                screen.getChatField(),
+                client.textRenderer,
+                false,
+                false,
+                1,
+                ChatBoxConfigStorage.General.SUGGESTION_SIZE.config.getIntegerValue(),
+                true
+            );
         this.suggestor.refresh();
     }
-
 }

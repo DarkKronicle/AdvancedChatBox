@@ -3,7 +3,6 @@ package io.github.darkkronicle.advancedchatbox.interfaces;
 import com.mojang.brigadier.context.StringRange;
 import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestion;
 import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestions;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +10,6 @@ import java.util.Optional;
  * An interface for building suggestions for the {@link io.github.darkkronicle.advancedchat.chat.ChatSuggestor}
  */
 public interface IMessageSuggestor {
-
     /**
      * Suggests completions to different parts of the text.
      *
@@ -48,8 +46,10 @@ public interface IMessageSuggestor {
      * @param text Content of the chat box to suggest
      * @return List of {@link AdvancedSuggestion} to suggest
      */
-    default Optional<List<AdvancedSuggestion>> suggestCurrentWord(String text, StringRange range) {
+    default Optional<List<AdvancedSuggestion>> suggestCurrentWord(
+        String text,
+        StringRange range
+    ) {
         return Optional.empty();
     }
-
 }

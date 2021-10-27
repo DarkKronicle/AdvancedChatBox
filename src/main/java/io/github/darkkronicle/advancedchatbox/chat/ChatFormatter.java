@@ -6,6 +6,8 @@ import io.github.darkkronicle.advancedchatbox.registry.ChatFormatterRegistry;
 import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
+import java.util.HashMap;
+import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -13,9 +15,6 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
-
-import java.util.HashMap;
-import java.util.Optional;
 
 /**
  * A class to format the chat box on the {@link io.github.darkkronicle.advancedchat.config.ConfigStorage.ChatScreen}
@@ -58,22 +57,39 @@ public class ChatFormatter {
                     continue;
                 }
                 StringRange range = suggestions.getRange();
-                String matchString = string.subSequence(range.getStart(), range.getEnd()).toString();
-                format.put(new StringMatch(matchString, range.getStart(), range.getEnd()), (current, match) -> {
-                    Style style = Style.EMPTY;
-                    style = style.withFormatting(Formatting.UNDERLINE);
-                    TextColor textColor = TextColor.fromRgb(ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config.getSimpleColor().color());
-                    style = style.withColor(textColor);
-                    return new FluidText(new RawText(matchString, style));
-                });
+                String matchString = string
+                    .subSequence(range.getStart(), range.getEnd())
+                    .toString();
+                format.put(
+                    new StringMatch(
+                        matchString,
+                        range.getStart(),
+                        range.getEnd()
+                    ),
+                    (current, match) -> {
+                        Style style = Style.EMPTY;
+                        style = style.withFormatting(Formatting.UNDERLINE);
+                        TextColor textColor = TextColor.fromRgb(
+                            ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config
+                                .getSimpleColor()
+                                .color()
+                        );
+                        style = style.withColor(textColor);
+                        return new FluidText(new RawText(matchString, style));
+                    }
+                );
             }
             text.replaceStrings(format);
         }
-        for (ChatFormatterRegistry.ChatFormatterOption option : ChatFormatterRegistry.getInstance().getAll()) {
+        for (ChatFormatterRegistry.ChatFormatterOption option : ChatFormatterRegistry
+            .getInstance()
+            .getAll()) {
             if (!option.isActive()) {
                 continue;
             }
-            Optional<FluidText> otext = option.getOption().format(text, suggestor.getParse());
+            Optional<FluidText> otext = option
+                .getOption()
+                .format(text, suggestor.getParse());
             if (otext.isPresent()) {
                 text = otext.get();
             }
@@ -86,9 +102,10 @@ public class ChatFormatter {
         if (length == 0) {
             return OrderedText.EMPTY;
         }
-        return last.truncate(new StringMatch(s, integer, integer + length)).asOrderedText();
+        return last
+            .truncate(new StringMatch(s, integer, integer + length))
+            .asOrderedText();
     }
-
 
     public OrderedText apply(String s, Integer integer) {
         String text = widget.getText();

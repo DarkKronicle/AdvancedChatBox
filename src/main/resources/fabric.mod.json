@@ -12,7 +12,7 @@
     "discord": "https://discord.gg/WnaE3uZxDA"
   },
   "license": "MPL-v2",
-  "icon": "assets/acmoduletemplate/icon.png",
+  "icon": "assets/advancedchatbox/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -30,6 +30,11 @@
     "advancedchatcore": ">=1.0.0"
   },
   "custom": {
-    "acmodule": true
+    "acmodule": true,
+    "modmenu": {
+      "parent": {
+        "id": "advancedchatcore"
+      }
+    }
   }
 }

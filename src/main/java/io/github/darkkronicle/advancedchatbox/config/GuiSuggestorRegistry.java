@@ -10,7 +10,8 @@ import io.github.darkkronicle.advancedchatcore.config.gui.widgets.WidgetListRegi
 import io.github.darkkronicle.advancedchatcore.config.gui.widgets.WidgetRegistryOptionEntry;
 import net.minecraft.client.gui.screen.Screen;
 
-public class GuiSuggestorRegistry extends GuiListBase<ChatSuggestorRegistry.ChatSuggestorOption, WidgetRegistryOptionEntry<ChatSuggestorRegistry.ChatSuggestorOption>, WidgetListRegistryOption<ChatSuggestorRegistry.ChatSuggestorOption>> {
+public class GuiSuggestorRegistry
+    extends GuiListBase<ChatSuggestorRegistry.ChatSuggestorOption, WidgetRegistryOptionEntry<ChatSuggestorRegistry.ChatSuggestorOption>, WidgetListRegistryOption<ChatSuggestorRegistry.ChatSuggestorOption>> {
 
     public GuiSuggestorRegistry(Screen parent) {
         super(10, 60);
@@ -27,13 +28,27 @@ public class GuiSuggestorRegistry extends GuiListBase<ChatSuggestorRegistry.Chat
         String name = ButtonListener.Type.BACK.getDisplayName();
         int width = StringUtils.getStringWidth(name) + 10;
         ButtonGeneric generic = new ButtonGeneric(x, y, width, 20, name);
-        this.addButton(generic, new ButtonListener(ButtonListener.Type.BACK, this));
+        this.addButton(
+                generic,
+                new ButtonListener(ButtonListener.Type.BACK, this)
+            );
         this.getListWidget().refreshEntries();
     }
 
     @Override
-    protected WidgetListRegistryOption<ChatSuggestorRegistry.ChatSuggestorOption> createListWidget(int listX, int listY) {
-        return new WidgetListRegistryOption<>(listX, listY, this.getBrowserWidth(), this.getBrowserHeight(), null, ChatSuggestorRegistry.getInstance(), this);
+    protected WidgetListRegistryOption<ChatSuggestorRegistry.ChatSuggestorOption> createListWidget(
+        int listX,
+        int listY
+    ) {
+        return new WidgetListRegistryOption<>(
+            listX,
+            listY,
+            this.getBrowserWidth(),
+            this.getBrowserHeight(),
+            null,
+            ChatSuggestorRegistry.getInstance(),
+            this
+        );
     }
 
     @Override
@@ -55,21 +70,27 @@ public class GuiSuggestorRegistry extends GuiListBase<ChatSuggestorRegistry.Chat
         private final GuiSuggestorRegistry parent;
         private final ButtonListener.Type type;
 
-        public ButtonListener(ButtonListener.Type type, GuiSuggestorRegistry parent) {
+        public ButtonListener(
+            ButtonListener.Type type,
+            GuiSuggestorRegistry parent
+        ) {
             this.type = type;
             this.parent = parent;
         }
 
         @Override
-        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
+        public void actionPerformedWithButton(
+            ButtonBase button,
+            int mouseButton
+        ) {
             if (this.type == ButtonListener.Type.BACK) {
                 parent.back();
             }
         }
 
         public enum Type {
-            BACK("back"),
-            ;
+            BACK("back");
+
             private final String translation;
 
             private static String translate(String key) {
@@ -83,9 +104,6 @@ public class GuiSuggestorRegistry extends GuiListBase<ChatSuggestorRegistry.Chat
             public String getDisplayName() {
                 return StringUtils.translate(translation);
             }
-
         }
-
     }
-
 }

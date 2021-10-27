@@ -5,14 +5,14 @@ import fi.dy.masa.malilib.gui.interfaces.ISelectionListener;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
 import fi.dy.masa.malilib.gui.wrappers.TextFieldWrapper;
 import io.github.darkkronicle.advancedchatbox.suggester.ShortcutSuggestor;
-import net.minecraft.client.gui.screen.Screen;
-
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Nullable;
+import net.minecraft.client.gui.screen.Screen;
 
-public class ShortcutListWidget extends WidgetListBase<ShortcutSuggestor.Shortcut, ShortcutEntryListWidget> {
+public class ShortcutListWidget
+    extends WidgetListBase<ShortcutSuggestor.Shortcut, ShortcutEntryListWidget> {
 
     public final ShortcutSuggestor suggestor;
     protected final List<TextFieldWrapper<GuiTextFieldGeneric>> textFields = new ArrayList<>();
@@ -54,7 +54,15 @@ public class ShortcutListWidget extends WidgetListBase<ShortcutSuggestor.Shortcu
         return super.onKeyTyped(keyCode, scanCode, modifiers);
     }
 
-    public ShortcutListWidget(int x, int y, int width, int height, @Nullable ISelectionListener<ShortcutSuggestor.Shortcut> selectionListener, ShortcutSuggestor parent, Screen screen) {
+    public ShortcutListWidget(
+        int x,
+        int y,
+        int width,
+        int height,
+        @Nullable ISelectionListener<ShortcutSuggestor.Shortcut> selectionListener,
+        ShortcutSuggestor parent,
+        Screen screen
+    ) {
         super(x, y, width, height, selectionListener);
         this.browserEntryHeight = 22;
         this.suggestor = parent;
@@ -62,13 +70,27 @@ public class ShortcutListWidget extends WidgetListBase<ShortcutSuggestor.Shortcu
     }
 
     @Override
-    protected ShortcutEntryListWidget createListEntryWidget(int x, int y, int listIndex, boolean isOdd, ShortcutSuggestor.Shortcut entry) {
-        return new ShortcutEntryListWidget(x, y, this.browserEntryWidth, this.getBrowserEntryHeightFor(entry), isOdd, entry, listIndex, this);
+    protected ShortcutEntryListWidget createListEntryWidget(
+        int x,
+        int y,
+        int listIndex,
+        boolean isOdd,
+        ShortcutSuggestor.Shortcut entry
+    ) {
+        return new ShortcutEntryListWidget(
+            x,
+            y,
+            this.browserEntryWidth,
+            this.getBrowserEntryHeightFor(entry),
+            isOdd,
+            entry,
+            listIndex,
+            this
+        );
     }
 
     @Override
     protected Collection<ShortcutSuggestor.Shortcut> getAllEntries() {
         return suggestor.getShortcuts();
     }
-
 }
