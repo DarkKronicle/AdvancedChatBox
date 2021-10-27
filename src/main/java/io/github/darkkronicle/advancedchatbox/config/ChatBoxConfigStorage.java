@@ -127,18 +127,18 @@ public class ChatBoxConfigStorage implements IConfigHandler {
             )
         );
 
-        public static final ConfigStorage.SaveableConfig<ConfigBoolean> SUGGEST_CAPITAL = ConfigStorage.SaveableConfig.fromConfig(
-            "suggest_capital",
-            new ConfigBoolean(
-                translate("suggestcapital"),
-                true,
-                translate("info.suggestcapital")
-            )
-        );
+//        public static final ConfigStorage.SaveableConfig<ConfigBoolean> SUGGEST_CAPITAL = ConfigStorage.SaveableConfig.fromConfig(
+//            "suggest_capital",
+//            new ConfigBoolean(
+//                translate("suggestcapital"),
+//                true,
+//                translate("info.suggestcapital")
+//            )
+//        );
 
         public static final ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(
-            HOVER_TEXT,
-            SUGGEST_CAPITAL
+            HOVER_TEXT
+//            SUGGEST_CAPITAL
         );
     }
 

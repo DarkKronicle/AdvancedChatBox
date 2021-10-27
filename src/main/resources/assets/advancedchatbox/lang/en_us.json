@@ -31,5 +31,7 @@
   "advancedchatbox.config.general.pruneplayersuggestions": "Prune Player Suggestions",
   "advancedchatbox.config.general.info.pruneplayersuggestions": "Whether or not §6non-real players§r, such as the fake players used in BungeeTabListPlus, are removed from the §dChatSuggestor",
   "advancedchatbox.config.general.availablesuggestioncolor": "Available Suggestion Color",
-  "advancedchatbox.config.general.info.availablesuggestioncolor": "What color §6custom chat suggestors§r will show up as"
+  "advancedchatbox.config.general.info.availablesuggestioncolor": "What color §6custom chat suggestors§r will show up as",
+  "advancedchatbox.config.spellchecker.hovertext": "Spell Checker Hover Format",
+  "advancedchatbox.config.spellchecker.info.hovertext": "The format of the text that appears when you hover your mouse over a suggested spelling change\n§b$1§r is the first part of the description, up to the suggested change\n§b$2§r is the actual spelling suggestion\n§b$3§r is any additional information that the spell checker may provide"
 }
