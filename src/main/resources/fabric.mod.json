@@ -9,6 +9,7 @@
   ],
   "contact": {
     "sources": "https://github.com/DarkKronicle/AdvancedChatBox",
+    "issues": "https://github.com/DarkKronicle/AdvancedChatBox/issues",
     "discord": "https://discord.gg/WnaE3uZxDA"
   },
   "license": "MPL-v2",
@@ -19,9 +20,6 @@
       "io.github.darkkronicle.advancedchatbox.AdvancedChatBox"
     ]
   },
-  "mixins": [
-    "advancedchatbox.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.8.9+build.204",
     "fabric": "*",
@@ -32,6 +30,9 @@
   "custom": {
     "acmodule": true,
     "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/WnaE3uZxDA"
+      },
       "parent": {
         "id": "advancedchatcore"
       }

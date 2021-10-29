@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.suggester;
 
 import com.mojang.brigadier.context.StringRange;
@@ -21,17 +28,11 @@ import net.minecraft.client.network.PlayerListEntry;
 public class PlayerSuggestor implements IMessageSuggestor {
 
     @Override
-    public Optional<List<AdvancedSuggestion>> suggestCurrentWord(
-        String text,
-        StringRange range
-    ) {
+    public Optional<List<AdvancedSuggestion>> suggestCurrentWord(String text, StringRange range) {
         List<AdvancedSuggestion> newSuggestions = new ArrayList<>();
         Collection<String> names = getPlayerNames();
         for (String name : names) {
-            if (
-                text.equals("") ||
-                name.toLowerCase().startsWith(text.toLowerCase())
-            ) {
+            if (text.equals("") || name.toLowerCase().startsWith(text.toLowerCase())) {
                 newSuggestions.add(new AdvancedSuggestion(range, name));
             }
         }
@@ -41,21 +42,18 @@ public class PlayerSuggestor implements IMessageSuggestor {
     private Collection<String> getPlayerNames() {
         List<String> list = new ArrayList<>();
 
-        for (PlayerListEntry playerListEntry : MinecraftClient
-            .getInstance()
-            .player.networkHandler.getPlayerList()) {
-            if (
-                ChatBoxConfigStorage.General.PRUNE_PLAYER_SUGGESTIONS.config.getBooleanValue() &&
-                playerListEntry.getDisplayName() != null
-            ) {
+        for (PlayerListEntry playerListEntry :
+                MinecraftClient.getInstance().player.networkHandler.getPlayerList()) {
+            if (ChatBoxConfigStorage.General.PRUNE_PLAYER_SUGGESTIONS.config.getBooleanValue()
+                    && playerListEntry.getDisplayName() != null) {
                 // Try to get their actual name (without prefix)
-                StringMatch match = SearchUtils
-                    .getMatch(
-                        playerListEntry.getDisplayName().getString(),
-                        ConfigStorage.General.MESSAGE_OWNER_REGEX.config.getStringValue(),
-                        FindType.REGEX
-                    )
-                    .orElse(null);
+                StringMatch match =
+                        SearchUtils.getMatch(
+                                        playerListEntry.getDisplayName().getString(),
+                                        ConfigStorage.General.MESSAGE_OWNER_REGEX.config
+                                                .getStringValue(),
+                                        FindType.REGEX)
+                                .orElse(null);
                 if (match != null) {
                     // Check to make sure it isn't blank
                     if (!match.match.equals("")) {
@@ -63,9 +61,7 @@ public class PlayerSuggestor implements IMessageSuggestor {
                     }
                 } else {
                     // Check to make sure it isn't blank
-                    if (
-                        !playerListEntry.getDisplayName().getString().equals("")
-                    ) {
+                    if (!playerListEntry.getDisplayName().getString().equals("")) {
                         list.add(playerListEntry.getDisplayName().getString());
                     }
                 }

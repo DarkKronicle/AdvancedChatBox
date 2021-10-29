@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.suggester;
 
 import com.mojang.brigadier.context.StringRange;
@@ -26,9 +33,8 @@ public class CalculatorSuggestor implements IMessageSuggestor {
         if (!text.contains("[") || !text.contains("]")) {
             return Optional.empty();
         }
-        List<StringMatch> matches = SearchUtils
-            .findMatches(text, BRACKET_REGEX, FindType.REGEX)
-            .orElse(null);
+        List<StringMatch> matches =
+                SearchUtils.findMatches(text, BRACKET_REGEX, FindType.REGEX).orElse(null);
         if (matches == null) {
             return Optional.empty();
         }
@@ -49,15 +55,11 @@ public class CalculatorSuggestor implements IMessageSuggestor {
             }
             StringRange range = new StringRange(m.start, m.end);
             suggest.add(
-                new AdvancedSuggestions(
-                    range,
-                    new ArrayList<>(
-                        Collections.singleton(
-                            new AdvancedSuggestion(range, message)
-                        )
-                    )
-                )
-            );
+                    new AdvancedSuggestions(
+                            range,
+                            new ArrayList<>(
+                                    Collections.singleton(
+                                            new AdvancedSuggestion(range, message)))));
         }
         if (suggest.isEmpty()) {
             return Optional.empty();

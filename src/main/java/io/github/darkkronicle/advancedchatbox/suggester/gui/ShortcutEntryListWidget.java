@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.suggester.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -19,8 +26,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
 @Environment(EnvType.CLIENT)
-public class ShortcutEntryListWidget
-    extends WidgetListEntryBase<ShortcutSuggestor.Shortcut> {
+public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggestor.Shortcut> {
 
     private final ShortcutListWidget parent;
     private final boolean isOdd;
@@ -36,15 +42,14 @@ public class ShortcutEntryListWidget
     }
 
     public ShortcutEntryListWidget(
-        int x,
-        int y,
-        int width,
-        int height,
-        boolean isOdd,
-        ShortcutSuggestor.Shortcut entry,
-        int listIndex,
-        ShortcutListWidget parent
-    ) {
+            int x,
+            int y,
+            int width,
+            int height,
+            boolean isOdd,
+            ShortcutSuggestor.Shortcut entry,
+            int listIndex,
+            ShortcutListWidget parent) {
         super(x, y, width, height, entry, listIndex);
         this.isOdd = isOdd;
         this.parent = parent;
@@ -55,35 +60,33 @@ public class ShortcutEntryListWidget
         int nameWidth = 100;
         pos -= removeWidth;
         int replaceWidth = width - removeWidth - nameWidth + 1;
-        GuiTextFieldGeneric replaceField = new GuiTextFieldGeneric(
-            pos - replaceWidth,
-            y,
-            replaceWidth,
-            20,
-            MinecraftClient.getInstance().textRenderer
-        );
+        GuiTextFieldGeneric replaceField =
+                new GuiTextFieldGeneric(
+                        pos - replaceWidth,
+                        y,
+                        replaceWidth,
+                        20,
+                        MinecraftClient.getInstance().textRenderer);
         replaceField.setMaxLength(512);
         replaceField.setText(entry.getReplace());
-        replace =
-            new TextFieldWrapper<>(replaceField, new SaveListener(this, false));
+        replace = new TextFieldWrapper<>(replaceField, new SaveListener(this, false));
         parent.addTextField(replace);
 
         pos -= replaceWidth + 1;
-        GuiTextFieldGeneric nameField = new GuiTextFieldGeneric(
-            pos - nameWidth,
-            y,
-            nameWidth,
-            20,
-            MinecraftClient.getInstance().textRenderer
-        );
+        GuiTextFieldGeneric nameField =
+                new GuiTextFieldGeneric(
+                        pos - nameWidth,
+                        y,
+                        nameWidth,
+                        20,
+                        MinecraftClient.getInstance().textRenderer);
         nameField.setMaxLength(512);
         nameField.setText(entry.getName());
         name = new TextFieldWrapper<>(nameField, new SaveListener(this, true));
         parent.addTextField(name);
     }
 
-    private static class SaveListener
-        implements ITextFieldListener<GuiTextFieldGeneric> {
+    private static class SaveListener implements ITextFieldListener<GuiTextFieldGeneric> {
 
         private final ShortcutEntryListWidget parent;
         private final boolean name;
@@ -105,13 +108,7 @@ public class ShortcutEntryListWidget
     }
 
     protected int addButton(int x, int y, ButtonListener.Type type) {
-        ButtonGeneric button = new ButtonGeneric(
-            x,
-            y,
-            -1,
-            true,
-            type.getDisplayName()
-        );
+        ButtonGeneric button = new ButtonGeneric(x, y, -1, true, type.getDisplayName());
         this.addButton(button, new ButtonListener(type, this));
 
         return button.getWidth() + 1;
@@ -139,11 +136,7 @@ public class ShortcutEntryListWidget
     }
 
     @Override
-    protected boolean onMouseClickedImpl(
-        int mouseX,
-        int mouseY,
-        int mouseButton
-    ) {
+    protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
         if (super.onMouseClickedImpl(mouseX, mouseY, mouseButton)) {
             return true;
         }
@@ -151,32 +144,24 @@ public class ShortcutEntryListWidget
         boolean ret = false;
 
         if (this.name != null) {
-            ret =
-                this.name.getTextField()
-                    .mouseClicked(mouseX, mouseY, mouseButton);
+            ret = this.name.getTextField().mouseClicked(mouseX, mouseY, mouseButton);
         }
         if (this.replace != null && !ret) {
-            ret =
-                this.replace.getTextField()
-                    .mouseClicked(mouseX, mouseY, mouseButton);
+            ret = this.replace.getTextField().mouseClicked(mouseX, mouseY, mouseButton);
         }
 
         if (!this.subWidgets.isEmpty()) {
             for (WidgetBase widget : this.subWidgets) {
                 ret |=
-                    widget.isMouseOver(mouseX, mouseY) &&
-                    widget.onMouseClicked(mouseX, mouseY, mouseButton);
+                        widget.isMouseOver(mouseX, mouseY)
+                                && widget.onMouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
         return ret;
     }
 
-    protected void drawTextFields(
-        int mouseX,
-        int mouseY,
-        MatrixStack matrixStack
-    ) {
+    protected void drawTextFields(int mouseX, int mouseY, MatrixStack matrixStack) {
         if (this.name != null) {
             this.name.getTextField().render(matrixStack, mouseX, mouseY, 0f);
         }
@@ -190,19 +175,13 @@ public class ShortcutEntryListWidget
         private final ButtonListener.Type type;
         private final ShortcutEntryListWidget parent;
 
-        public ButtonListener(
-            ButtonListener.Type type,
-            ShortcutEntryListWidget parent
-        ) {
+        public ButtonListener(ButtonListener.Type type, ShortcutEntryListWidget parent) {
             this.parent = parent;
             this.type = type;
         }
 
         @Override
-        public void actionPerformedWithButton(
-            ButtonBase button,
-            int mouseButton
-        ) {
+        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
             if (type == ButtonListener.Type.REMOVE) {
                 parent.parent.suggestor.removeShortcut(parent.entry);
                 parent.parent.refreshEntries();
@@ -229,39 +208,23 @@ public class ShortcutEntryListWidget
     }
 
     @Override
-    public void render(
-        int mouseX,
-        int mouseY,
-        boolean selected,
-        MatrixStack matrixStack
-    ) {
+    public void render(int mouseX, int mouseY, boolean selected, MatrixStack matrixStack) {
         RenderUtils.color(1f, 1f, 1f, 1f);
 
         // Draw a lighter background for the hovered and the selected entry
         if (selected || this.isMouseOver(mouseX, mouseY)) {
             RenderUtils.drawRect(
-                this.x,
-                this.y,
-                this.width,
-                this.height,
-                ColorUtil.WHITE.withAlpha(150).color()
-            );
+                    this.x,
+                    this.y,
+                    this.width,
+                    this.height,
+                    ColorUtil.WHITE.withAlpha(150).color());
         } else if (this.isOdd) {
             RenderUtils.drawRect(
-                this.x,
-                this.y,
-                this.width,
-                this.height,
-                ColorUtil.WHITE.withAlpha(70).color()
-            );
+                    this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(70).color());
         } else {
             RenderUtils.drawRect(
-                this.x,
-                this.y,
-                this.width,
-                this.height,
-                ColorUtil.WHITE.withAlpha(50).color()
-            );
+                    this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(50).color());
         }
 
         RenderUtils.color(1f, 1f, 1f, 1f);

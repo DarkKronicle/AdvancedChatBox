@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.suggester;
 
 import com.google.gson.JsonArray;
@@ -22,7 +29,6 @@ import io.github.darkkronicle.advancedchatcore.util.RawText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import lombok.Data;
@@ -34,8 +40,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Style;
 
 @Environment(EnvType.CLIENT)
-public class ShortcutSuggestor
-    implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
+public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
 
     @EqualsAndHashCode
     @Data
@@ -54,10 +59,7 @@ public class ShortcutSuggestor
                 return null;
             }
             JsonObject obj = element.getAsJsonObject();
-            return new Shortcut(
-                obj.get("name").getAsString(),
-                obj.get("replace").getAsString()
-            );
+            return new Shortcut(obj.get("name").getAsString(), obj.get("replace").getAsString());
         }
 
         public JsonObject toJsonElement() {
@@ -69,14 +71,10 @@ public class ShortcutSuggestor
     }
 
     public static Shortcut getRandomShortcut() {
-        return new Shortcut(
-            AdvancedChatCore.getRandomString(),
-            AdvancedChatCore.getRandomString()
-        );
+        return new Shortcut(AdvancedChatCore.getRandomString(), AdvancedChatCore.getRandomString());
     }
 
-    @Getter
-    private List<Shortcut> shortcuts;
+    @Getter private List<Shortcut> shortcuts;
 
     public ShortcutSuggestor() {
         shortcuts = new ArrayList<>();
@@ -128,35 +126,25 @@ public class ShortcutSuggestor
             }
             StringRange range = new StringRange(start, end);
             suggest.add(
-                new AdvancedSuggestions(
-                    range,
-                    getSuggestions(string.substring(start + 1, end), range)
-                )
-            );
+                    new AdvancedSuggestions(
+                            range, getSuggestions(string.substring(start + 1, end), range)));
         }
         return Optional.of(suggest);
     }
 
-    private List<AdvancedSuggestion> getSuggestions(
-        String current,
-        StringRange range
-    ) {
+    private List<AdvancedSuggestion> getSuggestions(String current, StringRange range) {
         ArrayList<AdvancedSuggestion> suggestions = new ArrayList<>();
         for (Shortcut shortcut : shortcuts) {
-            if (
-                current.length() == 0 ||
-                shortcut.name.toLowerCase().startsWith(current.toLowerCase())
-            ) {
+            if (current.length() == 0
+                    || shortcut.name.toLowerCase().startsWith(current.toLowerCase())) {
                 FluidText text = new FluidText();
                 text.append(new RawText(shortcut.name, Style.EMPTY));
                 suggestions.add(
-                    new AdvancedSuggestion(
-                        range,
-                        shortcut.replace,
-                        text,
-                        new RawText(shortcut.replace, Style.EMPTY)
-                    )
-                );
+                        new AdvancedSuggestion(
+                                range,
+                                shortcut.replace,
+                                text,
+                                new RawText(shortcut.replace, Style.EMPTY)));
             }
         }
         return suggestions;
@@ -232,7 +220,7 @@ public class ShortcutSuggestor
     }
 
     public class ShortcutScreen
-        extends GuiListBase<Shortcut, ShortcutEntryListWidget, ShortcutListWidget> {
+            extends GuiListBase<Shortcut, ShortcutEntryListWidget, ShortcutListWidget> {
 
         @Override
         public void initGui() {
@@ -250,19 +238,8 @@ public class ShortcutSuggestor
             this.setParent(parent);
         }
 
-        protected int addButton(
-            int x,
-            int y,
-            ButtonListener.Type type,
-            boolean rightAlign
-        ) {
-            ButtonGeneric button = new ButtonGeneric(
-                x,
-                y,
-                -1,
-                rightAlign,
-                type.getDisplayName()
-            );
+        protected int addButton(int x, int y, ButtonListener.Type type, boolean rightAlign) {
+            ButtonGeneric button = new ButtonGeneric(x, y, -1, rightAlign, type.getDisplayName());
             this.addButton(button, new ButtonListener(type, this));
 
             return button.getWidth();
@@ -271,14 +248,13 @@ public class ShortcutSuggestor
         @Override
         protected ShortcutListWidget createListWidget(int listX, int listY) {
             return new ShortcutListWidget(
-                listX,
-                listY,
-                this.getBrowserWidth(),
-                this.getBrowserHeight(),
-                null,
-                ShortcutSuggestor.this,
-                this
-            );
+                    listX,
+                    listY,
+                    this.getBrowserWidth(),
+                    this.getBrowserHeight(),
+                    null,
+                    ShortcutSuggestor.this,
+                    this);
         }
 
         @Override
@@ -319,10 +295,7 @@ public class ShortcutSuggestor
         }
 
         @Override
-        public void actionPerformedWithButton(
-            ButtonBase button,
-            int mouseButton
-        ) {
+        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
             if (this.type == ButtonListener.Type.ADD_SHORTCUT) {
                 this.gui.addShortcut();
             } else if (this.type == ButtonListener.Type.BACK) {

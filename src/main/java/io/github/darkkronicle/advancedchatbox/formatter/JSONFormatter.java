@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.formatter;
 
 import com.mojang.brigadier.ParseResults;
@@ -34,21 +41,12 @@ public class JSONFormatter implements IMessageFormatter {
         COLON("^:", new ColorUtil.SimpleColor(130, 130, 130, 255)),
         COMMA("^,", new ColorUtil.SimpleColor(130, 130, 130, 255)),
         NUMBER_LITERAL(
-            "^-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?",
-            new ColorUtil.SimpleColor(168, 97, 199, 255)
-        ),
+                "^-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?", new ColorUtil.SimpleColor(168, 97, 199, 255)),
         STRING_KEY(
-            "^\"(?:\\\\.|[^\"\\\\])*\"(?=\\s*:)",
-            new ColorUtil.SimpleColor(120, 156, 183, 255)
-        ),
-        STRING_LITERAL(
-            "^\"(?:\\\\.|[^\"\\\\])*\"",
-            new ColorUtil.SimpleColor(189, 215, 222, 255)
-        ),
-        BOOLEAN_LITERAL(
-            "^true|^false",
-            new ColorUtil.SimpleColor(232, 63, 113, 255)
-        ),
+                "^\"(?:\\\\.|[^\"\\\\])*\"(?=\\s*:)",
+                new ColorUtil.SimpleColor(120, 156, 183, 255)),
+        STRING_LITERAL("^\"(?:\\\\.|[^\"\\\\])*\"", new ColorUtil.SimpleColor(189, 215, 222, 255)),
+        BOOLEAN_LITERAL("^true|^false", new ColorUtil.SimpleColor(232, 63, 113, 255)),
         NULL_LITERAL("^null", new ColorUtil.SimpleColor(194, 76, 75, 255)),
         OTHER(".", new ColorUtil.SimpleColor(210, 43, 43, 255));
 
@@ -70,16 +68,10 @@ public class JSONFormatter implements IMessageFormatter {
     }
 
     @Override
-    public Optional<FluidText> format(
-        FluidText text,
-        @Nullable ParseResults<CommandSource> parse
-    ) {
+    public Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse) {
         String content = text.getString();
-        Optional<List<StringMatch>> omatches = SearchUtils.findMatches(
-            content,
-            "\\{.+\\}",
-            FindType.REGEX
-        );
+        Optional<List<StringMatch>> omatches =
+                SearchUtils.findMatches(content, "\\{.+\\}", FindType.REGEX);
         if (!omatches.isPresent()) {
             return Optional.empty();
         }
@@ -105,11 +97,8 @@ public class JSONFormatter implements IMessageFormatter {
         int index = 0;
         while (string.length() > 0) {
             for (JSONType type : JSONType.values()) {
-                Optional<StringMatch> omatch = SearchUtils.getMatch(
-                    string,
-                    type.regex,
-                    FindType.REGEX
-                );
+                Optional<StringMatch> omatch =
+                        SearchUtils.getMatch(string, type.regex, FindType.REGEX);
                 if (!omatch.isPresent()) {
                     continue;
                 }

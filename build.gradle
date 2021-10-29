@@ -1,9 +1,8 @@
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
-    id 'fabric-loom' version '0.8-SNAPSHOT'
-    id 'maven-publish'
-    id "io.freefair.lombok" version "6.0.0-m2"
+	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'maven-publish'
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id "com.diffplug.spotless" version "5.17.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -17,98 +16,109 @@ minecraft {
 }
 
 repositories {
-    mavenCentral()
-    maven { url 'https://masa.dy.fi/maven' }
-    maven { url 'https://jitpack.io' }
+	mavenCentral()
+	maven { url 'https://masa.dy.fi/maven' }
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Fabric api
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    modImplementation "fi.dy.masa.malilib:malilib-fabric-1.17.0:${project.malilib_version}"
-    modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
+	// Fabric api
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.17.0:${project.malilib_version}"
+	modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
 
-    include "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
-    implementation "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
+	include "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
+	implementation "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
 
-    implementation "org.languagetool:language-en:5.5"
-    // Transitive
-    include "org.languagetool:language-en:5.5"
-    include "org.languagetool:languagetool-core:5.5"
-    include group: 'net.loomchild', name: 'segment', version: '2.0.3'
-    include group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    include group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
-    include group: 'org.jetbrains.intellij.deps', name: 'trove4j', version: '1.0.20200330'
-    include group: 'javax.measure', name: 'unit-api', version: '2.1.3'
-    include group: 'tech.units', name: 'indriya', version: '1.3'
-    include group: 'tech.uom.lib', name: 'uom-lib-common', version: '1.1'
-    include group: 'org.carrot2', name: 'morfologik-fsa', version: '2.1.7'
-    include group: 'org.carrot2', name: 'morfologik-fsa-builders', version: '2.1.7'
-    include group: 'org.carrot2', name: 'morfologik-speller', version: '2.1.7'
-    include group: 'org.carrot2', name: 'morfologik-stemming', version: '2.1.7'
-    include group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.9.3'
-    include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
-    include group: 'edu.washington.cs.knowitall', name: 'opennlp-postag-models', version: '1.5'
-    include group: 'edu.washington.cs.knowitall', name: 'opennlp-tokenize-models', version: '1.5'
-    include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
-    include group: 'com.carrotsearch', name: 'hppc', version: '0.9.0'
+	implementation "org.languagetool:language-en:5.5"
+	// Transitive
+	include "org.languagetool:language-en:5.5"
+	include "org.languagetool:languagetool-core:5.5"
+	include group: 'net.loomchild', name: 'segment', version: '2.0.3'
+	include group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	include group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
+	include group: 'org.jetbrains.intellij.deps', name: 'trove4j', version: '1.0.20200330'
+	include group: 'javax.measure', name: 'unit-api', version: '2.1.3'
+	include group: 'tech.units', name: 'indriya', version: '1.3'
+	include group: 'tech.uom.lib', name: 'uom-lib-common', version: '1.1'
+	include group: 'org.carrot2', name: 'morfologik-fsa', version: '2.1.7'
+	include group: 'org.carrot2', name: 'morfologik-fsa-builders', version: '2.1.7'
+	include group: 'org.carrot2', name: 'morfologik-speller', version: '2.1.7'
+	include group: 'org.carrot2', name: 'morfologik-stemming', version: '2.1.7'
+	include group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.9.3'
+	include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
+	include group: 'edu.washington.cs.knowitall', name: 'opennlp-postag-models', version: '1.5'
+	include group: 'edu.washington.cs.knowitall', name: 'opennlp-tokenize-models', version: '1.5'
+	include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
+	include group: 'com.carrotsearch', name: 'hppc', version: '0.9.0'
 }
 
 processResources {
-    inputs.property "version", project.version
+	inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
-    it.options.encoding = "UTF-8"
-
-    // Minecraft 1.17 (21w19a) upwards uses Java 16.
-    it.options.release = 16
+	it.options.encoding = "UTF-8"
+	it.options.release = 16
 }
 
 java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
-    }
+	from "LICENSE.txt"
+}
+
+spotless {
+    ratchetFrom 'origin/main'
+	format 'misc', {
+		// define the files to apply `misc` to
+		target '*.gradle', '*.md', '.gitignore'
+
+		// define the steps to apply to those files
+		trimTrailingWhitespace()
+		indentWithTabs() // or spaces. Takes an integer argument if you don't like 4
+		endWithNewline()
+	}
+	java {
+		target 'src/*/java/**/*.java'
+		googleJavaFormat('1.12.0').aosp().reflowLongStrings()
+		removeUnusedImports()
+		licenseHeaderFile "HEADER.txt"
+	}
 }
 
 // configure the maven publication
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
+	publications {
+		mavenJava(MavenPublication) {
+			// add all the jars that should be included when publishing to maven
+			artifact(remapJar) {
+				builtBy remapJar
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
+		}
+	}
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
-    }
+	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	repositories {
+		// Add repositories to publish to here.
+		// Notice: This block does NOT have the same function as the block in the top level.
+		// The repositories here will be used for publishing your artifact, not for
+		// retrieving dependencies.
+	}
 }

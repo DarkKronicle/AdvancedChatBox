@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.interfaces;
 
 import com.mojang.brigadier.ParseResults;
@@ -6,9 +13,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import net.minecraft.command.CommandSource;
 
-/**
- * An interface for formatting the chat text box on the chat screen.
- */
+/** An interface for formatting the chat text box on the chat screen. */
 public interface IMessageFormatter {
     /**
      * Changes how the chat text bar is rendered on the chat screen
@@ -17,8 +22,5 @@ public interface IMessageFormatter {
      * @param parse Current commands that have been parsed
      * @return Text that should render on the chat text bar. If empty it won't modify.
      */
-    Optional<FluidText> format(
-        FluidText text,
-        @Nullable ParseResults<CommandSource> parse
-    );
+    Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse);
 }

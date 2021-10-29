@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.chat;
 
 import com.mojang.brigadier.context.StringRange;
@@ -17,20 +24,18 @@ import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
 /**
- * A class to format the chat box on the {@link io.github.darkkronicle.advancedchat.config.ConfigStorage.ChatScreen}
+ * A class to format the chat box on the {@link
+ * io.github.darkkronicle.advancedchat.config.ConfigStorage.ChatScreen}
  */
 @Environment(EnvType.CLIENT)
 public class ChatFormatter {
 
-    /**
-     * The last content that was formatted
-     */
+    /** The last content that was formatted */
     private String current = null;
 
-    /**
-     * The formatted current
-     */
+    /** The formatted current */
     private FluidText last = null;
+
     private final TextFieldWidget widget;
     private final ChatSuggestor suggestor;
 
@@ -41,6 +46,7 @@ public class ChatFormatter {
 
     /**
      * Format's the chat box contents
+     *
      * @param string Contents
      * @return Formatted FluidText. If nothing is changed it will be the contents with Style.EMPTY
      */
@@ -57,39 +63,31 @@ public class ChatFormatter {
                     continue;
                 }
                 StringRange range = suggestions.getRange();
-                String matchString = string
-                    .subSequence(range.getStart(), range.getEnd())
-                    .toString();
+                String matchString =
+                        string.subSequence(range.getStart(), range.getEnd()).toString();
                 format.put(
-                    new StringMatch(
-                        matchString,
-                        range.getStart(),
-                        range.getEnd()
-                    ),
-                    (current, match) -> {
-                        Style style = Style.EMPTY;
-                        style = style.withFormatting(Formatting.UNDERLINE);
-                        TextColor textColor = TextColor.fromRgb(
-                            ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config
-                                .getSimpleColor()
-                                .color()
-                        );
-                        style = style.withColor(textColor);
-                        return new FluidText(new RawText(matchString, style));
-                    }
-                );
+                        new StringMatch(matchString, range.getStart(), range.getEnd()),
+                        (current, match) -> {
+                            Style style = Style.EMPTY;
+                            style = style.withFormatting(Formatting.UNDERLINE);
+                            TextColor textColor =
+                                    TextColor.fromRgb(
+                                            ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR
+                                                    .config
+                                                    .getSimpleColor()
+                                                    .color());
+                            style = style.withColor(textColor);
+                            return new FluidText(new RawText(matchString, style));
+                        });
             }
             text.replaceStrings(format);
         }
-        for (ChatFormatterRegistry.ChatFormatterOption option : ChatFormatterRegistry
-            .getInstance()
-            .getAll()) {
+        for (ChatFormatterRegistry.ChatFormatterOption option :
+                ChatFormatterRegistry.getInstance().getAll()) {
             if (!option.isActive()) {
                 continue;
             }
-            Optional<FluidText> otext = option
-                .getOption()
-                .format(text, suggestor.getParse());
+            Optional<FluidText> otext = option.getOption().format(text, suggestor.getParse());
             if (otext.isPresent()) {
                 text = otext.get();
             }
@@ -102,9 +100,7 @@ public class ChatFormatter {
         if (length == 0) {
             return OrderedText.EMPTY;
         }
-        return last
-            .truncate(new StringMatch(s, integer, integer + length))
-            .asOrderedText();
+        return last.truncate(new StringMatch(s, integer, integer + length)).asOrderedText();
     }
 
     public OrderedText apply(String s, Integer integer) {

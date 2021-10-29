@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.registry;
 
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
@@ -13,12 +20,10 @@ import java.util.function.Supplier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-/**
- * Chat suggestor registry
- */
+/** Chat suggestor registry */
 @Environment(EnvType.CLIENT)
 public class ChatSuggestorRegistry
-    extends AbstractRegistry<IMessageSuggestor, ChatSuggestorRegistry.ChatSuggestorOption> {
+        extends AbstractRegistry<IMessageSuggestor, ChatSuggestorRegistry.ChatSuggestorOption> {
 
     private static final ChatSuggestorRegistry INSTANCE = new ChatSuggestorRegistry();
 
@@ -30,23 +35,15 @@ public class ChatSuggestorRegistry
 
     @Override
     public ChatSuggestorOption constructOption(
-        Supplier<IMessageSuggestor> iMessageSuggestor,
-        String saveString,
-        String translation,
-        String infoTranslation,
-        boolean active,
-        boolean hidden,
-        boolean setDefault
-    ) {
+            Supplier<IMessageSuggestor> iMessageSuggestor,
+            String saveString,
+            String translation,
+            String infoTranslation,
+            boolean active,
+            boolean hidden,
+            boolean setDefault) {
         return new ChatSuggestorOption(
-            iMessageSuggestor,
-            saveString,
-            translation,
-            infoTranslation,
-            active,
-            hidden,
-            this
-        );
+                iMessageSuggestor, saveString, translation, infoTranslation, active, hidden, this);
     }
 
     @Override
@@ -58,8 +55,7 @@ public class ChatSuggestorRegistry
         return registry;
     }
 
-    public static class ChatSuggestorOption
-        implements ConfigRegistryOption<IMessageSuggestor> {
+    public static class ChatSuggestorOption implements ConfigRegistryOption<IMessageSuggestor> {
 
         public final String translation;
         public final String saveString;
@@ -71,34 +67,31 @@ public class ChatSuggestorRegistry
         private final ConfigStorage.SaveableConfig<ConfigBoolean> active;
 
         public ChatSuggestorOption(
-            Supplier<IMessageSuggestor> suggestor,
-            String saveString,
-            String translation,
-            String infoTranslation,
-            boolean active,
-            boolean hidden,
-            ChatSuggestorRegistry registry
-        ) {
+                Supplier<IMessageSuggestor> suggestor,
+                String saveString,
+                String translation,
+                String infoTranslation,
+                boolean active,
+                boolean hidden,
+                ChatSuggestorRegistry registry) {
             this(
-                suggestor.get(),
-                saveString,
-                translation,
-                infoTranslation,
-                active,
-                hidden,
-                registry
-            );
+                    suggestor.get(),
+                    saveString,
+                    translation,
+                    infoTranslation,
+                    active,
+                    hidden,
+                    registry);
         }
 
         public ChatSuggestorOption(
-            IMessageSuggestor suggestor,
-            String saveString,
-            String translation,
-            String infoTranslation,
-            boolean active,
-            boolean hidden,
-            ChatSuggestorRegistry registry
-        ) {
+                IMessageSuggestor suggestor,
+                String saveString,
+                String translation,
+                String infoTranslation,
+                boolean active,
+                boolean hidden,
+                ChatSuggestorRegistry registry) {
             this.saveString = saveString;
             this.suggestor = suggestor;
             this.translation = translation;
@@ -106,17 +99,13 @@ public class ChatSuggestorRegistry
             this.registry = registry;
             this.hidden = hidden;
             this.active =
-                ConfigStorage.SaveableConfig.fromConfig(
-                    "active",
-                    new ConfigBoolean(translation, active, infoTranslation)
-                );
+                    ConfigStorage.SaveableConfig.fromConfig(
+                            "active", new ConfigBoolean(translation, active, infoTranslation));
         }
 
         @Override
         public List<String> getHoverLines() {
-            return Arrays.asList(
-                StringUtils.translate(infoTranslation).split("\n")
-            );
+            return Arrays.asList(StringUtils.translate(infoTranslation).split("\n"));
         }
 
         @Override
@@ -135,20 +124,15 @@ public class ChatSuggestorRegistry
         }
 
         @Override
-        public ChatSuggestorOption copy(
-            AbstractRegistry<IMessageSuggestor, ?> registry
-        ) {
+        public ChatSuggestorOption copy(AbstractRegistry<IMessageSuggestor, ?> registry) {
             return new ChatSuggestorOption(
-                getOption(),
-                saveString,
-                translation,
-                infoTranslation,
-                isActive(),
-                isHidden(),
-                registry == null
-                    ? this.registry
-                    : (ChatSuggestorRegistry) registry
-            );
+                    getOption(),
+                    saveString,
+                    translation,
+                    infoTranslation,
+                    isActive(),
+                    isHidden(),
+                    registry == null ? this.registry : (ChatSuggestorRegistry) registry);
         }
 
         @Override

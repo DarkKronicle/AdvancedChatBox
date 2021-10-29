@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.chat;
 
 import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
@@ -19,9 +26,7 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
 
     @Override
     public void onChatFieldUpdate(String chatText, String text) {
-        this.suggestor.setWindowActive(
-                !text.equals(getScreen().getOriginalChatText())
-            );
+        this.suggestor.setWindowActive(!text.equals(getScreen().getOriginalChatText()));
         this.suggestor.refresh();
     }
 
@@ -31,12 +36,7 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
     }
 
     @Override
-    public void render(
-        MatrixStack matrixStack,
-        int mouseX,
-        int mouseY,
-        float partialTicks
-    ) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.suggestor.render(matrixStack, mouseX, mouseY);
     }
 
@@ -65,17 +65,16 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
         MinecraftClient client = MinecraftClient.getInstance();
         AdvancedChatScreen screen = getScreen();
         this.suggestor =
-            new ChatSuggestorGui(
-                client,
-                screen,
-                screen.getChatField(),
-                client.textRenderer,
-                false,
-                false,
-                1,
-                ChatBoxConfigStorage.General.SUGGESTION_SIZE.config.getIntegerValue(),
-                true
-            );
+                new ChatSuggestorGui(
+                        client,
+                        screen,
+                        screen.getChatField(),
+                        client.textRenderer,
+                        false,
+                        false,
+                        1,
+                        ChatBoxConfigStorage.General.SUGGESTION_SIZE.config.getIntegerValue(),
+                        true);
         this.suggestor.refresh();
     }
 }

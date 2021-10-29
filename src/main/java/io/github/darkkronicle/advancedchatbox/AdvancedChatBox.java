@@ -1,14 +1,16 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox;
 
 import fi.dy.masa.malilib.event.InitializationHandler;
-import io.github.darkkronicle.advancedchatcore.AdvancedChatCore;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.apache.commons.io.IOUtils;
 
 @Environment(EnvType.CLIENT)
 public class AdvancedChatBox implements ClientModInitializer {
@@ -18,8 +20,6 @@ public class AdvancedChatBox implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // This will run after AdvancedChatCore's because of load order
-        InitializationHandler
-            .getInstance()
-            .registerInitializationHandler(new ChatBoxInitHandler());
+        InitializationHandler.getInstance().registerInitializationHandler(new ChatBoxInitHandler());
     }
 }

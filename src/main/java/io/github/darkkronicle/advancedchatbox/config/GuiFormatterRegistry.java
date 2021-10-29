@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 DarkKronicle
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 package io.github.darkkronicle.advancedchatbox.config;
 
 import fi.dy.masa.malilib.gui.GuiListBase;
@@ -11,7 +18,10 @@ import io.github.darkkronicle.advancedchatcore.config.gui.widgets.WidgetRegistry
 import net.minecraft.client.gui.screen.Screen;
 
 public class GuiFormatterRegistry
-    extends GuiListBase<ChatFormatterRegistry.ChatFormatterOption, WidgetRegistryOptionEntry<ChatFormatterRegistry.ChatFormatterOption>, WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption>> {
+        extends GuiListBase<
+                ChatFormatterRegistry.ChatFormatterOption,
+                WidgetRegistryOptionEntry<ChatFormatterRegistry.ChatFormatterOption>,
+                WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption>> {
 
     public GuiFormatterRegistry(Screen parent) {
         super(10, 60);
@@ -28,27 +38,21 @@ public class GuiFormatterRegistry
         String name = ButtonListener.Type.BACK.getDisplayName();
         int width = StringUtils.getStringWidth(name) + 10;
         ButtonGeneric generic = new ButtonGeneric(x, y, width, 20, name);
-        this.addButton(
-                generic,
-                new ButtonListener(ButtonListener.Type.BACK, this)
-            );
+        this.addButton(generic, new ButtonListener(ButtonListener.Type.BACK, this));
         this.getListWidget().refreshEntries();
     }
 
     @Override
     protected WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption> createListWidget(
-        int listX,
-        int listY
-    ) {
+            int listX, int listY) {
         return new WidgetListRegistryOption<>(
-            listX,
-            listY,
-            this.getBrowserWidth(),
-            this.getBrowserHeight(),
-            null,
-            ChatFormatterRegistry.getInstance(),
-            this
-        );
+                listX,
+                listY,
+                this.getBrowserWidth(),
+                this.getBrowserHeight(),
+                null,
+                ChatFormatterRegistry.getInstance(),
+                this);
     }
 
     @Override
@@ -70,19 +74,13 @@ public class GuiFormatterRegistry
         private final GuiFormatterRegistry parent;
         private final ButtonListener.Type type;
 
-        public ButtonListener(
-            ButtonListener.Type type,
-            GuiFormatterRegistry parent
-        ) {
+        public ButtonListener(ButtonListener.Type type, GuiFormatterRegistry parent) {
             this.type = type;
             this.parent = parent;
         }
 
         @Override
-        public void actionPerformedWithButton(
-            ButtonBase button,
-            int mouseButton
-        ) {
+        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
             if (this.type == ButtonListener.Type.BACK) {
                 parent.back();
             }
