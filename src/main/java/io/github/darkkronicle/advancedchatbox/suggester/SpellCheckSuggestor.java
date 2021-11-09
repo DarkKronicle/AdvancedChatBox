@@ -50,7 +50,7 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
                         new AmericanEnglish(),
                         new AmericanEnglish(),
                         new ResultCache(15),
-                        new UserConfig(new ArrayList<>(), new HashMap<>(), 1));
+                        new UserConfig(new ArrayList<>(), new HashMap<>(), 20));
         lt.setMaxErrorsPerWordRate(0.33f);
         try {
             // Set it up. Make it so it doesn't freeze later.

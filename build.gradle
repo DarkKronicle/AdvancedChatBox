@@ -25,10 +25,8 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric api
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.17.0:${project.malilib_version}"
+	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.17.1:${project.malilib_version}"
 	modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
 
 	include "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
@@ -82,7 +80,7 @@ jar {
 }
 
 spotless {
-    ratchetFrom 'origin/main'
+	ratchetFrom 'origin/main'
 	format 'misc', {
 		// define the files to apply `misc` to
 		target '*.gradle', '*.md', '.gitignore'

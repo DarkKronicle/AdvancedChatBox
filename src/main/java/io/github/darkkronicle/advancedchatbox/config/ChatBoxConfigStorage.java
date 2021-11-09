@@ -20,6 +20,8 @@ import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
+import io.github.darkkronicle.advancedchatbox.registry.ChatFormatterRegistry;
+import io.github.darkkronicle.advancedchatbox.registry.ChatSuggestorRegistry;
 import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
 import io.github.darkkronicle.advancedchatcore.config.options.ConfigSimpleColor;
 import io.github.darkkronicle.advancedchatcore.util.ColorUtil;
@@ -164,6 +166,11 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                         SpellChecker.NAME,
                         (List<ConfigStorage.SaveableConfig<?>>) SpellChecker.OPTIONS);
 
+                ConfigStorage.applyRegistry(
+                        root.get(ChatFormatterRegistry.NAME), ChatFormatterRegistry.getInstance());
+                ConfigStorage.applyRegistry(
+                        root.get(ChatSuggestorRegistry.NAME), ChatSuggestorRegistry.getInstance());
+
                 int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 0);
             }
         }
@@ -183,6 +190,13 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                     (List<ConfigStorage.SaveableConfig<?>>) SpellChecker.OPTIONS);
 
             root.add("config_version", new JsonPrimitive(CONFIG_VERSION));
+
+            root.add(
+                    ChatFormatterRegistry.NAME,
+                    ConfigStorage.saveRegistry(ChatFormatterRegistry.getInstance()));
+            root.add(
+                    ChatSuggestorRegistry.NAME,
+                    ConfigStorage.saveRegistry(ChatSuggestorRegistry.getInstance()));
 
             ConfigStorage.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
         }
