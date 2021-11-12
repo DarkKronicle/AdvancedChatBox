@@ -94,7 +94,7 @@ spotless {
 		target 'src/*/java/**/*.java'
 		googleJavaFormat('1.12.0').aosp().reflowLongStrings()
 		removeUnusedImports()
-		eclipse().configFile('eclipse-java-google-style.xml')
+		eclipse().configFile('elcipse-style.xml')
 		licenseHeaderFile "HEADER.txt"
 	}
 }
