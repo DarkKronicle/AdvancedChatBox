@@ -24,7 +24,6 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class ChatFormatterRegistry
         extends AbstractRegistry<IMessageFormatter, ChatFormatterRegistry.ChatFormatterOption> {
-
     private static final ChatFormatterRegistry INSTANCE = new ChatFormatterRegistry();
 
     public static final String NAME = "formatters";
@@ -45,20 +44,13 @@ public class ChatFormatterRegistry
     }
 
     @Override
-    public ChatFormatterOption constructOption(
-            Supplier<IMessageFormatter> iMessageFormatter,
-            String saveString,
-            String translation,
-            String infoTranslation,
-            boolean active,
-            boolean setDefault,
-            boolean hidden) {
-        return new ChatFormatterOption(
-                iMessageFormatter, saveString, translation, infoTranslation, active, hidden, this);
+    public ChatFormatterOption constructOption(Supplier<IMessageFormatter> iMessageFormatter, String saveString,
+            String translation, String infoTranslation, boolean active, boolean setDefault, boolean hidden) {
+        return new ChatFormatterOption(iMessageFormatter, saveString, translation, infoTranslation, active, hidden,
+                this);
     }
 
     public static class ChatFormatterOption implements ConfigRegistryOption<IMessageFormatter> {
-
         private final IMessageFormatter formatter;
         private final String saveString;
         private final String translation;
@@ -67,22 +59,9 @@ public class ChatFormatterRegistry
         private final ConfigStorage.SaveableConfig<ConfigBoolean> active;
         private final boolean hidden;
 
-        private ChatFormatterOption(
-                Supplier<IMessageFormatter> formatter,
-                String saveString,
-                String translation,
-                String infoTranslation,
-                boolean active,
-                boolean hidden,
-                ChatFormatterRegistry registry) {
-            this(
-                    formatter.get(),
-                    saveString,
-                    translation,
-                    infoTranslation,
-                    active,
-                    hidden,
-                    registry);
+        private ChatFormatterOption(Supplier<IMessageFormatter> formatter, String saveString, String translation,
+                String infoTranslation, boolean active, boolean hidden, ChatFormatterRegistry registry) {
+            this(formatter.get(), saveString, translation, infoTranslation, active, hidden, registry);
         }
 
         @Override
@@ -91,23 +70,16 @@ public class ChatFormatterRegistry
         }
 
         // Only register
-        private ChatFormatterOption(
-                IMessageFormatter formatter,
-                String saveString,
-                String translation,
-                String infoTranslation,
-                boolean active,
-                boolean hidden,
-                ChatFormatterRegistry registry) {
+        private ChatFormatterOption(IMessageFormatter formatter, String saveString, String translation,
+                String infoTranslation, boolean active, boolean hidden, ChatFormatterRegistry registry) {
             this.formatter = formatter;
             this.saveString = saveString;
             this.translation = translation;
             this.registry = registry;
             this.infoTranslation = infoTranslation;
             this.hidden = hidden;
-            this.active =
-                    ConfigStorage.SaveableConfig.fromConfig(
-                            "active", new ConfigBoolean(translation, active, infoTranslation));
+            this.active = ConfigStorage.SaveableConfig.fromConfig("active",
+                    new ConfigBoolean(translation, active, infoTranslation));
         }
 
         @Override
@@ -152,13 +124,7 @@ public class ChatFormatterRegistry
 
         @Override
         public ChatFormatterOption copy(AbstractRegistry<IMessageFormatter, ?> registry) {
-            return new ChatFormatterOption(
-                    formatter,
-                    saveString,
-                    translation,
-                    infoTranslation,
-                    isActive(),
-                    isHidden(),
+            return new ChatFormatterOption(formatter, saveString, translation, infoTranslation, isActive(), isHidden(),
                     registry == null ? this.registry : (ChatFormatterRegistry) registry);
         }
     }

@@ -32,12 +32,10 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class ChatBoxConfigStorage implements IConfigHandler {
-
     public static final String CONFIG_FILE_NAME = AdvancedChatBox.MOD_ID + ".json";
     private static final int CONFIG_VERSION = 1;
 
     public static class General {
-
         public static final String NAME = "general";
 
         public static String translate(String key) {
@@ -45,72 +43,38 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         }
 
         public static final ConfigStorage.SaveableConfig<ConfigSimpleColor> HIGHLIGHT_COLOR =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "highlightColor",
-                        new ConfigSimpleColor(
-                                translate("highlightcolor"),
-                                new ColorUtil.SimpleColor(255, 255, 0, 255),
+                ConfigStorage.SaveableConfig.fromConfig("highlightColor",
+                        new ConfigSimpleColor(translate("highlightcolor"), new ColorUtil.SimpleColor(255, 255, 0, 255),
                                 translate("info.highlightcolor")));
         public static final ConfigStorage.SaveableConfig<ConfigSimpleColor> UNHIGHLIGHT_COLOR =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "unhighlightColor",
-                        new ConfigSimpleColor(
-                                translate("unhighlightcolor"),
-                                new ColorUtil.SimpleColor(170, 170, 170, 255),
-                                translate("info.unhighlightcolor")));
+                ConfigStorage.SaveableConfig.fromConfig("unhighlightColor",
+                        new ConfigSimpleColor(translate("unhighlightcolor"),
+                                new ColorUtil.SimpleColor(170, 170, 170, 255), translate("info.unhighlightcolor")));
         public static final ConfigStorage.SaveableConfig<ConfigSimpleColor> BACKGROUND_COLOR =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "backgroundColor",
-                        new ConfigSimpleColor(
-                                translate("backgroundcolor"),
-                                new ColorUtil.SimpleColor(0, 0, 0, 170),
+                ConfigStorage.SaveableConfig.fromConfig("backgroundColor",
+                        new ConfigSimpleColor(translate("backgroundcolor"), new ColorUtil.SimpleColor(0, 0, 0, 170),
                                 translate("info.backgroundcolor")));
         public static final ConfigStorage.SaveableConfig<ConfigInteger> SUGGESTION_SIZE =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "suggestionSize",
-                        new ConfigInteger(
-                                translate("suggestionsize"),
-                                10,
-                                1,
-                                50,
-                                translate("info.suggestionsize")));
+                ConfigStorage.SaveableConfig.fromConfig("suggestionSize",
+                        new ConfigInteger(translate("suggestionsize"), 10, 1, 50, translate("info.suggestionsize")));
         public static final ConfigStorage.SaveableConfig<ConfigBoolean> REMOVE_IDENTIFIER =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "removeIdentifier",
-                        new ConfigBoolean(
-                                translate("removeidentifier"),
-                                true,
-                                translate("info.removeidentifier")));
+                ConfigStorage.SaveableConfig.fromConfig("removeIdentifier",
+                        new ConfigBoolean(translate("removeidentifier"), true, translate("info.removeidentifier")));
         public static final ConfigStorage.SaveableConfig<ConfigBoolean> PRUNE_PLAYER_SUGGESTIONS =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "prunePlayerSuggestions",
-                        new ConfigBoolean(
-                                translate("pruneplayersuggestions"),
-                                true,
-                                translate("info.pruneplayersuggestions")));
-        public static final ConfigStorage.SaveableConfig<ConfigSimpleColor>
-                AVAILABLE_SUGGESTION_COLOR =
-                        ConfigStorage.SaveableConfig.fromConfig(
-                                "availableSuggestionColor",
-                                new ConfigSimpleColor(
-                                        translate("availablesuggestioncolor"),
-                                        new ColorUtil.SimpleColor(150, 150, 150, 255),
-                                        translate("info.availablesuggestioncolor")));
+                ConfigStorage.SaveableConfig.fromConfig("prunePlayerSuggestions", new ConfigBoolean(
+                        translate("pruneplayersuggestions"), true, translate("info.pruneplayersuggestions")));
+        public static final ConfigStorage.SaveableConfig<ConfigSimpleColor> AVAILABLE_SUGGESTION_COLOR =
+                ConfigStorage.SaveableConfig.fromConfig("availableSuggestionColor",
+                        new ConfigSimpleColor(translate("availablesuggestioncolor"),
+                                new ColorUtil.SimpleColor(150, 150, 150, 255),
+                                translate("info.availablesuggestioncolor")));
 
-        public static final ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>>
-                OPTIONS =
-                        ImmutableList.of(
-                                HIGHLIGHT_COLOR,
-                                UNHIGHLIGHT_COLOR,
-                                BACKGROUND_COLOR,
-                                SUGGESTION_SIZE,
-                                REMOVE_IDENTIFIER,
-                                PRUNE_PLAYER_SUGGESTIONS,
-                                AVAILABLE_SUGGESTION_COLOR);
+        public static final ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>> OPTIONS =
+                ImmutableList.of(HIGHLIGHT_COLOR, UNHIGHLIGHT_COLOR, BACKGROUND_COLOR, SUGGESTION_SIZE,
+                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR);
     }
 
     public static class SpellChecker {
-
         public static final String NAME = "spellchecker";
 
         public static String translate(String key) {
@@ -118,38 +82,29 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         }
 
         public static final ConfigStorage.SaveableConfig<ConfigString> HOVER_TEXT =
-                ConfigStorage.SaveableConfig.fromConfig(
-                        "hoverText",
-                        new ConfigString(
-                                translate("hovertext"),
-                                "&7$1&b$2&7$3",
-                                translate("info.hovertext")));
+                ConfigStorage.SaveableConfig.fromConfig("hoverText",
+                        new ConfigString(translate("hovertext"), "&7$1&b$2&7$3", translate("info.hovertext")));
 
-        //        public static final ConfigStorage.SaveableConfig<ConfigBoolean> SUGGEST_CAPITAL =
+        // public static final ConfigStorage.SaveableConfig<ConfigBoolean>
+        // SUGGEST_CAPITAL =
         // ConfigStorage.SaveableConfig.fromConfig(
-        //            "suggest_capital",
-        //            new ConfigBoolean(
-        //                translate("suggestcapital"),
-        //                true,
-        //                translate("info.suggestcapital")
-        //            )
-        //        );
+        // "suggest_capital",
+        // new ConfigBoolean(
+        // translate("suggestcapital"),
+        // true,
+        // translate("info.suggestcapital")
+        // )
+        // );
 
-        public static final ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>>
-                OPTIONS =
-                        ImmutableList.of(
-                                HOVER_TEXT
-                                //            SUGGEST_CAPITAL
-                                );
+        public static final ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>> OPTIONS =
+                ImmutableList.of(HOVER_TEXT
+                // SUGGEST_CAPITAL
+                );
     }
 
     public static void loadFromFile() {
         File configFile =
-                FileUtils.getConfigDirectory()
-                        .toPath()
-                        .resolve("advancedchat")
-                        .resolve(CONFIG_FILE_NAME)
-                        .toFile();
+                FileUtils.getConfigDirectory().toPath().resolve("advancedchat").resolve(CONFIG_FILE_NAME).toFile();
 
         if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
             JsonElement element = ConfigStorage.parseJsonFile(configFile);
@@ -157,19 +112,12 @@ public class ChatBoxConfigStorage implements IConfigHandler {
             if (element != null && element.isJsonObject()) {
                 JsonObject root = element.getAsJsonObject();
 
-                ConfigStorage.readOptions(
-                        root,
-                        General.NAME,
-                        (List<ConfigStorage.SaveableConfig<?>>) General.OPTIONS);
-                ConfigStorage.readOptions(
-                        root,
-                        SpellChecker.NAME,
+                ConfigStorage.readOptions(root, General.NAME, (List<ConfigStorage.SaveableConfig<?>>) General.OPTIONS);
+                ConfigStorage.readOptions(root, SpellChecker.NAME,
                         (List<ConfigStorage.SaveableConfig<?>>) SpellChecker.OPTIONS);
 
-                ConfigStorage.applyRegistry(
-                        root.get(ChatFormatterRegistry.NAME), ChatFormatterRegistry.getInstance());
-                ConfigStorage.applyRegistry(
-                        root.get(ChatSuggestorRegistry.NAME), ChatSuggestorRegistry.getInstance());
+                ConfigStorage.applyRegistry(root.get(ChatFormatterRegistry.NAME), ChatFormatterRegistry.getInstance());
+                ConfigStorage.applyRegistry(root.get(ChatSuggestorRegistry.NAME), ChatSuggestorRegistry.getInstance());
 
                 int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 0);
             }
@@ -182,21 +130,14 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         if ((dir.exists() && dir.isDirectory()) || dir.mkdirs()) {
             JsonObject root = new JsonObject();
 
-            ConfigStorage.writeOptions(
-                    root, General.NAME, (List<ConfigStorage.SaveableConfig<?>>) General.OPTIONS);
-            ConfigStorage.writeOptions(
-                    root,
-                    SpellChecker.NAME,
+            ConfigStorage.writeOptions(root, General.NAME, (List<ConfigStorage.SaveableConfig<?>>) General.OPTIONS);
+            ConfigStorage.writeOptions(root, SpellChecker.NAME,
                     (List<ConfigStorage.SaveableConfig<?>>) SpellChecker.OPTIONS);
 
             root.add("config_version", new JsonPrimitive(CONFIG_VERSION));
 
-            root.add(
-                    ChatFormatterRegistry.NAME,
-                    ConfigStorage.saveRegistry(ChatFormatterRegistry.getInstance()));
-            root.add(
-                    ChatSuggestorRegistry.NAME,
-                    ConfigStorage.saveRegistry(ChatSuggestorRegistry.getInstance()));
+            root.add(ChatFormatterRegistry.NAME, ConfigStorage.saveRegistry(ChatFormatterRegistry.getInstance()));
+            root.add(ChatSuggestorRegistry.NAME, ConfigStorage.saveRegistry(ChatSuggestorRegistry.getInstance()));
 
             ConfigStorage.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
         }

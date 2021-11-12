@@ -35,7 +35,6 @@ import org.languagetool.rules.RuleMatch;
 
 @Environment(EnvType.CLIENT)
 public class SpellCheckSuggestor implements IMessageSuggestor {
-
     private final JLanguageTool lt;
 
     private static final SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
@@ -45,12 +44,8 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
     }
 
     private SpellCheckSuggestor() {
-        lt =
-                new JLanguageTool(
-                        new AmericanEnglish(),
-                        new AmericanEnglish(),
-                        new ResultCache(15),
-                        new UserConfig(new ArrayList<>(), new HashMap<>(), 20));
+        lt = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
+                new UserConfig(new ArrayList<>(), new HashMap<>(), 20));
         lt.setMaxErrorsPerWordRate(0.33f);
         try {
             // Set it up. Make it so it doesn't freeze later.
@@ -81,9 +76,8 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
     private static List<AdvancedSuggestion> convertSuggestions(RuleMatch match, StringRange range) {
         List<AdvancedSuggestion> replacements = new ArrayList<>();
         for (String s : match.getSuggestedReplacements()) {
-            replacements.add(
-                    new AdvancedSuggestion(
-                            range, s, new RawText(s, Style.EMPTY), getHover(match.getMessage())));
+            replacements
+                    .add(new AdvancedSuggestion(range, s, new RawText(s, Style.EMPTY), getHover(match.getMessage())));
         }
         return replacements;
     }
@@ -91,8 +85,7 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
     private static Text getHover(String message) {
         String text = ChatBoxConfigStorage.SpellChecker.HOVER_TEXT.config.getStringValue();
         text = text.replaceAll("&", "§");
-        Optional<StringMatch> match =
-                SearchUtils.getMatch(message, "<suggestion>(.+)</suggestion>", FindType.REGEX);
+        Optional<StringMatch> match = SearchUtils.getMatch(message, "<suggestion>(.+)</suggestion>", FindType.REGEX);
         if (match.isEmpty()) {
             text = text.replaceAll("\\$1", message).replaceAll("\\$2", "").replaceAll("\\$3", "");
             return StyleFormatter.formatText(new FluidText(new RawText(text, Style.EMPTY)));

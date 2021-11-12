@@ -20,18 +20,19 @@ import net.fabricmc.api.Environment;
 /**
  * A holder of {@link AdvancedSuggestion}
  *
- * <p>Maintains the start/stop range and suggestions in that range
+ * <p>
+ * Maintains the start/stop range and suggestions in that range
  */
 @Environment(EnvType.CLIENT)
 public class AdvancedSuggestions {
+    @Getter
+    private final List<AdvancedSuggestion> suggestions;
 
-    @Getter private final List<AdvancedSuggestion> suggestions;
-
-    @Getter private StringRange range;
+    @Getter
+    private StringRange range;
 
     /** Empty suggestions */
-    public static final AdvancedSuggestions EMPTY =
-            new AdvancedSuggestions(StringRange.at(0), new ArrayList<>());
+    public static final AdvancedSuggestions EMPTY = new AdvancedSuggestions(StringRange.at(0), new ArrayList<>());
 
     /** Future of EMPTY */
     public static CompletableFuture<AdvancedSuggestions> empty() {

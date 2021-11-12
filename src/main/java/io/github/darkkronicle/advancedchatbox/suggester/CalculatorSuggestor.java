@@ -24,7 +24,6 @@ import org.mariuszgromada.math.mxparser.Expression;
 
 @Environment(EnvType.CLIENT)
 public class CalculatorSuggestor implements IMessageSuggestor {
-
     private static final String BRACKET_REGEX = "\\[[^\\[\\]]*\\]";
     public static final String NAN = "NaN";
 
@@ -33,8 +32,7 @@ public class CalculatorSuggestor implements IMessageSuggestor {
         if (!text.contains("[") || !text.contains("]")) {
             return Optional.empty();
         }
-        List<StringMatch> matches =
-                SearchUtils.findMatches(text, BRACKET_REGEX, FindType.REGEX).orElse(null);
+        List<StringMatch> matches = SearchUtils.findMatches(text, BRACKET_REGEX, FindType.REGEX).orElse(null);
         if (matches == null) {
             return Optional.empty();
         }
@@ -54,12 +52,8 @@ public class CalculatorSuggestor implements IMessageSuggestor {
                 message = String.valueOf(val);
             }
             StringRange range = new StringRange(m.start, m.end);
-            suggest.add(
-                    new AdvancedSuggestions(
-                            range,
-                            new ArrayList<>(
-                                    Collections.singleton(
-                                            new AdvancedSuggestion(range, message)))));
+            suggest.add(new AdvancedSuggestions(range,
+                    new ArrayList<>(Collections.singleton(new AdvancedSuggestion(range, message)))));
         }
         if (suggest.isEmpty()) {
             return Optional.empty();

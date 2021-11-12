@@ -14,18 +14,21 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * An interface for building suggestions for the {@link
- * io.github.darkkronicle.advancedchat.chat.ChatSuggestor}
+ * An interface for building suggestions for the
+ * {@link io.github.darkkronicle.advancedchat.chat.ChatSuggestor}
  */
 public interface IMessageSuggestor {
     /**
      * Suggests completions to different parts of the text.
      *
-     * <p>Example: - Suggests L to all GJ
+     * <p>
+     * Example: - Suggests L to all GJ
      *
-     * <p>Input: `Wow GJ everyone! GJ`
+     * <p>
+     * Input: `Wow GJ everyone! GJ`
      *
-     * <p>Built suggestions: `Wow GJ everyone! GJ` L L
+     * <p>
+     * Built suggestions: `Wow GJ everyone! GJ` L L
      *
      * @param text Content of the chat box to suggest
      * @return List of {@link AdvancedSuggestions} to suggest
@@ -37,11 +40,14 @@ public interface IMessageSuggestor {
     /**
      * Suggests completions to the last word of the text.
      *
-     * <p>Example: - Suggests L to all GJ
+     * <p>
+     * Example: - Suggests L to all GJ
      *
-     * <p>Input: `Wow GJ everyone! GJ`
+     * <p>
+     * Input: `Wow GJ everyone! GJ`
      *
-     * <p>Built suggestions: `Wow GJ everyone! GJ` L
+     * <p>
+     * Built suggestions: `Wow GJ everyone! GJ` L
      *
      * @param text Content of the chat box to suggest
      * @return List of {@link AdvancedSuggestion} to suggest

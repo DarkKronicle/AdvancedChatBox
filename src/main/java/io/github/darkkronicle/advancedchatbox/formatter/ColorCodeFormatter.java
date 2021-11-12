@@ -23,7 +23,6 @@ import net.minecraft.util.Formatting;
 
 @Environment(EnvType.CLIENT)
 public class ColorCodeFormatter implements IMessageFormatter {
-
     @Override
     public Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse) {
         if (parse != null) {
@@ -41,8 +40,7 @@ public class ColorCodeFormatter implements IMessageFormatter {
         Style last = Style.EMPTY;
         FluidText formatted = new FluidText();
         for (StringMatch match : search.getMatches()) {
-            formatted.append(
-                    text.truncate(new StringMatch("", index, match.start)).fillStyle(last));
+            formatted.append(text.truncate(new StringMatch("", index, match.start)).fillStyle(last));
             Formatting format = Formatting.byCode(match.match.charAt(1));
             last = last.withFormatting(format);
             index = match.start;

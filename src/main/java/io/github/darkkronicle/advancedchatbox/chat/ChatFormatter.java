@@ -24,12 +24,11 @@ import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
 /**
- * A class to format the chat box on the {@link
- * io.github.darkkronicle.advancedchat.config.ConfigStorage.ChatScreen}
+ * A class to format the chat box on the
+ * {@link io.github.darkkronicle.advancedchat.config.ConfigStorage.ChatScreen}
  */
 @Environment(EnvType.CLIENT)
 public class ChatFormatter {
-
     /** The last content that was formatted */
     private String current = null;
 
@@ -63,27 +62,19 @@ public class ChatFormatter {
                     continue;
                 }
                 StringRange range = suggestions.getRange();
-                String matchString =
-                        string.subSequence(range.getStart(), range.getEnd()).toString();
-                format.put(
-                        new StringMatch(matchString, range.getStart(), range.getEnd()),
-                        (current, match) -> {
-                            Style style = Style.EMPTY;
-                            style = style.withFormatting(Formatting.UNDERLINE);
-                            TextColor textColor =
-                                    TextColor.fromRgb(
-                                            ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR
-                                                    .config
-                                                    .getSimpleColor()
-                                                    .color());
-                            style = style.withColor(textColor);
-                            return new FluidText(new RawText(matchString, style));
-                        });
+                String matchString = string.subSequence(range.getStart(), range.getEnd()).toString();
+                format.put(new StringMatch(matchString, range.getStart(), range.getEnd()), (current, match) -> {
+                    Style style = Style.EMPTY;
+                    style = style.withFormatting(Formatting.UNDERLINE);
+                    TextColor textColor = TextColor.fromRgb(
+                            ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config.getSimpleColor().color());
+                    style = style.withColor(textColor);
+                    return new FluidText(new RawText(matchString, style));
+                });
             }
             text.replaceStrings(format);
         }
-        for (ChatFormatterRegistry.ChatFormatterOption option :
-                ChatFormatterRegistry.getInstance().getAll()) {
+        for (ChatFormatterRegistry.ChatFormatterOption option : ChatFormatterRegistry.getInstance().getAll()) {
             if (!option.isActive()) {
                 continue;
             }

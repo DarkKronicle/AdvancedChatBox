@@ -17,7 +17,6 @@ import net.minecraft.client.util.math.MatrixStack;
 
 @Environment(EnvType.CLIENT)
 public class ChatBoxSection extends AdvancedChatScreenSection {
-
     private ChatSuggestorGui suggestor;
 
     public ChatBoxSection(AdvancedChatScreen screen) {
@@ -64,17 +63,8 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
     public void initGui() {
         MinecraftClient client = MinecraftClient.getInstance();
         AdvancedChatScreen screen = getScreen();
-        this.suggestor =
-                new ChatSuggestorGui(
-                        client,
-                        screen,
-                        screen.getChatField(),
-                        client.textRenderer,
-                        false,
-                        false,
-                        1,
-                        ChatBoxConfigStorage.General.SUGGESTION_SIZE.config.getIntegerValue(),
-                        true);
+        this.suggestor = new ChatSuggestorGui(client, screen, screen.getChatField(), client.textRenderer, false, false,
+                1, ChatBoxConfigStorage.General.SUGGESTION_SIZE.config.getIntegerValue(), true);
         this.suggestor.refresh();
     }
 }

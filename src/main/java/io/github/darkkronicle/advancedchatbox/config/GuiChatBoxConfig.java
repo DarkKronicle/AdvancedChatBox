@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiChatBoxConfig extends GuiConfigsBase {
-
     private final List<GuiConfigHandler.TabButton> buttons;
 
     public GuiChatBoxConfig(List<GuiConfigHandler.TabButton> buttons) {
@@ -76,8 +75,7 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
 
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
-        List<ConfigStorage.SaveableConfig<? extends IConfigBase>> configs =
-                ChatBoxConfigStorage.General.OPTIONS;
+        List<ConfigStorage.SaveableConfig<? extends IConfigBase>> configs = ChatBoxConfigStorage.General.OPTIONS;
 
         ArrayList<IConfigBase> config = new ArrayList<>();
         for (ConfigStorage.SaveableConfig<? extends IConfigBase> s : configs) {
@@ -88,7 +86,6 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
     }
 
     private static class ButtonListener implements IButtonActionListener {
-
         private final Type type;
         private final GuiChatBoxConfig parent;
 
@@ -107,8 +104,8 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         }
 
         public enum Type {
-            CONFIG_FORMATTERS("advancedchatbox.config.button.config_formatters"),
-            CONFIG_SUGGESTORS("advancedchatbox.config.button.config_suggestors");
+            CONFIG_FORMATTERS("advancedchatbox.config.button.config_formatters"), CONFIG_SUGGESTORS(
+                    "advancedchatbox.config.button.config_suggestors");
 
             private final String translationKey;
 
@@ -123,7 +120,6 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
     }
 
     private static class ButtonListenerConfigTabs implements IButtonActionListener {
-
         private final GuiConfigHandler.TabButton tabButton;
 
         public ButtonListenerConfigTabs(GuiConfigHandler.TabButton tabButton) {
@@ -133,8 +129,7 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
         @Override
         public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
             GuiConfigHandler.getInstance().activeTab = this.tabButton.getTab().getName();
-            GuiBase.openGui(
-                    this.tabButton.getTab().getScreen(GuiConfigHandler.getInstance().getButtons()));
+            GuiBase.openGui(this.tabButton.getTab().getScreen(GuiConfigHandler.getInstance().getButtons()));
         }
     }
 }

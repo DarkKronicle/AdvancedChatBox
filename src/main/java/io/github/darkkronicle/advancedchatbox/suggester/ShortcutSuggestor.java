@@ -41,11 +41,9 @@ import net.minecraft.text.Style;
 
 @Environment(EnvType.CLIENT)
 public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
-
     @EqualsAndHashCode
     @Data
     public static class Shortcut {
-
         private String name;
         private String replace;
 
@@ -74,7 +72,8 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         return new Shortcut(AdvancedChatCore.getRandomString(), AdvancedChatCore.getRandomString());
     }
 
-    @Getter private List<Shortcut> shortcuts;
+    @Getter
+    private List<Shortcut> shortcuts;
 
     public ShortcutSuggestor() {
         shortcuts = new ArrayList<>();
@@ -125,9 +124,7 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
                 break;
             }
             StringRange range = new StringRange(start, end);
-            suggest.add(
-                    new AdvancedSuggestions(
-                            range, getSuggestions(string.substring(start + 1, end), range)));
+            suggest.add(new AdvancedSuggestions(range, getSuggestions(string.substring(start + 1, end), range)));
         }
         return Optional.of(suggest);
     }
@@ -135,16 +132,11 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
     private List<AdvancedSuggestion> getSuggestions(String current, StringRange range) {
         ArrayList<AdvancedSuggestion> suggestions = new ArrayList<>();
         for (Shortcut shortcut : shortcuts) {
-            if (current.length() == 0
-                    || shortcut.name.toLowerCase().startsWith(current.toLowerCase())) {
+            if (current.length() == 0 || shortcut.name.toLowerCase().startsWith(current.toLowerCase())) {
                 FluidText text = new FluidText();
                 text.append(new RawText(shortcut.name, Style.EMPTY));
-                suggestions.add(
-                        new AdvancedSuggestion(
-                                range,
-                                shortcut.replace,
-                                text,
-                                new RawText(shortcut.replace, Style.EMPTY)));
+                suggestions.add(new AdvancedSuggestion(range, shortcut.replace, text,
+                        new RawText(shortcut.replace, Style.EMPTY)));
             }
         }
         return suggestions;
@@ -219,9 +211,7 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         return () -> new ShortcutScreen(parent);
     }
 
-    public class ShortcutScreen
-            extends GuiListBase<Shortcut, ShortcutEntryListWidget, ShortcutListWidget> {
-
+    public class ShortcutScreen extends GuiListBase<Shortcut, ShortcutEntryListWidget, ShortcutListWidget> {
         @Override
         public void initGui() {
             super.initGui();
@@ -247,14 +237,8 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
 
         @Override
         protected ShortcutListWidget createListWidget(int listX, int listY) {
-            return new ShortcutListWidget(
-                    listX,
-                    listY,
-                    this.getBrowserWidth(),
-                    this.getBrowserHeight(),
-                    null,
-                    ShortcutSuggestor.this,
-                    this);
+            return new ShortcutListWidget(listX, listY, this.getBrowserWidth(), this.getBrowserHeight(), null,
+                    ShortcutSuggestor.this, this);
         }
 
         @Override
@@ -285,7 +269,6 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
     }
 
     private static class ButtonListener implements IButtonActionListener {
-
         private final ButtonListener.Type type;
         private final ShortcutScreen gui;
 
@@ -304,8 +287,7 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         }
 
         public enum Type {
-            ADD_SHORTCUT("addshortcut"),
-            BACK("back");
+            ADD_SHORTCUT("addshortcut"), BACK("back");
 
             private static String translate(String key) {
                 return "advancedchat.gui.button." + key;

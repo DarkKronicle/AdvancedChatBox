@@ -24,7 +24,6 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class ChatSuggestorRegistry
         extends AbstractRegistry<IMessageSuggestor, ChatSuggestorRegistry.ChatSuggestorOption> {
-
     private static final ChatSuggestorRegistry INSTANCE = new ChatSuggestorRegistry();
 
     public static ChatSuggestorRegistry getInstance() {
@@ -34,16 +33,10 @@ public class ChatSuggestorRegistry
     public static final String NAME = "suggestors";
 
     @Override
-    public ChatSuggestorOption constructOption(
-            Supplier<IMessageSuggestor> iMessageSuggestor,
-            String saveString,
-            String translation,
-            String infoTranslation,
-            boolean active,
-            boolean hidden,
-            boolean setDefault) {
-        return new ChatSuggestorOption(
-                iMessageSuggestor, saveString, translation, infoTranslation, active, hidden, this);
+    public ChatSuggestorOption constructOption(Supplier<IMessageSuggestor> iMessageSuggestor, String saveString,
+            String translation, String infoTranslation, boolean active, boolean hidden, boolean setDefault) {
+        return new ChatSuggestorOption(iMessageSuggestor, saveString, translation, infoTranslation, active, hidden,
+                this);
     }
 
     @Override
@@ -56,7 +49,6 @@ public class ChatSuggestorRegistry
     }
 
     public static class ChatSuggestorOption implements ConfigRegistryOption<IMessageSuggestor> {
-
         public final String translation;
         public final String saveString;
         private final String infoTranslation;
@@ -66,41 +58,21 @@ public class ChatSuggestorRegistry
         private final IMessageSuggestor suggestor;
         private final ConfigStorage.SaveableConfig<ConfigBoolean> active;
 
-        public ChatSuggestorOption(
-                Supplier<IMessageSuggestor> suggestor,
-                String saveString,
-                String translation,
-                String infoTranslation,
-                boolean active,
-                boolean hidden,
-                ChatSuggestorRegistry registry) {
-            this(
-                    suggestor.get(),
-                    saveString,
-                    translation,
-                    infoTranslation,
-                    active,
-                    hidden,
-                    registry);
+        public ChatSuggestorOption(Supplier<IMessageSuggestor> suggestor, String saveString, String translation,
+                String infoTranslation, boolean active, boolean hidden, ChatSuggestorRegistry registry) {
+            this(suggestor.get(), saveString, translation, infoTranslation, active, hidden, registry);
         }
 
-        public ChatSuggestorOption(
-                IMessageSuggestor suggestor,
-                String saveString,
-                String translation,
-                String infoTranslation,
-                boolean active,
-                boolean hidden,
-                ChatSuggestorRegistry registry) {
+        public ChatSuggestorOption(IMessageSuggestor suggestor, String saveString, String translation,
+                String infoTranslation, boolean active, boolean hidden, ChatSuggestorRegistry registry) {
             this.saveString = saveString;
             this.suggestor = suggestor;
             this.translation = translation;
             this.infoTranslation = infoTranslation;
             this.registry = registry;
             this.hidden = hidden;
-            this.active =
-                    ConfigStorage.SaveableConfig.fromConfig(
-                            "active", new ConfigBoolean(translation, active, infoTranslation));
+            this.active = ConfigStorage.SaveableConfig.fromConfig("active",
+                    new ConfigBoolean(translation, active, infoTranslation));
         }
 
         @Override
@@ -125,14 +97,8 @@ public class ChatSuggestorRegistry
 
         @Override
         public ChatSuggestorOption copy(AbstractRegistry<IMessageSuggestor, ?> registry) {
-            return new ChatSuggestorOption(
-                    getOption(),
-                    saveString,
-                    translation,
-                    infoTranslation,
-                    isActive(),
-                    isHidden(),
-                    registry == null ? this.registry : (ChatSuggestorRegistry) registry);
+            return new ChatSuggestorOption(getOption(), saveString, translation, infoTranslation, isActive(),
+                    isHidden(), registry == null ? this.registry : (ChatSuggestorRegistry) registry);
         }
 
         @Override

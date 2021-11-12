@@ -34,91 +34,54 @@ import org.apache.logging.log4j.LogManager;
 
 @Environment(EnvType.CLIENT)
 public class ChatBoxInitHandler implements IInitializationHandler {
-
     @Override
     public void registerModHandlers() {
-        ConfigManager.getInstance()
-                .registerConfigHandler(AdvancedChatBox.MOD_ID, new ChatBoxConfigStorage());
-        GuiConfigHandler.getInstance()
-                .addGuiSection(
-                        new GuiConfigHandler.Tab() {
-                            @Override
-                            public String getName() {
-                                return StringUtils.translate("advancedchatbox.config.tab.general");
-                            }
+        ConfigManager.getInstance().registerConfigHandler(AdvancedChatBox.MOD_ID, new ChatBoxConfigStorage());
+        GuiConfigHandler.getInstance().addGuiSection(new GuiConfigHandler.Tab() {
+            @Override
+            public String getName() {
+                return StringUtils.translate("advancedchatbox.config.tab.general");
+            }
 
-                            @Override
-                            public Screen getScreen(List<GuiConfigHandler.TabButton> buttons) {
-                                return new GuiChatBoxConfig(buttons);
-                            }
-                        });
+            @Override
+            public Screen getScreen(List<GuiConfigHandler.TabButton> buttons) {
+                return new GuiChatBoxConfig(buttons);
+            }
+        });
 
         GuiConfigHandler.getInstance()
-                .addGuiSection(
-                        GuiConfigHandler.createGuiConfigSection(
-                                StringUtils.translate("advancedchatbox.config.tab.spellchecker"),
-                                ChatBoxConfigStorage.SpellChecker.OPTIONS));
+                .addGuiSection(GuiConfigHandler.createGuiConfigSection(
+                        StringUtils.translate("advancedchatbox.config.tab.spellchecker"),
+                        ChatBoxConfigStorage.SpellChecker.OPTIONS));
 
         ChatFormatterRegistry chatRegistry = ChatFormatterRegistry.getInstance();
-        chatRegistry.register(
-                CommandColorer::new,
-                "commandcolorer",
+        chatRegistry.register(CommandColorer::new, "commandcolorer",
                 "advancedchatbox.config.chatformatter.commandcolorer",
-                "advancedchatbox.config.chatformatter.info.commandcolorer",
-                true,
-                true);
-        chatRegistry.register(
-                JSONFormatter::new,
-                "jsonformatter",
-                "advancedchatbox.config.chatformatter.jsonformatter",
-                "advancedchatbox.config.chatformatter.info.jsonformatter",
-                true,
-                false);
-        chatRegistry.register(
-                ColorCodeFormatter::new,
-                "commandcodeformatter",
+                "advancedchatbox.config.chatformatter.info.commandcolorer", true, true);
+        chatRegistry.register(JSONFormatter::new, "jsonformatter", "advancedchatbox.config.chatformatter.jsonformatter",
+                "advancedchatbox.config.chatformatter.info.jsonformatter", true, false);
+        chatRegistry.register(ColorCodeFormatter::new, "commandcodeformatter",
                 "advancedchatbox.config.chatformatter.commandcodeformatter",
-                "advancedchatbox.config.commandcodeformatter.info.commandcolorer",
-                true,
-                false);
+                "advancedchatbox.config.commandcodeformatter.info.commandcolorer", true, false);
 
         // Initiate chat suggestors
         ChatSuggestorRegistry suggestorRegistry = ChatSuggestorRegistry.getInstance();
-        suggestorRegistry.register(
-                PlayerSuggestor::new,
-                "players",
-                "advancedchatbox.config.chatsuggestor.players",
-                "advancedchatbox.config.chatsuggestor.info.players",
-                true,
-                false);
-        suggestorRegistry.register(
-                CalculatorSuggestor::new,
-                "calculator",
+        suggestorRegistry.register(PlayerSuggestor::new, "players", "advancedchatbox.config.chatsuggestor.players",
+                "advancedchatbox.config.chatsuggestor.info.players", true, false);
+        suggestorRegistry.register(CalculatorSuggestor::new, "calculator",
                 "advancedchatbox.config.chatsuggestor.calculator",
-                "advancedchatbox.config.chatsuggestor.info.calculator",
-                true,
-                false);
-        suggestorRegistry.register(
-                ShortcutSuggestor::new,
-                "shortcut",
-                "advancedchatbox.config.chatsuggestor.shortcut",
-                "advancedchatbox.config.chatsuggestor.info.shortcut",
-                true,
-                false);
+                "advancedchatbox.config.chatsuggestor.info.calculator", true, false);
+        suggestorRegistry.register(ShortcutSuggestor::new, "shortcut", "advancedchatbox.config.chatsuggestor.shortcut",
+                "advancedchatbox.config.chatsuggestor.info.shortcut", true, false);
         try {
-            suggestorRegistry.register(
-                    SpellCheckSuggestor::getInstance,
-                    "spellcheck",
+            suggestorRegistry.register(SpellCheckSuggestor::getInstance, "spellcheck",
                     "advancedchatbox.config.chatsuggestor.spellcheck",
-                    "advancedchatbox.config.chatsuggestor.info.spellcheck",
-                    true,
-                    false);
+                    "advancedchatbox.config.chatsuggestor.info.spellcheck", true, false);
         } catch (Exception e) {
-            LogManager.getLogger()
-                    .log(Level.ERROR, "[AdvancedChat] {}", "Couldn't load SpellCheckSuggestor", e);
+            LogManager.getLogger().log(Level.ERROR, "[AdvancedChat] {}", "Couldn't load SpellCheckSuggestor", e);
         }
 
         AdvancedChatCore.CREATE_SUGGESTOR = false;
-        ChatScreenSectionHolder.getInstance().addSectionSupplier((ChatBoxSection::new));
+        ChatScreenSectionHolder.getInstance().addSectionSupplier(ChatBoxSection::new);
     }
 }

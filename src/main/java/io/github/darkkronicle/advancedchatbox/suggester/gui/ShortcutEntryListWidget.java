@@ -27,7 +27,6 @@ import net.minecraft.client.util.math.MatrixStack;
 
 @Environment(EnvType.CLIENT)
 public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggestor.Shortcut> {
-
     private final ShortcutListWidget parent;
     private final boolean isOdd;
     private TextFieldWrapper<GuiTextFieldGeneric> name;
@@ -41,15 +40,8 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
         return name.getTextField().getText();
     }
 
-    public ShortcutEntryListWidget(
-            int x,
-            int y,
-            int width,
-            int height,
-            boolean isOdd,
-            ShortcutSuggestor.Shortcut entry,
-            int listIndex,
-            ShortcutListWidget parent) {
+    public ShortcutEntryListWidget(int x, int y, int width, int height, boolean isOdd, ShortcutSuggestor.Shortcut entry,
+            int listIndex, ShortcutListWidget parent) {
         super(x, y, width, height, entry, listIndex);
         this.isOdd = isOdd;
         this.parent = parent;
@@ -60,13 +52,8 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
         int nameWidth = 100;
         pos -= removeWidth;
         int replaceWidth = width - removeWidth - nameWidth + 1;
-        GuiTextFieldGeneric replaceField =
-                new GuiTextFieldGeneric(
-                        pos - replaceWidth,
-                        y,
-                        replaceWidth,
-                        20,
-                        MinecraftClient.getInstance().textRenderer);
+        GuiTextFieldGeneric replaceField = new GuiTextFieldGeneric(pos - replaceWidth, y, replaceWidth, 20,
+                MinecraftClient.getInstance().textRenderer);
         replaceField.setMaxLength(512);
         replaceField.setText(entry.getReplace());
         replace = new TextFieldWrapper<>(replaceField, new SaveListener(this, false));
@@ -74,12 +61,7 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
 
         pos -= replaceWidth + 1;
         GuiTextFieldGeneric nameField =
-                new GuiTextFieldGeneric(
-                        pos - nameWidth,
-                        y,
-                        nameWidth,
-                        20,
-                        MinecraftClient.getInstance().textRenderer);
+                new GuiTextFieldGeneric(pos - nameWidth, y, nameWidth, 20, MinecraftClient.getInstance().textRenderer);
         nameField.setMaxLength(512);
         nameField.setText(entry.getName());
         name = new TextFieldWrapper<>(nameField, new SaveListener(this, true));
@@ -87,7 +69,6 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
     }
 
     private static class SaveListener implements ITextFieldListener<GuiTextFieldGeneric> {
-
         private final ShortcutEntryListWidget parent;
         private final boolean name;
 
@@ -152,9 +133,7 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
 
         if (!this.subWidgets.isEmpty()) {
             for (WidgetBase widget : this.subWidgets) {
-                ret |=
-                        widget.isMouseOver(mouseX, mouseY)
-                                && widget.onMouseClicked(mouseX, mouseY, mouseButton);
+                ret |= widget.isMouseOver(mouseX, mouseY) && widget.onMouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
@@ -171,7 +150,6 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
     }
 
     private static class ButtonListener implements IButtonActionListener {
-
         private final ButtonListener.Type type;
         private final ShortcutEntryListWidget parent;
 
@@ -213,18 +191,11 @@ public class ShortcutEntryListWidget extends WidgetListEntryBase<ShortcutSuggest
 
         // Draw a lighter background for the hovered and the selected entry
         if (selected || this.isMouseOver(mouseX, mouseY)) {
-            RenderUtils.drawRect(
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height,
-                    ColorUtil.WHITE.withAlpha(150).color());
+            RenderUtils.drawRect(this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(150).color());
         } else if (this.isOdd) {
-            RenderUtils.drawRect(
-                    this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(70).color());
+            RenderUtils.drawRect(this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(70).color());
         } else {
-            RenderUtils.drawRect(
-                    this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(50).color());
+            RenderUtils.drawRect(this.x, this.y, this.width, this.height, ColorUtil.WHITE.withAlpha(50).color());
         }
 
         RenderUtils.color(1f, 1f, 1f, 1f);

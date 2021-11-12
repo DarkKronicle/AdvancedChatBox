@@ -21,8 +21,9 @@ import net.minecraft.text.Text;
 /** Suggestion that contains render text, suggested text, suggested start/stop, and tooltip. */
 @Environment(EnvType.CLIENT)
 public class AdvancedSuggestion extends Suggestion {
-
-    @Nonnull @Getter private final Text render;
+    @Nonnull
+    @Getter
+    private final Text render;
 
     /**
      * @param range Range from the original string where it is recommending
@@ -54,8 +55,7 @@ public class AdvancedSuggestion extends Suggestion {
     @Override
     public int compareToIgnoreCase(final Suggestion o) {
         if (o instanceof AdvancedSuggestion) {
-            return render.getString()
-                    .compareToIgnoreCase(((AdvancedSuggestion) o).getRender().getString());
+            return render.getString().compareToIgnoreCase(((AdvancedSuggestion) o).getRender().getString());
         }
         return render.getString().compareToIgnoreCase(o.getText());
     }
@@ -67,7 +67,6 @@ public class AdvancedSuggestion extends Suggestion {
      * @return New objeect
      */
     public static AdvancedSuggestion fromSuggestion(Suggestion suggestion) {
-        return new AdvancedSuggestion(
-                suggestion.getRange(), suggestion.getText(), null, suggestion.getTooltip());
+        return new AdvancedSuggestion(suggestion.getRange(), suggestion.getText(), null, suggestion.getTooltip());
     }
 }

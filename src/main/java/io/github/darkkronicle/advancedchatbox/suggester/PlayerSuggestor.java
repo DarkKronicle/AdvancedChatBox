@@ -26,7 +26,6 @@ import net.minecraft.client.network.PlayerListEntry;
 
 @Environment(EnvType.CLIENT)
 public class PlayerSuggestor implements IMessageSuggestor {
-
     @Override
     public Optional<List<AdvancedSuggestion>> suggestCurrentWord(String text, StringRange range) {
         List<AdvancedSuggestion> newSuggestions = new ArrayList<>();
@@ -42,18 +41,14 @@ public class PlayerSuggestor implements IMessageSuggestor {
     private Collection<String> getPlayerNames() {
         List<String> list = new ArrayList<>();
 
-        for (PlayerListEntry playerListEntry :
-                MinecraftClient.getInstance().player.networkHandler.getPlayerList()) {
+        for (PlayerListEntry playerListEntry : MinecraftClient.getInstance().player.networkHandler.getPlayerList()) {
             if (ChatBoxConfigStorage.General.PRUNE_PLAYER_SUGGESTIONS.config.getBooleanValue()
                     && playerListEntry.getDisplayName() != null) {
                 // Try to get their actual name (without prefix)
-                StringMatch match =
-                        SearchUtils.getMatch(
-                                        playerListEntry.getDisplayName().getString(),
-                                        ConfigStorage.General.MESSAGE_OWNER_REGEX.config
-                                                .getStringValue(),
-                                        FindType.REGEX)
-                                .orElse(null);
+                StringMatch match = SearchUtils
+                        .getMatch(playerListEntry.getDisplayName().getString(),
+                                ConfigStorage.General.MESSAGE_OWNER_REGEX.config.getStringValue(), FindType.REGEX)
+                        .orElse(null);
                 if (match != null) {
                     // Check to make sure it isn't blank
                     if (!match.match.equals("")) {
@@ -66,7 +61,8 @@ public class PlayerSuggestor implements IMessageSuggestor {
                     }
                 }
             } else {
-                // Player name is never null. But on servers it can be populated with fake players.
+                // Player name is never null. But on servers it can be populated with
+                // fake players.
                 list.add(playerListEntry.getProfile().getName());
             }
         }

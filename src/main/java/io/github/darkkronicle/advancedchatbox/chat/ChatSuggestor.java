@@ -38,20 +38,23 @@ import net.minecraft.command.CommandSource;
 /** A maintainer of suggestions to suggest to the player. */
 @Environment(EnvType.CLIENT)
 public class ChatSuggestor {
-
     private static final Pattern SPACE_PATTERN = Pattern.compile("(\\s+)");
 
     /** Parsed command results */
-    @Getter private ParseResults<CommandSource> parse;
+    @Getter
+    private ParseResults<CommandSource> parse;
 
     /** Suggestions to complete */
-    @Getter private CompletableFuture<AdvancedSuggestions> pendingSuggestions;
+    @Getter
+    private CompletableFuture<AdvancedSuggestions> pendingSuggestions;
 
     /** Range of suggestion */
-    @Getter private StringRange range;
+    @Getter
+    private StringRange range;
 
     /** All completed suggestions */
-    @Getter private List<AdvancedSuggestions> allSuggestions;
+    @Getter
+    private List<AdvancedSuggestions> allSuggestions;
 
     private final TextFieldWidget textField;
     private final MinecraftClient client;
@@ -97,12 +100,9 @@ public class ChatSuggestor {
      */
     public void updateCommandSuggestions(Runnable after) {
         allSuggestions = null;
-        CommandDispatcher<CommandSource> commandDispatcher =
-                client.player.networkHandler.getCommandDispatcher();
-        pendingSuggestions =
-                commandDispatcher
-                        .getCompletionSuggestions(this.parse, getCursorIndex())
-                        .thenApplyAsync(AdvancedSuggestions::fromSuggestions);
+        CommandDispatcher<CommandSource> commandDispatcher = client.player.networkHandler.getCommandDispatcher();
+        pendingSuggestions = commandDispatcher.getCompletionSuggestions(this.parse, getCursorIndex())
+                .thenApplyAsync(AdvancedSuggestions::fromSuggestions);
         if (after != null) {
             runAfterDone(after);
         }
@@ -114,12 +114,9 @@ public class ChatSuggestor {
      * @param stringReader StringReader which contains reading string
      */
     public void updateParse(StringReader stringReader) {
-        CommandDispatcher<CommandSource> commandDispatcher =
-                client.player.networkHandler.getCommandDispatcher();
+        CommandDispatcher<CommandSource> commandDispatcher = client.player.networkHandler.getCommandDispatcher();
         if (parse == null) {
-            parse =
-                    commandDispatcher.parse(
-                            stringReader, client.player.networkHandler.getCommandSource());
+            parse = commandDispatcher.parse(stringReader, client.player.networkHandler.getCommandSource());
         }
     }
 
@@ -137,8 +134,7 @@ public class ChatSuggestor {
         String startToCursor = textField.getText().substring(0, getCursorIndex());
         int wordIndex = getLastWord(startToCursor);
         ArrayList<AdvancedSuggestions> suggestions = new ArrayList<>();
-        for (ChatSuggestorRegistry.ChatSuggestorOption option :
-                ChatSuggestorRegistry.getInstance().getAll()) {
+        for (ChatSuggestorRegistry.ChatSuggestorOption option : ChatSuggestorRegistry.getInstance().getAll()) {
             if (!option.isActive()) {
                 continue;
             }
@@ -158,18 +154,16 @@ public class ChatSuggestor {
      * @param other Other suggestions
      * @return CompletableFuture of the suggestions
      */
-    private CompletableFuture<AdvancedSuggestions> suggestMatching(
-            int start, String input, List<AdvancedSuggestions> other) {
+    private CompletableFuture<AdvancedSuggestions> suggestMatching(int start, String input,
+            List<AdvancedSuggestions> other) {
         List<AdvancedSuggestion> newSuggestions = new ArrayList<>();
         String lastWord = input.substring(start);
         StringRange r = new StringRange(start, input.length());
-        for (ChatSuggestorRegistry.ChatSuggestorOption option :
-                ChatSuggestorRegistry.getInstance().getAll()) {
+        for (ChatSuggestorRegistry.ChatSuggestorOption option : ChatSuggestorRegistry.getInstance().getAll()) {
             if (!option.isActive()) {
                 continue;
             }
-            Optional<List<AdvancedSuggestion>> s =
-                    option.getOption().suggestCurrentWord(lastWord, r);
+            Optional<List<AdvancedSuggestion>> s = option.getOption().suggestCurrentWord(lastWord, r);
             s.ifPresent(newSuggestions::addAll);
         }
 
@@ -208,8 +202,8 @@ public class ChatSuggestor {
      * Removes the identifier section of a suggestion. ("identifier:name")
      *
      * @param string Input to remove identifier
-     * @return String without the identifier. If there is no identifier it will just return the
-     *     original one.
+     * @return String without the identifier. If there is no identifier it will just return the original
+     *         one.
      */
     private String removeIdentifier(String string) {
         String[] text = string.split(":");
@@ -251,12 +245,8 @@ public class ChatSuggestor {
                 if (Collections.frequency(names.values(), entry.getValue()) >= 2) {
                     newSuggestions.add(entry.getKey());
                 } else {
-                    newSuggestions.add(
-                            new AdvancedSuggestion(
-                                    entry.getKey().getRange(),
-                                    entry.getValue(),
-                                    entry.getKey().getRender(),
-                                    entry.getKey().getTooltip()));
+                    newSuggestions.add(new AdvancedSuggestion(entry.getKey().getRange(), entry.getValue(),
+                            entry.getKey().getRender(), entry.getKey().getTooltip()));
                 }
             }
         } else {

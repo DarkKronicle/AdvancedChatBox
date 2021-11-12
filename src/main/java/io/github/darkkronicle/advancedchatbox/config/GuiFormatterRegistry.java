@@ -17,12 +17,8 @@ import io.github.darkkronicle.advancedchatcore.config.gui.widgets.WidgetListRegi
 import io.github.darkkronicle.advancedchatcore.config.gui.widgets.WidgetRegistryOptionEntry;
 import net.minecraft.client.gui.screen.Screen;
 
-public class GuiFormatterRegistry
-        extends GuiListBase<
-                ChatFormatterRegistry.ChatFormatterOption,
-                WidgetRegistryOptionEntry<ChatFormatterRegistry.ChatFormatterOption>,
-                WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption>> {
-
+public class GuiFormatterRegistry extends
+        GuiListBase<ChatFormatterRegistry.ChatFormatterOption, WidgetRegistryOptionEntry<ChatFormatterRegistry.ChatFormatterOption>, WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption>> {
     public GuiFormatterRegistry(Screen parent) {
         super(10, 60);
         setParent(parent);
@@ -43,16 +39,10 @@ public class GuiFormatterRegistry
     }
 
     @Override
-    protected WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption> createListWidget(
-            int listX, int listY) {
-        return new WidgetListRegistryOption<>(
-                listX,
-                listY,
-                this.getBrowserWidth(),
-                this.getBrowserHeight(),
-                null,
-                ChatFormatterRegistry.getInstance(),
-                this);
+    protected WidgetListRegistryOption<ChatFormatterRegistry.ChatFormatterOption> createListWidget(int listX,
+            int listY) {
+        return new WidgetListRegistryOption<>(listX, listY, this.getBrowserWidth(), this.getBrowserHeight(), null,
+                ChatFormatterRegistry.getInstance(), this);
     }
 
     @Override
@@ -70,7 +60,6 @@ public class GuiFormatterRegistry
     }
 
     public static class ButtonListener implements IButtonActionListener {
-
         private final GuiFormatterRegistry parent;
         private final ButtonListener.Type type;
 

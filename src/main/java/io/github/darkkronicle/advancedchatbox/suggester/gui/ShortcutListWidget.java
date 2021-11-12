@@ -18,9 +18,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.client.gui.screen.Screen;
 
-public class ShortcutListWidget
-        extends WidgetListBase<ShortcutSuggestor.Shortcut, ShortcutEntryListWidget> {
-
+public class ShortcutListWidget extends WidgetListBase<ShortcutSuggestor.Shortcut, ShortcutEntryListWidget> {
     public final ShortcutSuggestor suggestor;
     protected final List<TextFieldWrapper<GuiTextFieldGeneric>> textFields = new ArrayList<>();
 
@@ -61,13 +59,8 @@ public class ShortcutListWidget
         return super.onKeyTyped(keyCode, scanCode, modifiers);
     }
 
-    public ShortcutListWidget(
-            int x,
-            int y,
-            int width,
-            int height,
-            @Nullable ISelectionListener<ShortcutSuggestor.Shortcut> selectionListener,
-            ShortcutSuggestor parent,
+    public ShortcutListWidget(int x, int y, int width, int height,
+            @Nullable ISelectionListener<ShortcutSuggestor.Shortcut> selectionListener, ShortcutSuggestor parent,
             Screen screen) {
         super(x, y, width, height, selectionListener);
         this.browserEntryHeight = 22;
@@ -76,17 +69,10 @@ public class ShortcutListWidget
     }
 
     @Override
-    protected ShortcutEntryListWidget createListEntryWidget(
-            int x, int y, int listIndex, boolean isOdd, ShortcutSuggestor.Shortcut entry) {
-        return new ShortcutEntryListWidget(
-                x,
-                y,
-                this.browserEntryWidth,
-                this.getBrowserEntryHeightFor(entry),
-                isOdd,
-                entry,
-                listIndex,
-                this);
+    protected ShortcutEntryListWidget createListEntryWidget(int x, int y, int listIndex, boolean isOdd,
+            ShortcutSuggestor.Shortcut entry) {
+        return new ShortcutEntryListWidget(x, y, this.browserEntryWidth, this.getBrowserEntryHeightFor(entry), isOdd,
+                entry, listIndex, this);
     }
 
     @Override
