@@ -42,6 +42,10 @@ public class PlayerSuggestor implements IMessageSuggestor {
         List<String> list = new ArrayList<>();
 
         for (PlayerListEntry playerListEntry : MinecraftClient.getInstance().player.networkHandler.getPlayerList()) {
+
+            //checking if player name is empty, to avoid fake players
+            if (playerListEntry.getProfile().getName().equals("")) continue;
+
             if (ChatBoxConfigStorage.General.PRUNE_PLAYER_SUGGESTIONS.config.getBooleanValue()
                     && playerListEntry.getDisplayName() != null) {
                 // Try to get their actual name (without prefix)
