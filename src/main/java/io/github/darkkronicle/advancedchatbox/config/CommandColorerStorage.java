@@ -20,14 +20,16 @@ public class CommandColorerStorage {
         return StringUtils.translate("advancedchatbox.config.general." + key);
     }
 
+    public static final String NAME = "commandcolorer";
+
     public static final ConfigStorage.SaveableConfig<ConfigSimpleColor> COMMAND_COLOR =
             ConfigStorage.SaveableConfig.fromConfig("highlightColor", new ConfigSimpleColor(translate("highlightcolor"),
                     new ColorUtil.SimpleColor(180, 180, 180, 255), translate("info.highlightcolor")));
 
     public static final ConfigStorage.SaveableConfig<ConfigSimpleColor> ERROR_COLOR =
-            ConfigStorage.SaveableConfig.fromConfig("highlightColor", new ConfigSimpleColor(translate("highlightcolor"),
-                    new ColorUtil.SimpleColor(255, 60, 60, 255), translate("info.highlightcolor")));
+            ConfigStorage.SaveableConfig.fromConfig("errorColor", new ConfigSimpleColor(translate("errorcolor"),
+                    new ColorUtil.SimpleColor(255, 60, 60, 255), translate("info.errorcolor")));
 
     public static final ImmutableList<ConfigStorage.SaveableConfig<? extends IConfigBase>> OPTIONS =
-            ImmutableList.of(COMMAND_COLOR);
+            ImmutableList.of(COMMAND_COLOR, ERROR_COLOR);
 }
