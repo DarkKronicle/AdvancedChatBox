@@ -55,7 +55,7 @@ public class ChatBoxInitHandler implements IInitializationHandler {
                         ChatBoxConfigStorage.SpellChecker.OPTIONS));
 
         ChatFormatterRegistry chatRegistry = ChatFormatterRegistry.getInstance();
-        chatRegistry.register(CommandColorer::new, "commandcolorer",
+        chatRegistry.register(CommandColorer::getInstance, "commandcolorer",
                 "advancedchatbox.config.chatformatter.commandcolorer",
                 "advancedchatbox.config.chatformatter.info.commandcolorer", true, true);
         chatRegistry.register(JSONFormatter::new, "jsonformatter", "advancedchatbox.config.chatformatter.jsonformatter",
