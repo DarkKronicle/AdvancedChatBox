@@ -66,8 +66,8 @@ public class ChatFormatter {
                 format.put(new StringMatch(matchString, range.getStart(), range.getEnd()), (current, match) -> {
                     Style style = Style.EMPTY;
                     style = style.withFormatting(Formatting.UNDERLINE);
-                    TextColor textColor = TextColor.fromRgb(
-                            ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config.getSimpleColor().color());
+                    TextColor textColor = TextColor
+                            .fromRgb(ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config.get().color());
                     style = style.withColor(textColor);
                     return new FluidText(new RawText(matchString, style));
                 });

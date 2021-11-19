@@ -18,11 +18,12 @@ import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import fi.dy.masa.malilib.util.KeyCodes;
 import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
-import io.github.darkkronicle.advancedchatcore.util.ColorUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
+
+import io.github.darkkronicle.advancedchatcore.util.Colors;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -255,7 +256,7 @@ public class ChatSuggestorGui {
                 i++;
                 int j = this.chatScreenSized ? this.owner.height - 14 - 13 - 12 * i : 72 + 12 * i;
                 DrawableHelper.fill(matrices, this.x - 1, j, this.x + this.width + 1, j + 12,
-                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.getSimpleColor().color());
+                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 if (message != null) {
                     this.textRenderer.drawWithShadow(matrices, message, (float) this.x, (float) (j + 2), -1);
                 }
@@ -307,17 +308,18 @@ public class ChatSuggestorGui {
                 // Draw lines to signify that there is more
                 DrawableHelper.fill(matrices, this.area.getX(), this.area.getY() - 1,
                         this.area.getX() + this.area.getWidth(), this.area.getY(),
-                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.getSimpleColor().color());
+                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 DrawableHelper.fill(matrices, this.area.getX(), this.area.getY() + this.area.getHeight(),
                         this.area.getX() + this.area.getWidth(), this.area.getY() + this.area.getHeight() + 1,
-                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.getSimpleColor().color());
+                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 int x;
                 if (moreBelow) {
                     // Dotted
                     for (x = 0; x < this.area.getWidth(); ++x) {
                         if (x % 2 == 0) {
                             DrawableHelper.fill(matrices, this.area.getX() + x, this.area.getY() - 1,
-                                    this.area.getX() + x + 1, this.area.getY(), ColorUtil.WHITE.color());
+                                    this.area.getX() + x + 1, this.area.getY(),
+                                    Colors.getInstance().getColorOrWhite("white").color());
                         }
                     }
                 }
@@ -328,7 +330,8 @@ public class ChatSuggestorGui {
                         if (x % 2 == 0) {
                             DrawableHelper.fill(matrices, this.area.getX() + x,
                                     this.area.getY() + this.area.getHeight(), this.area.getX() + x + 1,
-                                    this.area.getY() + this.area.getHeight() + 1, ColorUtil.WHITE.color());
+                                    this.area.getY() + this.area.getHeight() + 1,
+                                    Colors.getInstance().getColorOrWhite("white").color());
                         }
                     }
                 }
@@ -340,7 +343,7 @@ public class ChatSuggestorGui {
                 AdvancedSuggestion suggestion = this.suggestions.get(s + this.inWindowIndex);
                 DrawableHelper.fill(matrices, this.area.getX(), this.area.getY() + 12 * s,
                         this.area.getX() + this.area.getWidth(), this.area.getY() + 12 * s + 12,
-                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.getSimpleColor().color());
+                        ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 if (mouseX > this.area.getX() && mouseX < this.area.getX() + this.area.getWidth()
                         && mouseY > this.area.getY() + 12 * s && mouseY < this.area.getY() + 12 * s + 12) {
                     if (updateMouse) {
@@ -353,8 +356,8 @@ public class ChatSuggestorGui {
                 ChatSuggestorGui.this.textRenderer.drawWithShadow(matrices, suggestion.getRender(),
                         (float) (this.area.getX() + 1), (float) (this.area.getY() + 2 + 12 * s),
                         (s + this.inWindowIndex) == this.selection
-                                ? ChatBoxConfigStorage.General.HIGHLIGHT_COLOR.config.getSimpleColor().color()
-                                : ChatBoxConfigStorage.General.UNHIGHLIGHT_COLOR.config.getSimpleColor().color());
+                                ? ChatBoxConfigStorage.General.HIGHLIGHT_COLOR.config.get().color()
+                                : ChatBoxConfigStorage.General.UNHIGHLIGHT_COLOR.config.get().color());
             }
 
             if (hover) {

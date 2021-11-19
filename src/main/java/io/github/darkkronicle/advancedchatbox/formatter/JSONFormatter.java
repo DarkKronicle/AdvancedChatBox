@@ -9,7 +9,7 @@ package io.github.darkkronicle.advancedchatbox.formatter;
 
 import com.mojang.brigadier.ParseResults;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageFormatter;
-import io.github.darkkronicle.advancedchatcore.util.ColorUtil;
+import io.github.darkkronicle.advancedchatcore.util.Color;
 import io.github.darkkronicle.advancedchatcore.util.FindType;
 import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
@@ -34,31 +34,21 @@ public class JSONFormatter implements IMessageFormatter {
      * JSON Logic is from https://github.com/joeattardi/json-colorizer/blob/master/src/lib/lexer.js
      */
     public enum JSONType {
-        WHITESPACE("^\\s+", ColorUtil.WHITE.withAlpha(0)), BRACE("^[\\{\\}]",
-                new ColorUtil.SimpleColor(130, 130, 130, 255)), BRACKET("^[\\[\\]]",
-                        new ColorUtil.SimpleColor(180, 180, 180, 255)), COLON("^:", new ColorUtil.SimpleColor(130, 130,
-                                130, 255)), COMMA("^,", new ColorUtil.SimpleColor(130, 130, 130, 255)), NUMBER_LITERAL(
-                                        "^-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?",
-                                        new ColorUtil.SimpleColor(168, 97, 199, 255)), STRING_KEY(
-                                                "^\"(?:\\\\.|[^\"\\\\])*\"(?=\\s*:)",
-                                                new ColorUtil.SimpleColor(120, 156, 183, 255)), STRING_LITERAL(
-                                                        "^\"(?:\\\\.|[^\"\\\\])*\"",
-                                                        new ColorUtil.SimpleColor(189, 215, 222, 255)), BOOLEAN_LITERAL(
-                                                                "^true|^false",
-                                                                new ColorUtil.SimpleColor(232, 63, 113,
-                                                                        255)), NULL_LITERAL(
-                                                                                "^null",
-                                                                                new ColorUtil.SimpleColor(194, 76, 75,
-                                                                                        255)), OTHER(
-                                                                                                ".",
-                                                                                                new ColorUtil.SimpleColor(
-                                                                                                        210, 43, 43,
-                                                                                                        255));
+        WHITESPACE("^\\s+", new Color(255, 255, 255, 255).withAlpha(0)), BRACE("^[\\{\\}]",
+                new Color(130, 130, 130, 255)), BRACKET("^[\\[\\]]", new Color(180, 180, 180, 255)), COLON("^:",
+                        new Color(130, 130, 130, 255)), COMMA("^,", new Color(130, 130, 130, 255)), NUMBER_LITERAL(
+                                "^-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?",
+                                new Color(168, 97, 199, 255)), STRING_KEY("^\"(?:\\\\.|[^\"\\\\])*\"(?=\\s*:)",
+                                        new Color(120, 156, 183, 255)), STRING_LITERAL("^\"(?:\\\\.|[^\"\\\\])*\"",
+                                                new Color(189, 215, 222, 255)), BOOLEAN_LITERAL("^true|^false",
+                                                        new Color(232, 63, 113, 255)), NULL_LITERAL("^null",
+                                                                new Color(194, 76, 75, 255)), OTHER(".",
+                                                                        new Color(210, 43, 43, 255));
 
         public final String regex;
-        public final ColorUtil.SimpleColor color;
+        public final Color color;
 
-        JSONType(String regex, ColorUtil.SimpleColor color) {
+        JSONType(String regex, Color color) {
             this.regex = regex;
             this.color = color;
         }

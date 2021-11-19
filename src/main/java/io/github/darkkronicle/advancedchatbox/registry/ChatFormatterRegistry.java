@@ -11,7 +11,7 @@ import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageFormatter;
-import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
+import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
 import io.github.darkkronicle.advancedchatcore.interfaces.ConfigRegistryOption;
 import io.github.darkkronicle.advancedchatcore.util.AbstractRegistry;
 import java.util.Arrays;
@@ -56,7 +56,7 @@ public class ChatFormatterRegistry
         private final String translation;
         private final String infoTranslation;
         private final ChatFormatterRegistry registry;
-        private final ConfigStorage.SaveableConfig<ConfigBoolean> active;
+        private final SaveableConfig<ConfigBoolean> active;
         private final boolean hidden;
 
         private ChatFormatterOption(Supplier<IMessageFormatter> formatter, String saveString, String translation,
@@ -78,8 +78,7 @@ public class ChatFormatterRegistry
             this.registry = registry;
             this.infoTranslation = infoTranslation;
             this.hidden = hidden;
-            this.active = ConfigStorage.SaveableConfig.fromConfig("active",
-                    new ConfigBoolean(translation, active, infoTranslation));
+            this.active = SaveableConfig.fromConfig("active", new ConfigBoolean(translation, active, infoTranslation));
         }
 
         @Override
@@ -88,7 +87,7 @@ public class ChatFormatterRegistry
         }
 
         @Override
-        public ConfigStorage.SaveableConfig<ConfigBoolean> getActive() {
+        public SaveableConfig<ConfigBoolean> getActive() {
             return active;
         }
 

@@ -13,7 +13,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
-import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
+import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
 import io.github.darkkronicle.advancedchatcore.config.gui.GuiConfigHandler;
 import io.github.darkkronicle.advancedchatcore.gui.buttons.ConfigTabsButtonListener;
 import io.github.darkkronicle.advancedchatcore.gui.buttons.NamedSimpleButton;
@@ -74,10 +74,10 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
 
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
-        List<ConfigStorage.SaveableConfig<? extends IConfigBase>> configs = ChatBoxConfigStorage.General.OPTIONS;
+        List<SaveableConfig<? extends IConfigBase>> configs = ChatBoxConfigStorage.General.OPTIONS;
 
         ArrayList<IConfigBase> config = new ArrayList<>();
-        for (ConfigStorage.SaveableConfig<? extends IConfigBase> s : configs) {
+        for (SaveableConfig<? extends IConfigBase> s : configs) {
             config.add(s.config);
         }
 

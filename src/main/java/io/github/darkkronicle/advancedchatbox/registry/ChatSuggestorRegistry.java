@@ -11,7 +11,7 @@ import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageSuggestor;
-import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
+import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
 import io.github.darkkronicle.advancedchatcore.interfaces.ConfigRegistryOption;
 import io.github.darkkronicle.advancedchatcore.util.AbstractRegistry;
 import java.util.Arrays;
@@ -56,7 +56,7 @@ public class ChatSuggestorRegistry
         private final boolean hidden;
 
         private final IMessageSuggestor suggestor;
-        private final ConfigStorage.SaveableConfig<ConfigBoolean> active;
+        private final SaveableConfig<ConfigBoolean> active;
 
         public ChatSuggestorOption(Supplier<IMessageSuggestor> suggestor, String saveString, String translation,
                 String infoTranslation, boolean active, boolean hidden, ChatSuggestorRegistry registry) {
@@ -71,8 +71,7 @@ public class ChatSuggestorRegistry
             this.infoTranslation = infoTranslation;
             this.registry = registry;
             this.hidden = hidden;
-            this.active = ConfigStorage.SaveableConfig.fromConfig("active",
-                    new ConfigBoolean(translation, active, infoTranslation));
+            this.active = SaveableConfig.fromConfig("active", new ConfigBoolean(translation, active, infoTranslation));
         }
 
         @Override
@@ -81,7 +80,7 @@ public class ChatSuggestorRegistry
         }
 
         @Override
-        public ConfigStorage.SaveableConfig<ConfigBoolean> getActive() {
+        public SaveableConfig<ConfigBoolean> getActive() {
             return active;
         }
 

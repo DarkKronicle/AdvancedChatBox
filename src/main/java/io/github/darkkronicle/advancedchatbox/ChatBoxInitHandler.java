@@ -60,9 +60,9 @@ public class ChatBoxInitHandler implements IInitializationHandler {
                 "advancedchatbox.config.chatformatter.info.commandcolorer", true, true);
         chatRegistry.register(JSONFormatter::new, "jsonformatter", "advancedchatbox.config.chatformatter.jsonformatter",
                 "advancedchatbox.config.chatformatter.info.jsonformatter", true, false);
-        chatRegistry.register(ColorCodeFormatter::new, "commandcodeformatter",
-                "advancedchatbox.config.chatformatter.commandcodeformatter",
-                "advancedchatbox.config.commandcodeformatter.info.commandcolorer", true, false);
+        chatRegistry.register(ColorCodeFormatter::new, "colorcodeformatter",
+                "advancedchatbox.config.chatformatter.colorcodeformatter",
+                "advancedchatbox.config.chatformatter.info.colorcodeformatter", true, false);
 
         // Initiate chat suggestors
         ChatSuggestorRegistry suggestorRegistry = ChatSuggestorRegistry.getInstance();

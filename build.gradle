@@ -53,6 +53,9 @@ dependencies {
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-tokenize-models', version: '1.5'
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
 	include group: 'com.carrotsearch', name: 'hppc', version: '0.9.0'
+
+	// Packages with core
+	implementation 'com.electronwill.night-config:toml:3.6.5'
 }
 
 processResources {
@@ -92,7 +95,7 @@ spotless {
 	}
 	java {
 		target 'src/*/java/**/*.java'
-		googleJavaFormat('1.12.0').aosp().reflowLongStrings()
+//		googleJavaFormat('1.12.0').aosp().reflowLongStrings()
 		removeUnusedImports()
 		eclipse().configFile('elcipse-style.xml')
 		licenseHeaderFile "HEADER.txt"

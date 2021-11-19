@@ -1,0 +1,23 @@
+color_pallete = 'pastel_blue_magenta'
+
+[argument.location_or_entity]
+
+[command.help]
+    structure = '[]:1'
+
+[command.teleport]
+    structure = '{[teleport]:1|[tp]:1} {$location_or_entity$:2} {$location_or_entity$:3} [/(facing)?( )?/]:4[(entity )?( ?)]:4 [/.+/]:5'
+
+[command.time]
+    pallete = 'pastel_rgb'
+    structure = '[time]:1 '
+    subcommands = [
+        'time_query',
+        'time_add_set'
+    ]
+
+[command.time_query]
+    structure = '[query]:2'
+
+[command.time_add_set]
+    structure = '{[add]:2|[set]:2} [/\d+/]:3[]:4'
