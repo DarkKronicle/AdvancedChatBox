@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2021-2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -25,7 +25,6 @@ import net.minecraft.util.Formatting;
 
 /**
  * A class to format the chat box on the
- * {@link io.github.darkkronicle.advancedchat.config.ConfigStorage.ChatScreen}
  */
 @Environment(EnvType.CLIENT)
 public class ChatFormatter {
@@ -61,9 +60,27 @@ public class ChatFormatter {
                     // Don't want to format if there's nothing there...
                     continue;
                 }
+                boolean atLeastOne = false;
+                for (AdvancedSuggestion suggestion : suggestions.getSuggestions()) {
+                    if (suggestion.getText().length() > 0) {
+                        atLeastOne = true;
+                        break;
+                    }
+                }
+                if (!atLeastOne) {
+                    continue;
+                }
                 StringRange range = suggestions.getRange();
-                String matchString = string.subSequence(range.getStart(), range.getEnd()).toString();
-                format.put(new StringMatch(matchString, range.getStart(), range.getEnd()), (current, match) -> {
+                int start = range.getStart();
+                int end = range.getEnd();
+                if (end > string.length()) {
+                    end = string.length();
+                }
+                if (start < 0) {
+                    start = 0;
+                }
+                String matchString = string.subSequence(start, end).toString();
+                format.put(new StringMatch(matchString, start, end), (current, match) -> {
                     Style style = Style.EMPTY;
                     style = style.withFormatting(Formatting.UNDERLINE);
                     TextColor textColor = TextColor
@@ -91,7 +108,16 @@ public class ChatFormatter {
         if (length == 0) {
             return OrderedText.EMPTY;
         }
-        return last.truncate(new StringMatch(s, integer, integer + length)).asOrderedText();
+        if (last.getRawTexts().size() == 0) {
+            return OrderedText.EMPTY;
+        }
+        int start = integer;
+        int end = integer + length;
+        int fluidLength = last.getString().length();
+        if (end > fluidLength) {
+            end = fluidLength;
+        }
+        return last.truncate(new StringMatch(s, start, end)).asOrderedText();
     }
 
     public OrderedText apply(String s, Integer integer) {

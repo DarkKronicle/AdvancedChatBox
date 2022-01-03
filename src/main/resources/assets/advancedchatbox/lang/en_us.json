@@ -2,6 +2,9 @@
   "advancedchatbox.config.tab.general": "§dChat Suggestor",
   "advancedchatbox.config.tab.spellchecker": "§6Spell Checker",
 
+  "advancedchat.config.shortcutmenu.remove": "§cRemove",
+  "advancedchat.gui.button.addshortcut": "§aAdd Shortcut",
+
   "advancedchatbox.config.button.config_suggestors": "Configure Suggestors",
   "advancedchatbox.config.chatsuggestor.players": "Suggest Players",
   "advancedchatbox.config.chatsuggestor.info.players": "Whether or not §6player names§r are suggested in chat\nThese show up by pressing tab",
