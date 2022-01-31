@@ -37,22 +37,17 @@ public class ChatBoxInitHandler implements IInitializationHandler {
     @Override
     public void registerModHandlers() {
         ConfigManager.getInstance().registerConfigHandler(AdvancedChatBox.MOD_ID, new ChatBoxConfigStorage());
-        GuiConfigHandler.getInstance().addGuiSection(new GuiConfigHandler.Tab() {
-            @Override
-            public String getName() {
-                return StringUtils.translate("advancedchatbox.config.tab.general");
-            }
+        GuiConfigHandler.getInstance().addTab(GuiConfigHandler.children("box", "advancedchat.config.tab.advancedchatbox",
+                GuiConfigHandler.wrapScreen("box_general", "advancedchatbox.config.tab.general",
+                        parent -> new GuiChatBoxConfig()
+                ),
+                GuiConfigHandler.wrapSaveableOptions(
+                        "spellchecker",
+                        "advancedchatbox.config.tab.spellchecker",
+                        ChatBoxConfigStorage.SpellChecker.OPTIONS
+                )
+        ));
 
-            @Override
-            public Screen getScreen(List<GuiConfigHandler.TabButton> buttons) {
-                return new GuiChatBoxConfig(buttons);
-            }
-        });
-
-        GuiConfigHandler.getInstance()
-                .addGuiSection(GuiConfigHandler.createGuiConfigSection(
-                        StringUtils.translate("advancedchatbox.config.tab.spellchecker"),
-                        ChatBoxConfigStorage.SpellChecker.OPTIONS));
 
         ChatFormatterRegistry chatRegistry = ChatFormatterRegistry.getInstance();
         chatRegistry.register(CommandColorer::getInstance, "commandcolorer",

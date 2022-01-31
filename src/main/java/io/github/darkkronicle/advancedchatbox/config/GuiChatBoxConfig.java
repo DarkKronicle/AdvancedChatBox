@@ -14,18 +14,19 @@ import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
+import io.github.darkkronicle.advancedchatcore.config.gui.GuiConfig;
 import io.github.darkkronicle.advancedchatcore.config.gui.GuiConfigHandler;
 import io.github.darkkronicle.advancedchatcore.gui.buttons.ConfigTabsButtonListener;
 import io.github.darkkronicle.advancedchatcore.gui.buttons.NamedSimpleButton;
+import net.minecraft.client.gui.screen.Screen;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiChatBoxConfig extends GuiConfigsBase {
-    private final List<GuiConfigHandler.TabButton> buttons;
 
-    public GuiChatBoxConfig(List<GuiConfigHandler.TabButton> buttons) {
+    public GuiChatBoxConfig() {
         super(10, 80, AdvancedChatBox.MOD_ID, null, "advancedchat.screen.main");
-        this.buttons = buttons;
     }
 
     @Override
@@ -35,41 +36,25 @@ public class GuiChatBoxConfig extends GuiConfigsBase {
 
         int x = 10;
         int y = 26;
-        int rows = 1;
 
-        for (GuiConfigHandler.TabButton tab : buttons) {
-            int newY = this.createButton(tab);
-            if (newY != y) {
-                rows++;
-                y = newY;
-            }
-        }
+        y += GuiConfig.addTabButtons(this, x, y) * 22;
+        y += GuiConfig.addAllChildrenButtons(this, GuiConfig.TAB, x, y) * 22;
 
-        y += 22;
         x = width - 2;
         x -= addButton(x, y, "advancedchatbox.config.button.config_formatters",
                 (button, mouseButton) -> GuiBase.openGui(new GuiFormatterRegistry(this))) + 2;
         x -= addButton(x, y, "advancedchatbox.config.button.config_suggestors",
                 (button, mouseButton) -> GuiBase.openGui(new GuiSuggestorRegistry(this))) + 2;
-        if (rows > 1) {
-            int scrollbarPosition = this.getListWidget().getScrollbar().getValue();
-            this.setListPosition(this.getListX(), 80 + (rows - 1) * 22);
-            this.reCreateListWidget();
-            this.getListWidget().getScrollbar().setValue(scrollbarPosition);
-        } else {
-            this.reCreateListWidget();
-        }
+
+        int scrollbarPosition = this.getListWidget().getScrollbar().getValue();
+        this.setListPosition(this.getListX(), y);
+        this.reCreateListWidget();
+        this.getListWidget().getScrollbar().setValue(scrollbarPosition);
         this.getListWidget().refreshEntries();
     }
 
     private int addButton(int x, int y, String translation, IButtonActionListener listener) {
-        return this.addButton(new NamedSimpleButton(x, y, StringUtils.translate(translation), false), listener)
-                .getWidth();
-    }
-
-    private int createButton(GuiConfigHandler.TabButton button) {
-        this.addButton(button.getButton(), new ConfigTabsButtonListener(button));
-        return button.getButton().getY();
+        return this.addButton(new NamedSimpleButton(x, y, StringUtils.translate(translation), false), listener).getWidth();
     }
 
     @Override

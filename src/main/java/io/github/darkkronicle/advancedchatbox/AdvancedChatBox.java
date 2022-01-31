@@ -7,7 +7,7 @@
  */
 package io.github.darkkronicle.advancedchatbox;
 
-import fi.dy.masa.malilib.event.InitializationHandler;
+import io.github.darkkronicle.advancedchatcore.ModuleHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +19,6 @@ public class AdvancedChatBox implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // This will run after AdvancedChatCore's because of load order
-        InitializationHandler.getInstance().registerInitializationHandler(new ChatBoxInitHandler());
+        ModuleHandler.getInstance().registerInitHandler(MOD_ID, -1, new ChatBoxInitHandler());
     }
 }

@@ -29,9 +29,6 @@ dependencies {
 	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.18.0:${project.malilib_version}"
 	modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
 
-	include "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
-	implementation "org.mariuszgromada.math:MathParser.org-mXparser:${project.mxparser_version}"
-
 	implementation "org.languagetool:language-en:5.5"
 	// Transitive
 	include "org.languagetool:language-en:5.5"
@@ -53,9 +50,6 @@ dependencies {
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-tokenize-models', version: '1.5'
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
 	include group: 'com.carrotsearch', name: 'hppc', version: '0.9.0'
-
-	// Packages with core
-	implementation 'com.electronwill.night-config:toml:3.6.5'
 }
 
 processResources {
@@ -95,9 +89,7 @@ spotless {
 	}
 	java {
 		target 'src/*/java/**/*.java'
-//		googleJavaFormat('1.12.0').aosp().reflowLongStrings()
 		removeUnusedImports()
-		eclipse().configFile('elcipse-style.xml')
 		licenseHeaderFile "HEADER.txt"
 	}
 }
