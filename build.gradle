@@ -26,28 +26,42 @@ dependencies {
 	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.18.2:${project.malilib_version}"
 	modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
 
+	implementation "org.languagetool:language-de:5.5"
 	implementation "org.languagetool:language-en:5.5"
 	// Transitive
+	include "org.languagetool:language-de:5.5"
 	include "org.languagetool:language-en:5.5"
 	include "org.languagetool:languagetool-core:5.5"
-	include group: 'net.loomchild', name: 'segment', version: '2.0.3'
-	include group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-	include group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
-	include group: 'org.jetbrains.intellij.deps', name: 'trove4j', version: '1.0.20200330'
-	include group: 'javax.measure', name: 'unit-api', version: '2.1.3'
-	include group: 'tech.units', name: 'indriya', version: '1.3'
+	
+	
+	
 	include group: 'tech.uom.lib', name: 'uom-lib-common', version: '1.1'
-	include group: 'org.carrot2', name: 'morfologik-fsa', version: '2.1.7'
-	include group: 'org.carrot2', name: 'morfologik-fsa-builders', version: '2.1.7'
-	include group: 'org.carrot2', name: 'morfologik-speller', version: '2.1.7'
-	include group: 'org.carrot2', name: 'morfologik-stemming', version: '2.1.7'
 	include group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.9.3'
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-postag-models', version: '1.5'
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-tokenize-models', version: '1.5'
 	include group: 'edu.washington.cs.knowitall', name: 'opennlp-chunk-models', version: '1.5'
 	include group: 'com.carrotsearch', name: 'hppc', version: '0.9.0'
-}
+	include group: 'de.danielnaber', name: 'german-pos-dict', version: '1.2.2'
+	include group: 'de.danielnaber', name: 'jwordsplitter', version: '4.5'
+	include group: 'edu.washington.cs.knowitall', name: 'openregex', version: '1.1.1'
+	include group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+
+	include group: 'org.carrot2', name: 'morfologik-fsa', version: '2.1.7'
+	include group: 'org.carrot2', name: 'morfologik-fsa-builders', version: '2.1.7'
+	include group: 'org.carrot2', name: 'morfologik-speller', version: '2.1.7'
+	include group: 'org.carrot2', name: 'morfologik-stemming', version: '2.1.7'
+	include group: 'net.loomchild', name: 'segment', version: '2.0.3'
+	include group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	include group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
+	include group: 'org.jetbrains.intellij.deps', name: 'trove4j', version: '1.0.20200330'
+	include group: 'javax.measure', name: 'unit-api', version: '2.1.3'
+	include group: 'tech.units', name: 'indriya', version: '1.3'
+
+	include group: 'com.hankcs', name: 'aho-corasick-double-array-trie', version: '1.2.2'
+        include group: 'com.gitlab.dumonts', name: 'hunspell', version: '1.1.1'
+        include group: 'com.nativelibs4java', name: 'bridj', version: '0.7.0'
+ } 
 
 processResources {
 	inputs.property "version", project.version
