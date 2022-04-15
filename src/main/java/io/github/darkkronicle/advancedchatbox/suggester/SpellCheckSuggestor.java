@@ -30,26 +30,42 @@ import net.minecraft.text.Text;
 import org.languagetool.JLanguageTool;
 import org.languagetool.ResultCache;
 import org.languagetool.UserConfig;
+import org.languagetool.language.GermanyGerman;
 import org.languagetool.language.AmericanEnglish;
+import org.languagetool.language.BritishEnglish;
 import org.languagetool.rules.RuleMatch;
 
 @Environment(EnvType.CLIENT)
 public class SpellCheckSuggestor implements IMessageSuggestor {
-    private final JLanguageTool lt;
-
-    private static final SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
+    String selectedLanguage = ChatBoxConfigStorage.SpellChecker.SPELL_LANGUAGE.config.getStringValue();
+    private JLanguageTool language;
+    //System.out.println("Ausserhalb von SpellCheckSuggestor: selectedLanguage:"+selectedLanguage+" language:"+language);
+    private static SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
 
     public static SpellCheckSuggestor getInstance() {
         return INSTANCE;
     }
-
     private SpellCheckSuggestor() {
-        lt = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
-                new UserConfig(new ArrayList<>(), new HashMap<>(), 20));
-        lt.setMaxErrorsPerWordRate(0.33f);
+        //selectedLanguage = "British";
+        //System.out.println("Innerhalb von SpellCheckSuggestor: selectedLanguage:"+selectedLanguage+" language:"+language);
+        switch (selectedLanguage) {
+        
+        case "German": language = new JLanguageTool(new GermanyGerman(), new GermanyGerman(), new ResultCache(15),
+             new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+        
+        case "British": language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
+             new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+        
+        case "American": language = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
+            new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+        default: language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
+        new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+        }
+
+        language.setMaxErrorsPerWordRate(0.33f);
         try {
             // Set it up. Make it so it doesn't freeze later.
-            lt.check("a");
+            language.check("a");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +75,7 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
     public Optional<List<AdvancedSuggestions>> suggest(String text) {
         ArrayList<AdvancedSuggestions> suggestions = new ArrayList<>();
         try {
-            List<RuleMatch> matches = lt.check(text);
+            List<RuleMatch> matches = language.check(text);
             for (RuleMatch match : matches) {
                 int fromPos = match.getFromPos();
                 int toPos = match.getToPos();
