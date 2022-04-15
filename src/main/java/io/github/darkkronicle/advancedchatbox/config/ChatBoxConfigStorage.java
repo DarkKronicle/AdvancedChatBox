@@ -78,6 +78,8 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
         public static final SaveableConfig<ConfigString> HOVER_TEXT = SaveableConfig.fromConfig("hoverText",
                 new ConfigString(translate("hovertext"), "&7$1&b$2&7$3", translate("info.hovertext")));
+        public static final SaveableConfig<ConfigString> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
+                new ConfigString(translate("spellLanguage"), "German", translate("info.spellLanguage")));       
 
         // public static final SaveableConfig<ConfigBoolean>
         // SUGGEST_CAPITAL =
@@ -90,7 +92,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         // )
         // );
 
-        public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(HOVER_TEXT
+        public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(HOVER_TEXT, SPELL_LANGUAGE
         // SUGGEST_CAPITAL
         );
     }
