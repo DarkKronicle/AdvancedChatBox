@@ -72,7 +72,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                         new Color(150, 150, 150, 255), translate("info.availablesuggestioncolor")));
 
         public static final SaveableConfig<ConfigString> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
-                new ConfigString(translate("spellLanguage"), "German", translate("info.spellLanguage")));
+                new ConfigString(translate("spellLanguage"), "American", translate("info.spellLanguage")));
         
 
         public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS =
