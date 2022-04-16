@@ -36,6 +36,12 @@ public class ChatBoxConfigStorage implements IConfigHandler {
     public static final String CONFIG_FILE_NAME = AdvancedChatBox.MOD_ID + ".json";
     private static final int CONFIG_VERSION = 1;
 
+    private static final ChatBoxConfigStorage INSTANCE = new ChatBoxConfigStorage();
+
+    public static ChatBoxConfigStorage getInstance() {
+        return INSTANCE;
+    }
+
     public static class General {
         public static final String NAME = "general";
 
@@ -98,12 +104,14 @@ public class ChatBoxConfigStorage implements IConfigHandler {
     }
 
     public static void loadFromFile() {
+        System.out.println("HIER LADEN FROM 1");
         File configFile =
                 FileUtils.getConfigDirectory().toPath().resolve("advancedchat").resolve(CONFIG_FILE_NAME).toFile();
 
         if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
             JsonElement element = ConfigStorage.parseJsonFile(configFile);
-
+ 
+            System.out.println("HIER LADEN FROM FILE 2");
             if (element != null && element.isJsonObject()) {
                 JsonObject root = element.getAsJsonObject();
 
@@ -114,6 +122,8 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                 ConfigStorage.applyRegistry(root.get(ChatSuggestorRegistry.NAME), ChatSuggestorRegistry.getInstance());
 
                 int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 0);
+
+                System.out.println("HIER LADEN FROM FILE 3");
             }
         }
     }
@@ -138,6 +148,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
     @Override
     public void load() {
+        System.out.println("HIER LADEN LOAD");
         loadFromFile();
     }
 
