@@ -45,31 +45,34 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
     public static SpellCheckSuggestor getInstance() {
         return INSTANCE;
     }
-    private SpellCheckSuggestor() {
-        //selectedLanguage = "British";
-        //System.out.println("Innerhalb von SpellCheckSuggestor: selectedLanguage:"+selectedLanguage+" language:"+language);
-        switch (selectedLanguage) {
+    public SpellCheckSuggestor() {
         
-        case "German": language = new JLanguageTool(new GermanyGerman(), new GermanyGerman(), new ResultCache(15),
-             new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-        
-        case "British": language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
-             new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-        
-        case "American": language = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
-            new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-        default: language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
-        new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-        }
-
-        language.setMaxErrorsPerWordRate(0.33f);
-        try {
-            // Set it up. Make it so it doesn't freeze later.
-            language.check("a");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
+    public void Setup() {
+            
+        //selectedLanguage = "British";
+        switch (selectedLanguage) {
+    
+       case "German": language = new JLanguageTool(new GermanyGerman(), new GermanyGerman(), new ResultCache(15),
+            new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+       
+       case "British": language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
+            new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+       
+       case "American": language = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
+           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+       default: language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
+       new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+       }
+
+       language.setMaxErrorsPerWordRate(0.33f);
+       try {
+           // Set it up. Make it so it doesn't freeze later.
+           language.check("a");
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+    } 
 
     @Override
     public Optional<List<AdvancedSuggestions>> suggest(String text) {
