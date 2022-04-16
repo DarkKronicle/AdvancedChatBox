@@ -37,7 +37,6 @@ public class ChatBoxInitHandler implements IInitializationHandler {
     @Override
     public void registerModHandlers() {
         ChatBoxConfigStorage.getInstance().load(); 
-        System.out.println("HIER LADEN INIT HANDLER NACH OVERRIDE");  
         ConfigManager.getInstance().registerConfigHandler(AdvancedChatBox.MOD_ID, new ChatBoxConfigStorage());
         GuiConfigHandler.getInstance().addTab(GuiConfigHandler.children("box", "advancedchat.config.tab.advancedchatbox",
                 GuiConfigHandler.wrapScreen("box_general", "advancedchatbox.config.tab.general",
