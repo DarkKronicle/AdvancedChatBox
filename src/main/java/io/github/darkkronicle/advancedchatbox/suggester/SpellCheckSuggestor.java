@@ -45,10 +45,10 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
     public static SpellCheckSuggestor getInstance() {
         return INSTANCE;
     }
-    public SpellCheckSuggestor() {
+    private SpellCheckSuggestor() {
         
     }
-    public void Setup() {
+    public void setup() {
             
         //selectedLanguage = "British";
         switch (selectedLanguage) {
