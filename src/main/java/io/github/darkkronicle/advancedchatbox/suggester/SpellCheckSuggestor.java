@@ -36,8 +36,7 @@ import org.languagetool.language.BritishEnglish;
 import org.languagetool.rules.RuleMatch;
 
 @Environment(EnvType.CLIENT)
-public class SpellCheckSuggestor implements IMessageSuggestor {
-    String selectedLanguage = ChatBoxConfigStorage.SpellChecker.SPELL_LANGUAGE.config.getStringValue();
+public class SpellCheckSuggestor implements IMessageSuggestor {    
     private JLanguageTool language;
     //System.out.println("Ausserhalb von SpellCheckSuggestor: selectedLanguage:"+selectedLanguage+" language:"+language);
     private static SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
@@ -49,7 +48,7 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
         
     }
     public void setup() {
-            
+        String selectedLanguage = ChatBoxConfigStorage.SpellChecker.SPELL_LANGUAGE.config.getStringValue();    
         //selectedLanguage = "British";
         switch (selectedLanguage) {
     
