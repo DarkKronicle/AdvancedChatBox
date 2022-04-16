@@ -22,6 +22,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatbox.registry.ChatFormatterRegistry;
 import io.github.darkkronicle.advancedchatbox.registry.ChatSuggestorRegistry;
+import io.github.darkkronicle.advancedchatbox.suggester.SpellCheckSuggestor;
 import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
 import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
 import io.github.darkkronicle.advancedchatcore.config.options.ConfigColor;
@@ -70,9 +71,13 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                 .fromConfig("availableSuggestionColor", new ConfigColor(translate("availablesuggestioncolor"),
                         new Color(150, 150, 150, 255), translate("info.availablesuggestioncolor")));
 
+        public static final SaveableConfig<ConfigString> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
+                new ConfigString(translate("spellLanguage"), "German", translate("info.spellLanguage")));
+        
+
         public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS =
                 ImmutableList.of(HIGHLIGHT_COLOR, UNHIGHLIGHT_COLOR, BACKGROUND_COLOR, SUGGESTION_SIZE,
-                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR);
+                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR, SPELL_LANGUAGE);
     }
 
     public static class SpellChecker {
@@ -84,8 +89,6 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
         public static final SaveableConfig<ConfigString> HOVER_TEXT = SaveableConfig.fromConfig("hoverText",
                 new ConfigString(translate("hovertext"), "&7$1&b$2&7$3", translate("info.hovertext")));
-        public static final SaveableConfig<ConfigString> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
-                new ConfigString(translate("spellLanguage"), "German", translate("info.spellLanguage")));       
 
         // public static final SaveableConfig<ConfigBoolean>
         // SUGGEST_CAPITAL =
@@ -98,20 +101,18 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         // )
         // );
 
-        public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(HOVER_TEXT, SPELL_LANGUAGE
+        public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(HOVER_TEXT
         // SUGGEST_CAPITAL
         );
     }
 
     public static void loadFromFile() {
-        System.out.println("HIER LADEN FROM 1");
         File configFile =
                 FileUtils.getConfigDirectory().toPath().resolve("advancedchat").resolve(CONFIG_FILE_NAME).toFile();
 
         if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
             JsonElement element = ConfigStorage.parseJsonFile(configFile);
  
-            System.out.println("HIER LADEN FROM FILE 2");
             if (element != null && element.isJsonObject()) {
                 JsonObject root = element.getAsJsonObject();
 
@@ -123,7 +124,6 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
                 int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 0);
 
-                System.out.println("HIER LADEN FROM FILE 3");
             }
         }
     }
@@ -148,8 +148,8 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
     @Override
     public void load() {
-        System.out.println("HIER LADEN LOAD");
         loadFromFile();
+        SpellCheckSuggestor.getInstance().setup();        
     }
 
     @Override
