@@ -36,6 +36,7 @@ import org.apache.logging.log4j.LogManager;
 public class ChatBoxInitHandler implements IInitializationHandler {
     @Override
     public void registerModHandlers() {
+        ChatBoxConfigStorage.getInstance().load(); 
         ConfigManager.getInstance().registerConfigHandler(AdvancedChatBox.MOD_ID, new ChatBoxConfigStorage());
         GuiConfigHandler.getInstance().addTab(GuiConfigHandler.children("box", "advancedchat.config.tab.advancedchatbox",
                 GuiConfigHandler.wrapScreen("box_general", "advancedchatbox.config.tab.general",
@@ -72,6 +73,7 @@ public class ChatBoxInitHandler implements IInitializationHandler {
             suggestorRegistry.register(SpellCheckSuggestor::getInstance, "spellcheck",
                     "advancedchatbox.config.chatsuggestor.spellcheck",
                     "advancedchatbox.config.chatsuggestor.info.spellcheck", true, false);
+            SpellCheckSuggestor.getInstance().setup();                   
         } catch (Exception e) {
             LogManager.getLogger().log(Level.ERROR, "[AdvancedChat] {}", "Couldn't load SpellCheckSuggestor", e);
         }

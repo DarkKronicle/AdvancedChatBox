@@ -22,6 +22,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatbox.registry.ChatFormatterRegistry;
 import io.github.darkkronicle.advancedchatbox.registry.ChatSuggestorRegistry;
+import io.github.darkkronicle.advancedchatbox.suggester.SpellCheckSuggestor;
 import io.github.darkkronicle.advancedchatcore.config.ConfigStorage;
 import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
 import io.github.darkkronicle.advancedchatcore.config.options.ConfigColor;
@@ -35,6 +36,12 @@ import net.fabricmc.api.Environment;
 public class ChatBoxConfigStorage implements IConfigHandler {
     public static final String CONFIG_FILE_NAME = AdvancedChatBox.MOD_ID + ".json";
     private static final int CONFIG_VERSION = 1;
+
+    private static final ChatBoxConfigStorage INSTANCE = new ChatBoxConfigStorage();
+
+    public static ChatBoxConfigStorage getInstance() {
+        return INSTANCE;
+    }
 
     public static class General {
         public static final String NAME = "general";
@@ -64,9 +71,13 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                 .fromConfig("availableSuggestionColor", new ConfigColor(translate("availablesuggestioncolor"),
                         new Color(150, 150, 150, 255), translate("info.availablesuggestioncolor")));
 
+        public static final SaveableConfig<ConfigString> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
+                new ConfigString(translate("spellLanguage"), "American", translate("info.spellLanguage")));
+        
+
         public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS =
                 ImmutableList.of(HIGHLIGHT_COLOR, UNHIGHLIGHT_COLOR, BACKGROUND_COLOR, SUGGESTION_SIZE,
-                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR);
+                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR, SPELL_LANGUAGE);
     }
 
     public static class SpellChecker {
@@ -101,7 +112,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
 
         if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
             JsonElement element = ConfigStorage.parseJsonFile(configFile);
-
+ 
             if (element != null && element.isJsonObject()) {
                 JsonObject root = element.getAsJsonObject();
 
@@ -112,6 +123,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                 ConfigStorage.applyRegistry(root.get(ChatSuggestorRegistry.NAME), ChatSuggestorRegistry.getInstance());
 
                 int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 0);
+
             }
         }
     }
@@ -137,6 +149,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
     @Override
     public void load() {
         loadFromFile();
+        SpellCheckSuggestor.getInstance().setup();        
     }
 
     @Override
