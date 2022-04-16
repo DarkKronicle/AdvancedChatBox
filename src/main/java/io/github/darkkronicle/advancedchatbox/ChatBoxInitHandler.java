@@ -72,6 +72,8 @@ public class ChatBoxInitHandler implements IInitializationHandler {
             suggestorRegistry.register(SpellCheckSuggestor::getInstance, "spellcheck",
                     "advancedchatbox.config.chatsuggestor.spellcheck",
                     "advancedchatbox.config.chatsuggestor.info.spellcheck", true, false);
+            SpellCheckSuggestor setup = new SpellCheckSuggestor();
+            setup.Setup();                      
         } catch (Exception e) {
             LogManager.getLogger().log(Level.ERROR, "[AdvancedChat] {}", "Couldn't load SpellCheckSuggestor", e);
         }
