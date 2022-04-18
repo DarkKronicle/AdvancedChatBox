@@ -26,30 +26,37 @@ dependencies {
 	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.18.2:${project.malilib_version}"
 	modImplementation "com.github.DarkKronicle:AdvancedChatCore:${project.advancedchat_version}"
 
-	implementation "org.languagetool:language-de:5.5"
-	implementation "org.languagetool:language-en:5.5"
-	implementation "org.languagetool:language-ru:5.5"
-	implementation "org.languagetool:language-zh:5.5"
-	implementation "org.languagetool:language-pt:5.5"
-	implementation "org.languagetool:language-fr:5.5"
-	implementation "org.languagetool:language-nl:5.5"
-	implementation "org.languagetool:language-pl:5.5"
-	implementation "org.languagetool:language-es:5.5"
-	implementation "org.languagetool:language-it:5.5"
-	implementation "org.languagetool:language-uk:5.5"
+	implementation "org.languagetool:language-de:${project.language_tool_version}"
+	implementation "org.languagetool:language-en:${project.language_tool_version}"
+	implementation "org.languagetool:language-ru:${project.language_tool_version}"
+	implementation "org.languagetool:language-zh:${project.language_tool_version}"
+	implementation "org.languagetool:language-pt:${project.language_tool_version}"
+	implementation "org.languagetool:language-fr:${project.language_tool_version}"
+	implementation "org.languagetool:language-nl:${project.language_tool_version}"
+	implementation "org.languagetool:language-pl:${project.language_tool_version}"
+	implementation "org.languagetool:language-es:${project.language_tool_version}"
+	implementation "org.languagetool:language-it:${project.language_tool_version}"
+	implementation "org.languagetool:language-uk:${project.language_tool_version}"
+	implementation "org.languagetool:language-ja:${project.language_tool_version}"
 	// Transitive
-	include "org.languagetool:language-de:5.5"
-	include "org.languagetool:language-en:5.5"
-	include "org.languagetool:language-ru:5.5"
-	include "org.languagetool:language-zh:5.5"
-	include "org.languagetool:language-pt:5.5"
-	include "org.languagetool:language-fr:5.5"
-	include "org.languagetool:language-nl:5.5"
-	include "org.languagetool:language-pl:5.5"
-	include "org.languagetool:language-es:5.5"
-	include "org.languagetool:language-it:5.5"
-	include "org.languagetool:language-uk:5.5"
-	include "org.languagetool:languagetool-core:5.5"
+	include "org.languagetool:language-de:${project.language_tool_version}"
+	include "org.languagetool:language-en:${project.language_tool_version}"
+	include "org.languagetool:language-ru:${project.language_tool_version}"
+	include "org.languagetool:language-zh:${project.language_tool_version}"
+	include "org.languagetool:language-pt:${project.language_tool_version}"
+	include "org.languagetool:language-fr:${project.language_tool_version}"
+	include group: 'org.languagetool', name: 'french-pos-dict', version: '0.5'
+
+	include "org.languagetool:language-nl:${project.language_tool_version}"
+	include "org.languagetool:language-pl:${project.language_tool_version}"
+	include "org.languagetool:language-es:${project.language_tool_version}"
+	include "org.languagetool:language-it:${project.language_tool_version}"
+	include "org.languagetool:language-uk:${project.language_tool_version}"
+	include "org.languagetool:language-ja:${project.language_tool_version}"
+	include group: 'com.ibm.icu', name: 'icu4j', version: '71.1'
+	include group: 'com.github.lucene-gosen', name: 'lucene-gosen', version: '6.2.1'
+
+	include "org.languagetool:languagetool-core:${project.language_tool_version}"
 	
 	
 	//German and English
@@ -64,7 +71,13 @@ dependencies {
 	include group: 'de.danielnaber', name: 'jwordsplitter', version: '4.5'
 	include group: 'edu.washington.cs.knowitall', name: 'openregex', version: '1.1.1'
 	include group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-    
+
+	include group: 'io.grpc', name: 'grpc-netty-shaded', version: '1.42.1'
+	include group: 'io.grpc', name: 'grpc-protobuf', version: '1.42.1'
+	include group: 'io.grpc', name: 'grpc-stub', version: '1.42.1'
+	include group: 'io.grpc', name: 'grpc-api', version: '1.45.1'
+	include group: 'io.grpc', name: 'grpc-context', version: '1.45.1'
+
 	include group: 'org.carrot2', name: 'morfologik-fsa', version: '2.1.7'
 	include group: 'org.carrot2', name: 'morfologik-fsa-builders', version: '2.1.7'
 	include group: 'org.carrot2', name: 'morfologik-speller', version: '2.1.7'
@@ -77,14 +90,14 @@ dependencies {
 	include group: 'tech.units', name: 'indriya', version: '1.3'
 
 	include group: 'com.hankcs', name: 'aho-corasick-double-array-trie', version: '1.2.2'
-        include group: 'com.gitlab.dumonts', name: 'hunspell', version: '1.1.1'
-        include group: 'com.nativelibs4java', name: 'bridj', version: '0.7.0'
-	//Chinese
+	include group: 'com.gitlab.dumonts', name: 'hunspell', version: '1.1.1'
+	include group: 'com.nativelibs4java', name: 'bridj', version: '0.7.0'
+	// Chinese
 	include group: 'com.google.code', name: 'cjftransform', version: '1.0.1'
-        include group: 'com.hankcs', name: 'hanlp', version: 'portable-1.7.8'
-        //Spanish
-        include group: 'org.softcatala', name: 'spanish-pos-dict', version: '1.3'    
-	//Ukrainian
+	include group: 'com.hankcs', name: 'hanlp', version: 'portable-1.7.8'
+	// Spanish
+	include group: 'org.softcatala', name: 'spanish-pos-dict', version: '1.3'
+	// Ukrainian
 	include group: 'ua.net.nlp', name: 'morfologik-ukrainian-lt', version: '5.5.1'
  } 
 

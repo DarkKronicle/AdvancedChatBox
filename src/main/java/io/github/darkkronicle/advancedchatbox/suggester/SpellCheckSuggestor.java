@@ -8,6 +8,8 @@
 package io.github.darkkronicle.advancedchatbox.suggester;
 
 import com.mojang.brigadier.context.StringRange;
+import fi.dy.masa.malilib.config.IConfigOptionListEntry;
+import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestion;
 import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestions;
 import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
@@ -18,11 +20,17 @@ import io.github.darkkronicle.advancedchatcore.util.RawText;
 import io.github.darkkronicle.advancedchatcore.util.SearchUtils;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
 import io.github.darkkronicle.advancedchatcore.util.StyleFormatter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.text.Style;
@@ -30,90 +38,51 @@ import net.minecraft.text.Text;
 import org.languagetool.JLanguageTool;
 import org.languagetool.ResultCache;
 import org.languagetool.UserConfig;
-import org.languagetool.language.GermanyGerman;
-import org.languagetool.language.AmericanEnglish;
-import org.languagetool.language.BritishEnglish;
-import org.languagetool.language.Russian;
-import org.languagetool.language.Chinese; 
-import org.languagetool.language.PortugalPortuguese; 
-import org.languagetool.language.French; 
-import org.languagetool.language.Dutch; 
-import org.languagetool.language.Polish; 
-import org.languagetool.language.Spanish; 
-import org.languagetool.language.Italian; 
-import org.languagetool.language.Ukrainian; 
+import org.languagetool.language.*;
 import org.languagetool.rules.RuleMatch;
 
 @Environment(EnvType.CLIENT)
 public class SpellCheckSuggestor implements IMessageSuggestor {
+
+    private static SpellCheckSuggestor.Language previousLanguage = null;
+
     private JLanguageTool language;
-    private static SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
+
+    private final static SpellCheckSuggestor INSTANCE = new SpellCheckSuggestor();
 
     public static SpellCheckSuggestor getInstance() {
         return INSTANCE;
     }
-    
 
-    private SpellCheckSuggestor() {
-        
+    public static UserConfig generateConfig() {
+        return new UserConfig(new ArrayList<>(), new HashMap<>(), 20, null, null, null, null);
     }
+
+    private SpellCheckSuggestor() { }
+
     public void setup() {
-        String selectedLanguage = ChatBoxConfigStorage.General.SPELL_LANGUAGE.config.getStringValue();
-        System.out.println("HIER LADEN SPRACHE"+selectedLanguage); 
-        //selectedLanguage = "British";
-        switch (selectedLanguage) {
-    
-       case "German": language = new JLanguageTool(new GermanyGerman(), new GermanyGerman(), new ResultCache(15),
-            new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-       
-       case "British": language = new JLanguageTool(new BritishEnglish(), new BritishEnglish(), new ResultCache(15),
-            new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-       
-       case "American": language = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-       
-       case "Russian": language = new JLanguageTool(new Russian(), new Russian(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+        language = new JLanguageTool(
+                ((Language) ChatBoxConfigStorage.SpellChecker.SPELL_LANGUAGE.config.getOptionListValue()).getLanguageSupplier().get(),
+                null,
+                new ResultCache(15),
+                generateConfig()
+        );
 
-       case "Chinese": language = new JLanguageTool(new Chinese(), new Chinese(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;   
-           
-       case "Portuguese": language = new JLanguageTool(new PortugalPortuguese(), new PortugalPortuguese(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
+        language.setMaxErrorsPerWordRate(0.33f);
+        try {
+            // Set it up. Make it so it doesn't freeze later.
+            language.check("a");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        previousLanguage = (Language) ChatBoxConfigStorage.SpellChecker.SPELL_LANGUAGE.config.getOptionListValue();
+    }
 
-       case "French": language = new JLanguageTool(new French(), new French(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-
-       case "Dutch": language = new JLanguageTool(new Dutch(), new Dutch(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-
-       case "Polish": language = new JLanguageTool(new Polish(), new Polish(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-
-       case "Spanish": language = new JLanguageTool(new Spanish(), new Spanish(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-
-       case "Italian": language = new JLanguageTool(new Italian(), new Italian(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-
-       case "Ukrainian": language = new JLanguageTool(new Ukrainian(), new Ukrainian(), new ResultCache(15),
-           new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-           
-
-
-
-       default: language = new JLanguageTool(new AmericanEnglish(), new AmericanEnglish(), new ResultCache(15),
-       new UserConfig(new ArrayList<>(), new HashMap<>(), 20)); break;
-       }
-
-       language.setMaxErrorsPerWordRate(0.33f);
-       try {
-           // Set it up. Make it so it doesn't freeze later.
-           language.check("a");
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-    } 
+    public void checkDifferent() {
+        if (ChatBoxConfigStorage.SpellChecker.SPELL_LANGUAGE.config.getOptionListValue() != previousLanguage) {
+            setup();
+        }
+    }
 
     @Override
     public Optional<List<AdvancedSuggestions>> suggest(String text) {
@@ -156,5 +125,54 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
         String middle = message.substring(stringMatch.start + 12, stringMatch.end - 13);
         text = text.replaceAll("\\$1", start).replaceAll("\\$2", middle).replaceAll("\\$3", end);
         return StyleFormatter.formatText(new FluidText(new RawText(text, Style.EMPTY)));
+    }
+
+    @AllArgsConstructor
+    public enum Language implements IConfigOptionListEntry {
+        AMERICAN("american", AmericanEnglish::new),
+        BRITISH("british", BritishEnglish::new),
+        GERMAN("german", GermanyGerman::new),
+        RUSSIAN("russian", Russian::new),
+        CHINESE("chinese", Chinese::new),
+        PORTUGUESE("portuguese", PortugalPortuguese::new),
+        FRENCH("french", French::new),
+        DUTCH("dutch", Dutch::new),
+        POLISH("polish", Polish::new),
+        SPANISH("spanish", Spanish::new),
+        ITALIAN("italian", Italian::new),
+        UKRAINIAN("ukrainian", Ukrainian::new),
+        JAPANESE("japanese", Japanese::new),
+        ;
+
+        @Getter
+        private final String language;
+        @Getter
+        private final Supplier<org.languagetool.Language> languageSupplier;
+
+        @Override
+        public String getStringValue() {
+            return language;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StringUtils.translate("advancedchatbox.config.language." + language);
+        }
+
+        @Override
+        public Language cycle(boolean forward) {
+            int i = ordinal();
+            return values()[(i + (forward ? 1 : -1)) % values().length];
+        }
+
+        @Override
+        public Language fromString(String value) {
+            for (Language language : Language.values()) {
+                if (language.language.equals(value)) {
+                    return language;
+                }
+            }
+            return null;
+        }
     }
 }

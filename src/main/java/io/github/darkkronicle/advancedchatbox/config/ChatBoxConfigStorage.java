@@ -15,6 +15,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigInteger;
+import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.config.options.ConfigString;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
@@ -71,13 +72,11 @@ public class ChatBoxConfigStorage implements IConfigHandler {
                 .fromConfig("availableSuggestionColor", new ConfigColor(translate("availablesuggestioncolor"),
                         new Color(150, 150, 150, 255), translate("info.availablesuggestioncolor")));
 
-        public static final SaveableConfig<ConfigString> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
-                new ConfigString(translate("spellLanguage"), "American", translate("info.spellLanguage")));
-        
+
 
         public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS =
                 ImmutableList.of(HIGHLIGHT_COLOR, UNHIGHLIGHT_COLOR, BACKGROUND_COLOR, SUGGESTION_SIZE,
-                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR, SPELL_LANGUAGE);
+                        REMOVE_IDENTIFIER, PRUNE_PLAYER_SUGGESTIONS, AVAILABLE_SUGGESTION_COLOR);
     }
 
     public static class SpellChecker {
@@ -90,6 +89,9 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         public static final SaveableConfig<ConfigString> HOVER_TEXT = SaveableConfig.fromConfig("hoverText",
                 new ConfigString(translate("hovertext"), "&7$1&b$2&7$3", translate("info.hovertext")));
 
+        public static final SaveableConfig<ConfigOptionList> SPELL_LANGUAGE = SaveableConfig.fromConfig("spellLanguage",
+                new ConfigOptionList(translate("spellLanguage"), SpellCheckSuggestor.Language.AMERICAN, translate("info.spellLanguage")));
+
         // public static final SaveableConfig<ConfigBoolean>
         // SUGGEST_CAPITAL =
         // SaveableConfig.fromConfig(
@@ -101,7 +103,7 @@ public class ChatBoxConfigStorage implements IConfigHandler {
         // )
         // );
 
-        public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(HOVER_TEXT
+        public static final ImmutableList<SaveableConfig<? extends IConfigBase>> OPTIONS = ImmutableList.of(HOVER_TEXT, SPELL_LANGUAGE
         // SUGGEST_CAPITAL
         );
     }

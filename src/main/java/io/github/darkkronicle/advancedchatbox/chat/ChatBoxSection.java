@@ -8,8 +8,11 @@
 package io.github.darkkronicle.advancedchatbox.chat;
 
 import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
+import io.github.darkkronicle.advancedchatbox.suggester.SpellCheckSuggestor;
 import io.github.darkkronicle.advancedchatcore.chat.AdvancedChatScreen;
 import io.github.darkkronicle.advancedchatcore.interfaces.AdvancedChatScreenSection;
+import lombok.Getter;
+import lombok.Setter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -61,6 +64,7 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
 
     @Override
     public void initGui() {
+        SpellCheckSuggestor.getInstance().checkDifferent();
         MinecraftClient client = MinecraftClient.getInstance();
         AdvancedChatScreen screen = getScreen();
         this.suggestor = new ChatSuggestorGui(client, screen, screen.getChatField(), client.textRenderer, false, false,
