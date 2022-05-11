@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -164,6 +164,14 @@ public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenS
     }
 
     private static StringMatch fromRange(StringRange range, String input) {
+        if (range.getStart() < 0) {
+            range = new StringRange(0, range.getEnd());
+        }
+
+        if (range.getStart() >= input.length()) {
+            range = new StringRange(range.getStart(), input.length() - 1);
+        }
+
         return new StringMatch(range.get(input), range.getStart(), range.getEnd());
     }
 
