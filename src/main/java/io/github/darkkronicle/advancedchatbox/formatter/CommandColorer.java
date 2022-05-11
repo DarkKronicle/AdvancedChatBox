@@ -169,7 +169,7 @@ public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenS
         }
 
         if (range.getEnd() >= input.length()) {
-            range = new StringRange(range.getStart(), input.length() - 1);
+            range = new StringRange(range.getStart(), input.length());
         }
 
         return new StringMatch(range.get(input), range.getStart(), range.getEnd());
