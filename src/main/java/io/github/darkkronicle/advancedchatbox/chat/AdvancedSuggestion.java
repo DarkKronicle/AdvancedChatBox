@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2021-2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,12 +10,10 @@ package io.github.darkkronicle.advancedchatbox.chat;
 import com.mojang.brigadier.Message;
 import com.mojang.brigadier.context.StringRange;
 import com.mojang.brigadier.suggestion.Suggestion;
-import io.github.darkkronicle.advancedchatcore.util.RawText;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
 /** Suggestion that contains render text, suggested text, suggested start/stop, and tooltip. */
@@ -34,7 +32,7 @@ public class AdvancedSuggestion extends Suggestion {
     public AdvancedSuggestion(StringRange range, String text, Text render, Message tooltip) {
         super(range, text, tooltip);
         if (render == null) {
-            this.render = new RawText(text, Style.EMPTY);
+            this.render = Text.literal(text);
         } else {
             this.render = render;
         }

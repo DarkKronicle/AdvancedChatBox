@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2021-2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -11,10 +11,10 @@ import com.mojang.brigadier.ParseResults;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageFormatter;
 import io.github.darkkronicle.advancedchatcore.util.Color;
 import io.github.darkkronicle.advancedchatcore.util.FindType;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
-import io.github.darkkronicle.advancedchatcore.util.RawText;
 import io.github.darkkronicle.advancedchatcore.util.SearchUtils;
+import io.github.darkkronicle.advancedchatcore.util.StringInsert;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
+import io.github.darkkronicle.advancedchatcore.util.TextUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +25,9 @@ import lombok.Value;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 public class JSONFormatter implements IMessageFormatter {
@@ -62,25 +65,25 @@ public class JSONFormatter implements IMessageFormatter {
     }
 
     @Override
-    public Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse) {
+    public Optional<Text> format(Text text, @Nullable ParseResults<CommandSource> parse) {
         String content = text.getString();
         Optional<List<StringMatch>> omatches = SearchUtils.findMatches(content, "\\{.+\\}", FindType.REGEX);
         if (!omatches.isPresent()) {
             return Optional.empty();
         }
         List<StringMatch> matches = omatches.get();
-        HashMap<StringMatch, FluidText.StringInsert> replace = new HashMap<>();
+        HashMap<StringMatch, StringInsert> replace = new HashMap<>();
         for (StringMatch m : matches) {
             replace.put(m, (current, match) -> colorJson(match.match));
         }
-        text.replaceStrings(replace);
+        text = TextUtil.replaceStrings(text, replace);
         return Optional.of(text);
     }
 
-    public FluidText colorJson(String string) {
-        FluidText text = new FluidText();
+    public MutableText colorJson(String string) {
+        MutableText text = Text.empty();
         for (JSONToken token : parseJson(string)) {
-            text.append(RawText.withColor(token.match.match, token.type.color));
+            text.append(Text.literal(token.match.match).fillStyle(Style.EMPTY.withColor(token.type.color.color())));
         }
         return text;
     }

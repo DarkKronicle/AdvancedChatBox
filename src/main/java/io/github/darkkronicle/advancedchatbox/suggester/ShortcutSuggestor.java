@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2021-2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -24,8 +24,6 @@ import io.github.darkkronicle.advancedchatbox.suggester.gui.ShortcutListWidget;
 import io.github.darkkronicle.advancedchatcore.AdvancedChatCore;
 import io.github.darkkronicle.advancedchatcore.interfaces.IJsonApplier;
 import io.github.darkkronicle.advancedchatcore.interfaces.IScreenSupplier;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
-import io.github.darkkronicle.advancedchatcore.util.RawText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +35,8 @@ import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Style;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
@@ -133,10 +132,10 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         ArrayList<AdvancedSuggestion> suggestions = new ArrayList<>();
         for (Shortcut shortcut : shortcuts) {
             if (current.length() == 0 || shortcut.name.toLowerCase().startsWith(current.toLowerCase())) {
-                FluidText text = new FluidText();
-                text.append(new RawText(shortcut.name, Style.EMPTY));
+                MutableText text = Text.empty();
+                text.append(Text.literal(shortcut.name));
                 suggestions.add(new AdvancedSuggestion(range, shortcut.replace, text,
-                        new RawText(shortcut.replace, Style.EMPTY)));
+                        Text.literal(shortcut.replace)));
             }
         }
         return suggestions;

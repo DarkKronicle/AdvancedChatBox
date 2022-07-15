@@ -10,16 +10,19 @@ package io.github.darkkronicle.advancedchatbox.chat;
 import com.mojang.brigadier.context.StringRange;
 import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
 import io.github.darkkronicle.advancedchatbox.registry.ChatFormatterRegistry;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
-import io.github.darkkronicle.advancedchatcore.util.RawText;
+import io.github.darkkronicle.advancedchatcore.util.StringInsert;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
+import io.github.darkkronicle.advancedchatcore.util.TextUtil;
 import java.util.HashMap;
 import java.util.Optional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.text.CharacterVisitor;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
@@ -32,7 +35,7 @@ public class ChatFormatter {
     private String current = null;
 
     /** The formatted current */
-    private FluidText last = null;
+    private MutableText last = null;
 
     private final TextFieldWidget widget;
     private final ChatSuggestor suggestor;
@@ -48,13 +51,13 @@ public class ChatFormatter {
      * @param string Contents
      * @return Formatted FluidText. If nothing is changed it will be the contents with Style.EMPTY
      */
-    public FluidText format(String string) {
-        FluidText text = new FluidText(new RawText(string, Style.EMPTY));
+    public MutableText format(String string) {
+        MutableText text = Text.literal(string);
         if (string.length() == 0) {
             return text;
         }
         if (suggestor.getAllSuggestions() != null) {
-            HashMap<StringMatch, FluidText.StringInsert> format = new HashMap<>();
+            HashMap<StringMatch, StringInsert> format = new HashMap<>();
             for (AdvancedSuggestions suggestions : suggestor.getAllSuggestions()) {
                 if (suggestions.getSuggestions().isEmpty()) {
                     // Don't want to format if there's nothing there...
@@ -86,18 +89,20 @@ public class ChatFormatter {
                     TextColor textColor = TextColor
                             .fromRgb(ChatBoxConfigStorage.General.AVAILABLE_SUGGESTION_COLOR.config.get().color());
                     style = style.withColor(textColor);
-                    return new FluidText(new RawText(matchString, style));
+                    return Text.literal(matchString).fillStyle(style);
                 });
             }
-            text.replaceStrings(format);
+            text = TextUtil.replaceStrings(text, format).copy();
         }
-        for (ChatFormatterRegistry.ChatFormatterOption option : ChatFormatterRegistry.getInstance().getAll()) {
-            if (!option.isActive()) {
-                continue;
-            }
-            Optional<FluidText> otext = option.getOption().format(text, suggestor.getParse());
-            if (otext.isPresent()) {
-                text = otext.get();
+        if (text.getString().length() != 0) {
+            for (ChatFormatterRegistry.ChatFormatterOption option : ChatFormatterRegistry.getInstance().getAll()) {
+                if (!option.isActive()) {
+                    continue;
+                }
+                Optional<Text> otext = option.getOption().format(text, suggestor.getParse());
+                if (otext.isPresent()) {
+                    text = otext.get().copy();
+                }
             }
         }
         return text;
@@ -108,16 +113,13 @@ public class ChatFormatter {
         if (length == 0) {
             return OrderedText.EMPTY;
         }
-        if (last.getRawTexts().size() == 0) {
-            return OrderedText.EMPTY;
-        }
         int start = integer;
         int end = integer + length;
         int fluidLength = last.getString().length();
         if (end > fluidLength) {
             end = fluidLength;
         }
-        return last.truncate(new StringMatch(s, start, end)).asOrderedText();
+        return TextUtil.truncate(last, new StringMatch(s, start, end)).asOrderedText();
     }
 
     public OrderedText apply(String s, Integer integer) {

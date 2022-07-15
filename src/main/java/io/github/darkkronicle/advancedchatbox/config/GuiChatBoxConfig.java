@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2021-2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,10 +15,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatbox.AdvancedChatBox;
 import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
 import io.github.darkkronicle.advancedchatcore.config.gui.GuiConfig;
-import io.github.darkkronicle.advancedchatcore.config.gui.GuiConfigHandler;
-import io.github.darkkronicle.advancedchatcore.gui.buttons.ConfigTabsButtonListener;
 import io.github.darkkronicle.advancedchatcore.gui.buttons.NamedSimpleButton;
-import net.minecraft.client.gui.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.List;

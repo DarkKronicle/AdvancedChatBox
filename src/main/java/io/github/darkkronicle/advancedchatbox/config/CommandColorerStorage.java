@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 DarkKronicle
+ * Copyright (C) 2021-2022 DarkKronicle
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,7 +12,6 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigString;
 import fi.dy.masa.malilib.util.StringUtils;
 import io.github.darkkronicle.advancedchatcore.config.SaveableConfig;
-import io.github.darkkronicle.advancedchatcore.config.options.ConfigColor;
 import io.github.darkkronicle.advancedchatcore.config.options.ConfigColor;
 import io.github.darkkronicle.advancedchatcore.util.Color;
 import net.fabricmc.api.EnvType;

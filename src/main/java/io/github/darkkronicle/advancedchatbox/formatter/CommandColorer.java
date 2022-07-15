@@ -29,9 +29,9 @@ import io.github.darkkronicle.advancedchatcore.interfaces.IJsonApplier;
 import io.github.darkkronicle.advancedchatcore.interfaces.IScreenSupplier;
 import io.github.darkkronicle.advancedchatcore.util.Color;
 import io.github.darkkronicle.advancedchatcore.util.Colors;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
-import io.github.darkkronicle.advancedchatcore.util.RawText;
+import io.github.darkkronicle.advancedchatcore.util.StringInsert;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
+import io.github.darkkronicle.advancedchatcore.util.TextUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +44,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 
 @Environment(EnvType.CLIENT)
 public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenSupplier {
@@ -59,16 +61,15 @@ public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenS
     }
 
     @Override
-    public Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse) {
+    public Optional<Text> format(Text text, @Nullable ParseResults<CommandSource> parse) {
         if (parse == null) {
             if (text.getString().charAt(0) == '/') {
-                return Optional.of(new FluidText(
-                        RawText.withColor(text.getString(), CommandColorerStorage.ERROR_COLOR.config.get())));
+                return Optional.of(Text.literal(text.getString()).fillStyle(Style.EMPTY.withColor(CommandColorerStorage.ERROR_COLOR.config.get().color())));
             }
             return Optional.empty();
         }
         CommandContextBuilder<CommandSource> commandContextBuilder = parse.getContext().getLastChild();
-        HashMap<StringMatch, FluidText.StringInsert> replace = new HashMap<>();
+        HashMap<StringMatch, StringInsert> replace = new HashMap<>();
         int lowest = -1;
         int max = 0;
         int index = 0;
@@ -92,9 +93,9 @@ public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenS
             Color color = palette.getColors().get(index % palette.getColors().size());
             replace.put(match, (current, match1) -> {
                 if (current.getStyle().equals(Style.EMPTY)) {
-                    return new FluidText(RawText.withColor(match1.match, color));
+                    return Text.literal(match1.match).fillStyle(Style.EMPTY.withColor(color.color()));
                 }
-                return new FluidText(new RawText(match1.match, current.getStyle()));
+                return Text.literal(match1.match).fillStyle(current.getStyle());
             });
             index += 1;
         }
@@ -102,24 +103,22 @@ public class CommandColorer implements IMessageFormatter, IJsonApplier, IScreenS
         if (lowest > -1) {
             replace.put(new StringMatch(text.getString().substring(0, lowest), 0, lowest), (current, match) -> {
                 if (current.getStyle().equals(Style.EMPTY)) {
-                    return new FluidText(
-                            RawText.withColor(match.match, CommandColorerStorage.COMMAND_COLOR.config.get()));
+                    return Text.literal(match.match).fillStyle(Style.EMPTY.withColor(CommandColorerStorage.COMMAND_COLOR.config.get().color()));
                 }
-                return new FluidText(new RawText(match.match, current.getStyle()));
+                return Text.literal(match.match).fillStyle(current.getStyle());
             });
         }
         if (max != string.length()) {
             replace.put(new StringMatch(text.getString().substring(max, string.length()), max, string.length()),
                     (current, match) -> {
                         if (current.getStyle().equals(Style.EMPTY)) {
-                            return new FluidText(
-                                    RawText.withColor(match.match, CommandColorerStorage.ERROR_COLOR.config.get()));
+                            return Text.literal(match.match).fillStyle(Style.EMPTY.withColor(CommandColorerStorage.ERROR_COLOR.config.get().color()));
                         }
-                        return new FluidText(new RawText(match.match, current.getStyle()));
+                        return Text.literal(match.match).fillStyle(current.getStyle());
                     });
         }
 
-        text.replaceStrings(replace);
+        text = TextUtil.replaceStrings(text, replace);
         return Optional.of(text);
     }
 
