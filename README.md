@@ -1,6 +1,8 @@
 # AdvancedChatBox
 
-AdvancedChatBox allows for complex suggestions and tab completion to be added into the Minecraft chat box.
+AdvancedChatBox allows for complex suggestions and tab completion to be added into the Minecraft chat box. 
+
+**This branch contains all language tool languages. These make up ~300 MB of storage so only use this if you want all**
 
 Please submit bugs to the [issue tracker](https://github.com/DarkKronicle/AdvancedChatBox/issues). Join the [Discord](https://discord.gg/WnaE3uZxDA) for more help!
 
