@@ -13,7 +13,6 @@ import io.github.darkkronicle.advancedchatbox.chat.AdvancedSuggestions;
 import io.github.darkkronicle.advancedchatbox.config.ChatBoxConfigStorage;
 import io.github.darkkronicle.advancedchatbox.interfaces.IMessageSuggestor;
 import io.github.darkkronicle.advancedchatcore.util.FindType;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
 import io.github.darkkronicle.advancedchatcore.util.SearchUtils;
 import io.github.darkkronicle.advancedchatcore.util.StringMatch;
@@ -88,13 +87,13 @@ public class SpellCheckSuggestor implements IMessageSuggestor {
         Optional<StringMatch> match = SearchUtils.getMatch(message, "<suggestion>(.+)</suggestion>", FindType.REGEX);
         if (match.isEmpty()) {
             text = text.replaceAll("\\$1", message).replaceAll("\\$2", "").replaceAll("\\$3", "");
-            return StyleFormatter.formatText(new FluidText(new RawText(text, Style.EMPTY)));
+            return StyleFormatter.formatText(Text.literal(text));
         }
         StringMatch stringMatch = match.get();
         String start = message.substring(0, stringMatch.start);
         String end = message.substring(stringMatch.end);
         String middle = message.substring(stringMatch.start + 12, stringMatch.end - 13);
         text = text.replaceAll("\\$1", start).replaceAll("\\$2", middle).replaceAll("\\$3", end);
-        return StyleFormatter.formatText(new FluidText(new RawText(text, Style.EMPTY)));
+        return StyleFormatter.formatText(Text.literal(text));
     }
 }

@@ -41,7 +41,6 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
@@ -173,7 +172,7 @@ public class ChatSuggestorGui {
         Text text = Texts.toText(exception.getRawMessage());
         String string = exception.getContext();
         return string == null ? text.asOrderedText()
-                : (new TranslatableText("command.context.parse_error", text, exception.getCursor(), string))
+                : (Text.translatable("command.context.parse_error", text, exception.getCursor(), string))
                         .asOrderedText();
     }
 

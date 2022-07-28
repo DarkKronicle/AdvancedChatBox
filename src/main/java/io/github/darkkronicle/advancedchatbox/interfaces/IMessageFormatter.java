@@ -8,10 +8,10 @@
 package io.github.darkkronicle.advancedchatbox.interfaces;
 
 import com.mojang.brigadier.ParseResults;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.Text;
 
 /** An interface for formatting the chat text box on the chat screen. */
 public interface IMessageFormatter {
@@ -22,5 +22,5 @@ public interface IMessageFormatter {
      * @param parse Current commands that have been parsed
      * @return Text that should render on the chat text bar. If empty it won't modify.
      */
-    Optional<FluidText> format(FluidText text, @Nullable ParseResults<CommandSource> parse);
+    Optional<Text> format(Text text, @Nullable ParseResults<CommandSource> parse);
 }

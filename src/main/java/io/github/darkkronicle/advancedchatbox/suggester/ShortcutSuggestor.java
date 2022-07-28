@@ -24,13 +24,14 @@ import io.github.darkkronicle.advancedchatbox.suggester.gui.ShortcutListWidget;
 import io.github.darkkronicle.advancedchatcore.AdvancedChatCore;
 import io.github.darkkronicle.advancedchatcore.interfaces.IJsonApplier;
 import io.github.darkkronicle.advancedchatcore.interfaces.IScreenSupplier;
-import io.github.darkkronicle.advancedchatcore.util.FluidText;
 import io.github.darkkronicle.advancedchatcore.util.RawText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
+
+import io.github.darkkronicle.advancedchatcore.util.TextBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,6 +39,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScreenSupplier {
@@ -133,10 +135,9 @@ public class ShortcutSuggestor implements IMessageSuggestor, IJsonApplier, IScre
         ArrayList<AdvancedSuggestion> suggestions = new ArrayList<>();
         for (Shortcut shortcut : shortcuts) {
             if (current.length() == 0 || shortcut.name.toLowerCase().startsWith(current.toLowerCase())) {
-                FluidText text = new FluidText();
-                text.append(new RawText(shortcut.name, Style.EMPTY));
-                suggestions.add(new AdvancedSuggestion(range, shortcut.replace, text,
-                        new RawText(shortcut.replace, Style.EMPTY)));
+                TextBuilder text = new TextBuilder();
+                text.append(shortcut.name);
+                suggestions.add(new AdvancedSuggestion(range, shortcut.replace, text.build(), Text.literal(shortcut.replace)));
             }
         }
         return suggestions;
