@@ -452,8 +452,8 @@ public class ChatSuggestorGui {
             Suggestion suggestion = this.suggestions.get(this.selection);
             ChatSuggestorGui.this.textField.setSuggestion(ChatSuggestorGui
                     .getSuggestionSuffix(ChatSuggestorGui.this.textField.getText(), suggestion.apply(this.typedText)));
-            if (NarratorManager.INSTANCE.isActive() && this.lastNarrationIndex != this.selection) {
-                NarratorManager.INSTANCE.narrate(this.getNarration());
+            if (client.getNarratorManager().isActive() && this.lastNarrationIndex != this.selection) {
+                client.getNarratorManager().narrate(this.getNarration());
             }
         }
 
