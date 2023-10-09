@@ -14,7 +14,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 
 @Environment(EnvType.CLIENT)
 public class ChatBoxSection extends AdvancedChatScreenSection {
@@ -46,8 +45,8 @@ public class ChatBoxSection extends AdvancedChatScreenSection {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        return this.suggestor.mouseScrolled(amount);
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        return this.suggestor.mouseScrolled(verticalAmount);
     }
 
     @Override
