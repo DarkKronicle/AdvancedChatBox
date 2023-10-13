@@ -10,3 +10,4 @@ build/
 classes/
 lombok.config
 src/main/resources/english.zip
+/src/main/resources/swear_words.csv
