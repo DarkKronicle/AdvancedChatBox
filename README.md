@@ -1,8 +1,12 @@
+# Important
+
+I have no real interest in mod development at the moment, so I am archiving this. Feel free to fork, and consider some of the community forks/
+
 # AdvancedChatBox
 
 AdvancedChatBox allows for complex suggestions and tab completion to be added into the Minecraft chat box.
 
-Please submit bugs to the [issue tracker](https://github.com/DarkKronicle/AdvancedChatBox/issues). Join the [Discord](https://discord.gg/WnaE3uZxDA) for more help!
+Please submit bugs to the [issue tracker](https://github.com/DarkKronicle/AdvancedChatBox/issues).
 
 ## Dependencies
 
