@@ -28,11 +28,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.command.CommandSource;
@@ -245,19 +244,19 @@ public class ChatSuggestorGui {
         return suggestion.startsWith(original) ? suggestion.substring(original.length()) : null;
     }
 
-    public void render(MatrixStack matrices, int mouseX, int mouseY) {
+    public void render(DrawContext context, int mouseX, int mouseY) {
         if (this.window != null) {
-            this.window.render(matrices, mouseX, mouseY);
+            this.window.render(context, mouseX, mouseY);
         } else {
             int i = 0;
 
             for (OrderedText message : this.messages) {
                 i++;
                 int j = this.chatScreenSized ? this.owner.height - 14 - 13 - 12 * i : 72 + 12 * i;
-                DrawableHelper.fill(matrices, this.x - 1, j, this.x + this.width + 1, j + 12,
+                context.fill(this.x - 1, j, this.x + this.width + 1, j + 12,
                         ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 if (message != null) {
-                    this.textRenderer.drawWithShadow(matrices, message, (float) this.x, (float) (j + 2), -1);
+                    context.drawTextWithShadow(textRenderer, message, this.x, j + 2, -1);
                 }
             }
         }
@@ -293,7 +292,7 @@ public class ChatSuggestorGui {
             this.select(0);
         }
 
-        public void render(MatrixStack matrices, int mouseX, int mouseY) {
+        public void render(DrawContext context, int mouseX, int mouseY) {
             int suggestionSize = Math.min(this.suggestions.size(), ChatSuggestorGui.this.maxSuggestionSize);
             boolean moreBelow = this.inWindowIndex > 0;
             boolean moreAbove = this.suggestions.size() > this.inWindowIndex + suggestionSize;
@@ -305,10 +304,10 @@ public class ChatSuggestorGui {
 
             if (more) {
                 // Draw lines to signify that there is more
-                DrawableHelper.fill(matrices, this.area.getX(), this.area.getY() - 1,
+                context.fill(this.area.getX(), this.area.getY() - 1,
                         this.area.getX() + this.area.getWidth(), this.area.getY(),
                         ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
-                DrawableHelper.fill(matrices, this.area.getX(), this.area.getY() + this.area.getHeight(),
+                context.fill(this.area.getX(), this.area.getY() + this.area.getHeight(),
                         this.area.getX() + this.area.getWidth(), this.area.getY() + this.area.getHeight() + 1,
                         ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 int x;
@@ -316,7 +315,7 @@ public class ChatSuggestorGui {
                     // Dotted
                     for (x = 0; x < this.area.getWidth(); ++x) {
                         if (x % 2 == 0) {
-                            DrawableHelper.fill(matrices, this.area.getX() + x, this.area.getY() - 1,
+                            context.fill(this.area.getX() + x, this.area.getY() - 1,
                                     this.area.getX() + x + 1, this.area.getY(),
                                     Colors.getInstance().getColorOrWhite("white").color());
                         }
@@ -327,7 +326,7 @@ public class ChatSuggestorGui {
                     // Dotted
                     for (x = 0; x < this.area.getWidth(); ++x) {
                         if (x % 2 == 0) {
-                            DrawableHelper.fill(matrices, this.area.getX() + x,
+                            context.fill(this.area.getX() + x,
                                     this.area.getY() + this.area.getHeight(), this.area.getX() + x + 1,
                                     this.area.getY() + this.area.getHeight() + 1,
                                     Colors.getInstance().getColorOrWhite("white").color());
@@ -340,7 +339,7 @@ public class ChatSuggestorGui {
 
             for (int s = 0; s < suggestionSize; ++s) {
                 AdvancedSuggestion suggestion = this.suggestions.get(s + this.inWindowIndex);
-                DrawableHelper.fill(matrices, this.area.getX(), this.area.getY() + 12 * s,
+                context.fill(this.area.getX(), this.area.getY() + 12 * s,
                         this.area.getX() + this.area.getWidth(), this.area.getY() + 12 * s + 12,
                         ChatBoxConfigStorage.General.BACKGROUND_COLOR.config.get().color());
                 if (mouseX > this.area.getX() && mouseX < this.area.getX() + this.area.getWidth()
@@ -351,9 +350,8 @@ public class ChatSuggestorGui {
 
                     hover = true;
                 }
-
-                ChatSuggestorGui.this.textRenderer.drawWithShadow(matrices, suggestion.getRender(),
-                        (float) (this.area.getX() + 1), (float) (this.area.getY() + 2 + 12 * s),
+                context.drawTextWithShadow(ChatSuggestorGui.this.textRenderer, suggestion.getRender(),
+                        (this.area.getX() + 1), (this.area.getY() + 2 + 12 * s),
                         (s + this.inWindowIndex) == this.selection
                                 ? ChatBoxConfigStorage.General.HIGHLIGHT_COLOR.config.get().color()
                                 : ChatBoxConfigStorage.General.UNHIGHLIGHT_COLOR.config.get().color());
@@ -362,7 +360,7 @@ public class ChatSuggestorGui {
             if (hover) {
                 Message message = this.suggestions.get(this.selection).getTooltip();
                 if (message != null) {
-                    ChatSuggestorGui.this.owner.renderTooltip(matrices, Texts.toText(message), mouseX, mouseY);
+                    context.drawTooltip(textRenderer, Texts.toText(message), mouseX, mouseY);
                 }
             }
         }
